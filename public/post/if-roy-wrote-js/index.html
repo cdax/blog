@@ -1,0 +1,260 @@
+<!doctype html>
+<html class="no-js" lang="en-us">
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>If Arundhati Roy wrote JavaScript</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Chitharanjan Das">
+<meta name="description" content="">
+<meta name="generator" content="Hugo 0.16" />
+<link rel="apple-touch-icon" sizes="57x57" href="http://cdax.github.io/img/icons/apple-icon-57x57.png?v=2">
+<link rel="apple-touch-icon" sizes="60x60" href="http://cdax.github.io/img/icons/apple-icon-60x60.png?v=2">
+<link rel="apple-touch-icon" sizes="72x72" href="http://cdax.github.io/img/icons/apple-icon-72x72.png?v=2">
+<link rel="apple-touch-icon" sizes="76x76" href="http://cdax.github.io/img/icons/apple-icon-76x76.png?v=2">
+<link rel="apple-touch-icon" sizes="114x114" href="http://cdax.github.io/img/icons/apple-icon-114x114.png?v=2">
+<link rel="apple-touch-icon" sizes="120x120" href="http://cdax.github.io/img/icons/apple-icon-120x120.png?v=2">
+<link rel="apple-touch-icon" sizes="144x144" href="http://cdax.github.io/img/icons/apple-icon-144x144.png?v=2">
+<link rel="apple-touch-icon" sizes="152x152" href="http://cdax.github.io/img/icons/apple-icon-152x152.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.github.io/img/icons/apple-icon-180x180.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192"  href="http://cdax.github.io/img/icons/android-icon-192x192.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="http://cdax.github.io/img/icons/favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="http://cdax.github.io/img/icons/favicon-96x96.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="http://cdax.github.io/img/icons/favicon-16x16.png?v=2">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/img/icons/ms-icon-144x144.png?v=2">
+<meta name="theme-color" content="#ffffff">
+
+
+<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://cdax.github.io/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/main.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/ionicons.min.css">
+
+    </head>
+    <body>
+        
+        <nav class="main-nav">
+	
+	
+		<a href='http://cdax.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>If Arundhati Roy wrote JavaScript</h1>
+                    <h2 class="headline">February 27, 2015</h2>
+                </header>
+                <section id="post-body">
+                    
+
+<p><a href="http://anguscroll.com/">Angus Croll’s</a> <a href="http://www.amazon.com/Hemingway-Wrote-JavaScript-Angus-Croll/dp/1593275854/ref=sr_1_1?ie=UTF8&amp;qid=1425017264&amp;sr=8-1&amp;keywords=if+hemingway+wrote+javascript">If Hemingway Wrote JavaScript</a> is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.</p>
+
+<p><img src="http://cdax.github.io/img/thirteen_authors_2.jpg" alt="" /></p>
+
+<p><a href="http://cdas.svbtle.com/if-arundhati-roy-wrote-javascript">No Starch Press</a> has been publishing many thoroughly readable programming books over the years, including the much-acclaimed <a href="http://www.amazon.com/Eloquent-JavaScript-Modern-Introduction-Programming/dp/1593275846/ref=sr_1_1?ie=UTF8&amp;qid=1425017353&amp;sr=8-1&amp;keywords=eloquent+javascript">Eloquent JavaScript</a> and <a href="http://www.amazon.com/Learn-Some-Erlang-Great-Good/dp/1593274351/ref=sr_1_1?ie=UTF8&amp;qid=1425017394&amp;sr=8-1&amp;keywords=learn+you+some+erlang+for+great+good">Learn You Some Erlang for Great Good!</a> Although If Hemingway has a far more leisurely style than the other books, it is by no means a lesser spectacle of code craftsmanship. Reading some of the examples requires (or, like in my case, inspires) a proper understanding of scoping, hoisting, and closures among other ideas.</p>
+
+<h4 id="the-challenge">The Challenge</h4>
+
+<p>In this post, I’ll introduce a few basic JavaScript abstractions with help from one of Angus’s snippets, taken from the chapter on Arundhati Roy. The challenge is to create a chainable function that takes one string(word) per function call, but when called without an argument, returns a list of all previously passed-in words. e.g., the function sayIt() will be used thus:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">sayIt</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;Hello&quot;</span><span style="color: #f8f8f2">)(</span><span style="color: #e6db74">&quot;world!&quot;</span><span style="color: #f8f8f2">)());</span>
+</pre></div>
+
+
+<p>…resulting in the following:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>Hello world!
+</pre></div>
+
+
+<h4 id="arundhati-roy-s-javascript-solution">Arundhati Roy’s JavaScript solution</h4>
+
+<blockquote>
+<p>The plot of The God of Small Things is non-linear. So is Roy’s JavaScript code. - Angus Croll</p>
+</blockquote>
+
+<p>Here it is in all its glory, reproduced with permission from Angus and No Starch:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// 1) Start with the answer. 2) Move on to the Grubby Details.</span>
+<span style="color: #75715e">// A viable try-able plan.</span>
+<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">sayIt</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+
+    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+
+    <span style="color: #75715e">// Does Whatever-it-is-you-need-it-to.</span>
+    <span style="color: #75715e">// Loyal, Dependable, Weak-kneed.</span>
+    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #75715e">// When invoked it Saves.</span>
+        <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #75715e">// When addressed it Says.</span>
+        <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toString</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">join</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39; &#39;</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">}</span>
+        <span style="color: #75715e">// Then it waits to be re-summoned.</span>
+        <span style="color: #75715e">// Not invoking. Not recursing. Just waiting.</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">}</span>
+
+    <span style="color: #75715e">// Why change KochuFunction when KochuFunction can change itself?</span>
+    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #a6e22e">TheStretchableFetchableThing</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">];</span>
+        <span style="color: #a6e22e">KochuFunction</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+            <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">push</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">}</span>
+        <span style="color: #75715e">// KochuFunction is no longer what it was.</span>
+        <span style="color: #75715e">// Or thought it&#39;d be. Ever.</span>
+    <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p><em>Roy’s debut JavaScript function, received with almost the same fanfare as her debut novel.</em></p>
+
+<p>There are more than a couple of things going on here.</p>
+
+<h4 id="scoping">Scoping</h4>
+
+<p>For months, JavaScript’s scoping rules remained a source of confusion for me thanks to the C-style syntax and constructs. I finally had my moment of clarity after coming across an excellent blogpost on the subject. One major takeaway from that post is that names in JavaScript have function-level scope as opposed to the C family’s block-level scope. What this means is that in C++ (for example) the if and while blocks have their own scopes, isolated from all external scopes while in JavaScript, scope isolation exists only for functions, not blocks. The following is an illustrated example:</p>
+
+<p>In C++:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">;</span>
+<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">6</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">cout</span> <span style="color: #f92672">&lt;&lt;</span> <span style="color: #f8f8f2">a;</span> <span style="color: #75715e">// Prints 5</span>
+</pre></div>
+
+
+<p>In JavaScript:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #a6e22e">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">;</span>
+<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">true</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span> <span style="color: #75715e">// This if-block has no scope of its own, and as a result...</span>
+    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">6</span><span style="color: #f8f8f2">;</span> <span style="color: #75715e">// ...&#39;a&#39; still references the variable declared two lines above</span>
+<span style="color: #f8f8f2">}</span>
+<span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">a</span><span style="color: #f8f8f2">);</span> <span style="color: #75715e">// Prints 6</span>
+</pre></div>
+
+
+<p>The story of <code>sayIt()</code> revolves around three main characters. The functions <code>TheSayItSaveItThing()</code> and <code>KochuFunction()</code>, and the list <code>TheStretchableFetchableThing</code>. Let’s take a closer look and identify the scope of each.</p>
+
+<p><code>sayIt()</code> works by maintaining an ordered list of all the passed-in arguments. This list, <code>TheStretchableFetchableThing</code> is never formally declared as a var. The interpreter will therefore assign it to the topmost(global) scope.</p>
+
+<p><code>TheSayItSaveItThing()</code> and <code>KochuFunction()</code> on the other hand are declared as functions inside <code>sayIt()</code>, and are therefore assigned to <code>sayIt()</code>’s function-level scope.</p>
+
+<h4 id="hoisting">Hoisting</h4>
+
+<p>The outermost function, <code>sayIt()</code> has a return statement sitting neatly on top of all other lines of code. Hoisting is the process by which JavaScript pulls all var and function declarations to the top of their respective scopes. Hoisting is what is responsible for ensuring that <code>TheSayItSaveItThing()</code> and <code>KochuFunction()</code> are defined before that return statement is executed.</p>
+
+<p>As opposed to how we see the code, here is how the interpreter sees it:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">function</span> <span style="color: #a6e22e">sayIt</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+
+    <span style="color: #75715e">// KochuFunction()&#39;s definition has been hoisted</span>
+    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #a6e22e">TheStretchableFetchableThing</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">];</span>
+        <span style="color: #a6e22e">KochuFunction</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+            <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">push</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">}</span>
+
+    <span style="color: #75715e">// TheSayItSaveItThing()&#39;s definition has also been hoisted</span>
+    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toString</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">join</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39; &#39;</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">}</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">}</span>
+
+    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<h4 id="closures">Closures</h4>
+
+<p>In JavaScript, a closure is created when a function accesses a name that was declared in an external scope. Or in other words, a closure is an inner function accessing variables that were declared outside its own function-level scope.</p>
+
+<p>In the program above, for example, both <code>TheSayItSaveItThing()</code> and <code>KochuFunction()</code> are closures, accessing the global TheStretchableFetchableThing. Additionally, <code>TheSayItSaveItThing()</code> also accesses <code>KochuFunction()</code>. Closures are a very powerful JavaScript feature, as best explained <a href="http://c2.com/cgi/wiki?ClosuresAndObjectsAreEquivalent&amp;utm_content=buffer7063c&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer">here</a>.</p>
+
+<h4 id="the-russian-doll">‘The Russian Doll’</h4>
+
+<p>The power of scoping, hoisting and closures is revealed in the definition and subsequent re-definition of <code>KochuFunction()</code> in the code above. The first call to <code>KochuFunction()</code> seeds a new list with the passed-in argument, and then changes its own definition, so that subsequent calls will simply keep pushing to this list.</p>
+
+<p>Angus Croll calls this <a href="https://javascriptweblog.wordpress.com/2010/04/27/the-russian-doll-principle-re-writing%C2%A0functions%C2%A0at%C2%A0runtime/">the Russian Doll pattern</a>. Peter Michaux calls this <a href="http://michaux.ca/articles/lazy-function-definition-pattern">the lazy function definition pattern</a>.</p>
+
+<p><img src="http://cdax.github.io/img/matryoshka.JPG" alt="A Russian Matryoshka doll" /></p>
+
+<p>Often I’ve found myself writing functions that must do something one way the first time, and then a different way the next time. My own inelegant solution has always looked something like this:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">int</span> <span style="color: #a6e22e">firstCall</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">;</span>
+<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">firstCall</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #75715e">// do something</span>
+    <span style="color: #a6e22e">firstCall</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #75715e">// do something else</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>However, with this approach, each function call has an associated branching cost. The if statement needs to be checked for all the calls, even though the result will be the same every time except the first. The Russian Doll pattern eliminates this unnecessary cost by changing the function’s definition after the first invocation!</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// KochuFunction()&#39;s definition has been hoisted</span>
+<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">TheStretchableFetchableThing</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">];</span>
+    <span style="color: #75715e">// KochuFunction redefines itself inside its own body, like a Matryoshka doll</span>
+    <span style="color: #a6e22e">KochuFunction</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">push</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>If Hemingway wrote JavaScript has been a fascinating read so far, and I highly recommend it to admirers of JavaScript everywhere, the same way I’d recommend The God of Small Things to admirers of English literature.</p>
+
+                </section>
+                <section class="section topics">
+                    Tagged with
+                    <ul class="topics inline">
+                        
+                            <li class="topic"><a href="http://cdax.github.io/tags/javascript">javascript</a></li>
+                        
+                    </ul>
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                
+                    <div class="avatar-name">
+                        <img class="avatar" src="http://cdax.github.io/img/avatar.jpg">
+                        <div>
+                            <span class="dark">Chitharanjan Das</span>
+                            <span>Software Developer</span>
+                        </div>
+                    </div>
+                    
+                <section id="sharing">
+                    
+                </section>
+            </footer>
+            <footer id="footer">
+    
+    <p class="small">
+    
+        © 2016, Chitharanjan Das
+    
+    </p>
+</footer>
+
+        </section>
+
+    </body>
+</html>

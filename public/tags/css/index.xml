@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Css on Chitharanjan&#39;s Blog</title>
+    <link>http://cdax.github.io/tags/css/</link>
+    <description>Recent content in Css on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 Nov 2014 14:06:28 +0530</lastBuildDate>
+    <atom:link href="http://cdax.github.io/tags/css/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CSS for Print Media</title>
+      <link>http://cdax.github.io/post/css-for-print-media/</link>
+      <pubDate>Tue, 25 Nov 2014 14:06:28 +0530</pubDate>
+      
+      <guid>http://cdax.github.io/post/css-for-print-media/</guid>
+      <description>
+
+&lt;p&gt;I never really felt it was important to style web pages for the print medium till a few days ago when I was formatting my résumé. The theme that I&amp;rsquo;ve forked to use on this blog employs &lt;code&gt;font-kerning&lt;/code&gt; and &lt;code&gt;anti-aliasing&lt;/code&gt; to make my posts look like text on paper. This made me curious to see what my resume would look like if printed.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;Print Preview&lt;/em&gt; was embarrassing. The text was huge and there were gaps everywhere. Paragraphs were getting split between pages in all the wrong places. What was more, the page count stood at 6 A4 pages because of the oversized text. Much has been written about the importance of brevity when it comes to job applications. What if a prospective employer wanted to take a printout for their records, and then had their printer spew out pages after pages of poorly formatted text?&lt;/p&gt;
+
+&lt;p&gt;I decided to spend some time collecting best practices from all over the web. This blogpost is a choice collection of the essential ideas that one needs to know in order to write CSS for the printer.&lt;/p&gt;
+
+&lt;h4 id=&#34;media-queries-to-the-rescue&#34;&gt;Media Queries to the Rescue&lt;/h4&gt;
+
+&lt;p&gt;Media queries have traditionally been used for making websites responsive &amp;ndash; to make sure your content looks good on the most common screen sizes. But, as the name suggests, they can be used to query not just screen sizes, but just about any detail about the medium. For example, you can add print styles in the following two ways:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;&amp;lt;!--Styles for screens--&amp;gt;&lt;/span&gt;  
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;screen.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
+...
+&lt;span style=&#34;color: #75715e&#34;&gt;&amp;lt;!--Styles for printers--&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;media&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;print&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;print.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&amp;hellip;or, right inside screen.css, like so:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;@media&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(print)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
+    &lt;span style=&#34;color: #75715e&#34;&gt;/*Styles for printers go in here*/&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Media queries can be used to achieve many more details, like whether the printer is monochrome or color. I encourage you to read more about them on &lt;a href=&#34;http://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries&#34;&gt;MDN&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;But what exactly does one need to keep in mind while writing printer styles?&lt;/p&gt;
+
+&lt;h4 id=&#34;drop-the-headers-footers-and-backgrounds&#34;&gt;Drop the Headers, Footers and Backgrounds&lt;/h4&gt;
+
+&lt;p&gt;When a reader prints out your blogpost, they probably don&amp;rsquo;t want any of the navigation, search boxes, or other header elements. Likewise, sitemaps and other links that go into your footer aren&amp;rsquo;t usually required. The same background color that makes your website look nice might be superfluous when it comes to printing on a monochrome printer. Therefore, you&amp;rsquo;ll likely need to add the following to &lt;code&gt;print.css&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;header,&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;footer&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;none;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color: #f92672&#34;&gt;body&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;background&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;white;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;bring-out-the-page-breaks&#34;&gt;Bring out the Page-breaks&lt;/h4&gt;
+
+&lt;p&gt;In most situations, you don&amp;rsquo;t want page-breaks to be inserted into your content arbitrarily. To control where your content is split across pages, you can use the &lt;code&gt;page-break-before&lt;/code&gt; and &lt;code&gt;page-break-after&lt;/code&gt; properties, like so:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;...  
+&lt;span style=&#34;color: #75715e&#34;&gt;&amp;lt;!-- inserts a page-break here --&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;page-break&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;div&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;.page-break&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;block;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;page-break-before&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;always;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;These properties support a bunch of useful options, like &lt;code&gt;avoid&lt;/code&gt;, &lt;code&gt;left&lt;/code&gt; and &lt;code&gt;right&lt;/code&gt;. Read more about them &lt;a href=&#34;http://developer.mozilla.org/en-US/docs/Web/CSS/page-break-after&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;the-ideal-font-size&#34;&gt;The Ideal font-size&lt;/h4&gt;
+
+&lt;p&gt;Failing to land at the perfect px number after many trials, I finally resorted to A List Apart for some help. They have a great article explaining their print stylesheet, and the author suggests the use of a point-size instead of a pixel-size:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;p&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;font-size&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;12pt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;links&#34;&gt;Links&lt;/h4&gt;
+
+&lt;p&gt;Let&amp;rsquo;s face it &amp;ndash; hyperlinks are mostly useless when it comes to the print medium. However, keep in mind that as long as they&amp;rsquo;re important (and short) enough, your readers might actually be willing to make the effort to type them into a browser. So just make sure all of the links you &lt;em&gt;really&lt;/em&gt; want your readers to see, are displayed on paper. For example,&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/resume&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;Résumé&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;span&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;print-only&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;(www.blog.me/resume)&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;span&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Your stylesheet would then look like:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;.print-only&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;none;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color: #66d9ef&#34;&gt;@media&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(print)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #a6e22e&#34;&gt;.print-only&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;inline;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;further-reading&#34;&gt;Further Reading&lt;/h4&gt;
+
+&lt;p&gt;For more on writing print stylesheets, you can check out this &lt;a href=&#34;http://alistapart.com/article/goingtoprint&#34;&gt;fantastic article at A List Apart&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

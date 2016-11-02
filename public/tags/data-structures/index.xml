@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Structures on Chitharanjan&#39;s Blog</title>
+    <link>http://cdax.github.io/tags/data-structures/</link>
+    <description>Recent content in Data Structures on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 27 Nov 2014 13:28:06 +0530</lastBuildDate>
+    <atom:link href="http://cdax.github.io/tags/data-structures/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Binary Indexed Trees</title>
+      <link>http://cdax.github.io/post/binary-indexed-trees/</link>
+      <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
+      
+      <guid>http://cdax.github.io/post/binary-indexed-trees/</guid>
+      <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;A problem that seems difficult may have a simple, unexpected solution.&amp;rdquo; Unlike the advanced methods, the aha! insights of algorithms don&amp;rsquo;t come only after extensive study; they&amp;rsquo;re available to any programmer willing to think seriously before, during and after coding.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;em&gt;Jon Bentley (quoting Martin Gardner), in the column Aha! Algorithms from his book Programming Pearls&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;the-origin-of-bits&#34;&gt;The Origin of BITs&lt;/h4&gt;
+
+&lt;p&gt;The Binary Indexed Tree is hands down the most elegant data structure that I&amp;rsquo;ve had the pleasure of studying. It offers an embarrassingly simple yet highly efficient solution to the problem of maintaining cumulative object frequencies.&lt;/p&gt;
+
+&lt;p&gt;Imagine you&amp;rsquo;re supposed to keep track of the number of times each symbol appears in a long string, knowing the complete universe of possible symbols (or the &lt;em&gt;symbol alphabet&lt;/em&gt;). Two operations are key - &lt;code&gt;UPDATE&lt;/code&gt; the frequency of a symbol as it is read from the string, and &lt;code&gt;QUERY&lt;/code&gt; the frequency of a symbol at any given time.&lt;/p&gt;
+
+&lt;p&gt;A third kind of operation becomes important when a meaningful order can be imposed on the symbol alphabet, like say if the alphabet was a list of numbers that can be sorted. Here, it might be useful to track the cumulative frequency or &lt;code&gt;COUNT&lt;/code&gt; of symbols less than a given symbol &lt;em&gt;x&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The Binary Indexed Tree solves each of the &lt;code&gt;UPDATE&lt;/code&gt;, &lt;code&gt;QUERY&lt;/code&gt; and &lt;code&gt;COUNT&lt;/code&gt; problems in O(M) time, and using O(n) space where n is the cardinality of the symbol alphabet, and M is just the number of set bits (1s) in n&amp;rsquo;s binary representation!&lt;/p&gt;
+
+&lt;p&gt;BITs were first described in a 1994 paper titled &lt;a href=&#34;http://pdf.aminer.org/001/073/976/a_new_data_structure_for_cumulative_frequency_tables.pdf&#34;&gt;A New Data Structure for Cumulative Frequency Tables&lt;/a&gt; by Peter Fenwick, and are also known by their eponymous name, Fenwick Trees.&lt;/p&gt;
+
+&lt;h4 id=&#34;the-aha-insight&#34;&gt;The Aha! Insight&lt;/h4&gt;
+
+&lt;p&gt;The unexpected search technique used by BITs can be better understood by drawing parallels with the way many people learn how to convert from binary to decimal notation. We use the following lookup table:&lt;/p&gt;
+
+&lt;table&gt;  
+    &lt;tbody&gt;&lt;tr&gt;
+        &lt;th&gt;&lt;strong&gt;Bit position, i&lt;/strong&gt;&lt;/th&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;1&lt;/td&gt;
+        &lt;td&gt;2&lt;/td&gt;
+        &lt;td&gt;...&lt;/td&gt;
+        &lt;td&gt;n&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt;&lt;strong&gt;Value, v&lt;sub&gt;i&lt;/sub&gt;&lt;/strong&gt;&lt;/th&gt;
+        &lt;td&gt;1&lt;/td&gt;
+        &lt;td&gt;2&lt;/td&gt;
+        &lt;td&gt;4&lt;/td&gt;
+        &lt;td&gt;...&lt;/td&gt;
+        &lt;td&gt;2&lt;sup&gt;n&lt;/sup&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;and the decimal representation is simply the sum of the values related with the positions of the set bits. For 13, for example:&lt;/p&gt;
+
+&lt;p&gt;13 = (1101)&lt;sub&gt;2&lt;/sub&gt; = v&lt;sub&gt;3&lt;/sub&gt; + v&lt;sub&gt;2&lt;/sub&gt; + v&lt;sub&gt;0&lt;/sub&gt; = 8 + 4 + 1&lt;/p&gt;
+
+&lt;p&gt;The Fenwick Tree is an array analogous to the lookup table above, where each of the array elements si, is a carefully computed partial frequency sum (a sub-frequency). If fi is the actual frequency of the ith element, and r is the position of the least significant bit in i (for example, r1 = 0, r2 = 1, r3 = 0, and so on), then&lt;/p&gt;
+
+&lt;p&gt;s&lt;sub&gt;i&lt;/sub&gt; = f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 1&lt;/sub&gt; + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 2&lt;/sub&gt; + ... + f&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;three-key-observations&#34;&gt;Three key observations&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Note that the element frequencies that make up s&lt;sub&gt;i&lt;/sub&gt; and s&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt;&lt;/sub&gt; are disjoint sets.&lt;/li&gt;
+&lt;li&gt;Note also, that s&lt;sub&gt;0&lt;/sub&gt; = f&lt;sub&gt;0&lt;/sub&gt;&lt;/li&gt;
+&lt;li&gt;Finally, note that any frequency f&lt;sub&gt;j&lt;/sub&gt; appears in each of the sums s&lt;sub&gt;i&lt;/sub&gt; where j ≥ i - 2&lt;sup&gt;r&lt;/sup&gt; + 1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Talking in terms of bits, i - 2&lt;sup&gt;r&lt;/sup&gt; can be computed by stripping away the least significant bit from i. For more on bit-twiddling, take a look at this &lt;a href=&#34;https://graphics.stanford.edu/~seander/bithacks.html&#34;&gt;useful reference guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;implementing-count-and-query&#34;&gt;Implementing &lt;code&gt;COUNT&lt;/code&gt; and &lt;code&gt;QUERY&lt;/code&gt;&lt;/h4&gt;
+
+&lt;h5 id=&#34;count&#34;&gt;&lt;code&gt;COUNT&lt;/code&gt;&lt;/h5&gt;
+
+&lt;p&gt;The cumulative frequency up until the ith element, COUNT&lt;sub&gt;i&lt;/sub&gt; is defined as the sum of the actual frequencies of all elements less than or equal to the ith. COUNT&lt;sub&gt;i&lt;/sub&gt; can be calculated from the Fenwick Tree by observing that:&lt;/p&gt;
+
+&lt;p&gt;COUNT&lt;sub&gt;i&lt;/sub&gt; &lt;br&gt;
+= f&lt;sub&gt;0&lt;/sub&gt; + ... + f&lt;sub&gt;i - 1&lt;/sub&gt; + f&lt;sub&gt;i&lt;/sub&gt;&lt;br&gt;
+= f&lt;sub&gt;0&lt;/sub&gt; + ... + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; - 1&lt;/sub&gt; + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt;&lt;/sub&gt; + (f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 1&lt;/sub&gt; + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 2&lt;/sub&gt; + ... + f&lt;sub&gt;i&lt;/sub&gt;)&lt;br&gt;
+= s&lt;sub&gt;0&lt;/sub&gt; + ... + s&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt;&lt;/sub&gt; + s&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;In order to compute COUNT&lt;sub&gt;i&lt;/sub&gt;, we start with the sub-frequency at index i and at every step add a new sub-frequency after stripping away i&amp;rsquo;s least significant bit. This continues till i runs out of set bits, i.e., till i becomes equal to zero. For example,&lt;/p&gt;
+
+&lt;p&gt;COUNT&lt;sub&gt;13&lt;/sub&gt; = s&lt;sub&gt;13&lt;/sub&gt; + s&lt;sub&gt;12&lt;/sub&gt; + s&lt;sub&gt;8&lt;/sub&gt; + s&lt;sub&gt;0&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;query&#34;&gt;&lt;code&gt;QUERY&lt;/code&gt;&lt;/h5&gt;
+
+&lt;p&gt;Retrieving the actual frequency of the element at index &lt;em&gt;i&lt;/em&gt; is as simple as calculating COUNT&lt;sub&gt;i&lt;/sub&gt; and COUNT&lt;sub&gt;i - 1&lt;/sub&gt; and computing the difference. Both &lt;code&gt;QUERY&lt;/code&gt; and &lt;code&gt;COUNT&lt;/code&gt; are thus equally efficient.&lt;/p&gt;
+
+&lt;p&gt;Never forget that &lt;code&gt;QUERY&lt;/code&gt; can be made even faster by identifying the longest common suffix in the binary representations for &lt;em&gt;i&lt;/em&gt; and &lt;em&gt;i - 1&lt;/em&gt;. (How does this help?)&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

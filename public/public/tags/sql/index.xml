@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sql on Chitharanjan&#39;s Blog</title>
+    <link>http://cdax.github.io/tags/sql/</link>
+    <description>Recent content in Sql on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Feb 2013 12:10:43 +0530</lastBuildDate>
+    <atom:link href="http://cdax.github.io/tags/sql/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Dynamic Pivoting with T-SQL</title>
+      <link>http://cdax.github.io/post/dynamic-pivoting-t-sql/</link>
+      <pubDate>Tue, 05 Feb 2013 12:10:43 +0530</pubDate>
+      
+      <guid>http://cdax.github.io/post/dynamic-pivoting-t-sql/</guid>
+      <description>
+
+&lt;p&gt;In this post, I will share a cheap trick technique for pivoting a variable number of columns using Microsoft’s Transact-SQL. The idea of writing dynamic SQL to accomplish a pivot is nothing new, and can be found in discussion forums all over the web. Anyway, I’ve been looking for something to blog about, so I thought I’d go into more detail with this.&lt;/p&gt;
+
+&lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
+
+&lt;p&gt;You’re given two tables &lt;code&gt;Students&lt;/code&gt; and &lt;code&gt;Courses&lt;/code&gt;. They have the keys &lt;code&gt;STUDENT_ID&lt;/code&gt; and &lt;code&gt;COURSE_ID&lt;/code&gt;, respectively. Both tables are subject to frequent updates, inserts and deletes.&lt;/p&gt;
+
+&lt;iframe src=&#34;https://skydrive.live.com/embed?cid=FA469B013B97AF8D&amp;#038;resid=FA469B013B97AF8D%21130&amp;#038;authkey=AFpg9qTzEKTzrVg&amp;#038;em=2&amp;#038;wdAllowInteractivity=False&amp;#038;Item=Students&amp;#038;wdHideGridlines=False&amp;#038;wdDownloadButton=True&#34; width=&#34;223&#34; height=&#34;260&#34; frameborder=&#34;0&#34; scrolling=&#34;no&#34;&gt;&lt;/iframe&gt; &lt;iframe src=&#34;https://skydrive.live.com/embed?cid=FA469B013B97AF8D&amp;#038;resid=FA469B013B97AF8D%21130&amp;#038;authkey=AFpg9qTzEKTzrVg&amp;#038;em=2&amp;#038;wdAllowInteractivity=False&amp;#038;Item=Courses&amp;#038;wdHideGridlines=False&amp;#038;wdDownloadButton=True&#34; width=&#34;399&#34; height=&#34;260&#34; frameborder=&#34;0&#34; scrolling=&#34;no&#34;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;A third table called &lt;code&gt;Grades&lt;/code&gt; stores the letter-value of the grade scored by each student, in each course that he took. A record in Grades is structured somewhat like this: (&lt;code&gt;STUDENT_ID | COURSE_ID | GRADE&lt;/code&gt;).&lt;/p&gt;
+
+&lt;iframe src=&#34;https://skydrive.live.com/embed?cid=FA469B013B97AF8D&amp;#038;resid=FA469B013B97AF8D%21130&amp;#038;authkey=AFpg9qTzEKTzrVg&amp;#038;em=2&amp;#038;wdAllowInteractivity=False&amp;#038;Item=Grades&amp;#038;wdHideGridlines=False&amp;#038;wdDownloadButton=True&#34; width=&#34;292&#34; height=&#34;239&#34; frameborder=&#34;0&#34; scrolling=&#34;no&#34;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;What is required now, is a table or a view Report that has exactly one row for each student in Students, and a column for each of the courses in Courses, with the intersection of a row and a column denoting the grade received by a certain student in a certain course.&lt;/p&gt;
+
+&lt;iframe src=&#34;https://skydrive.live.com/embed?cid=FA469B013B97AF8D&amp;#038;resid=FA469B013B97AF8D%21130&amp;#038;authkey=AFpg9qTzEKTzrVg&amp;#038;em=2&amp;#038;wdAllowInteractivity=False&amp;#038;Item=Report&amp;#038;wdHideGridlines=False&amp;#038;wdDownloadButton=True&#34; width=&#34;600&#34; height=&#34;260&#34; frameborder=&#34;0&#34; scrolling=&#34;no&#34;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;While this would have been easy had Courses been a static table, implementing a pivot involving a variable number of pivot columns would require more than just your average T-SQL query. And that is because your average T-SQL query would require the number of pivot columns to be known at the time of writing the query.&lt;/p&gt;
+
+&lt;h4 id=&#34;the-solution&#34;&gt;The Solution&lt;/h4&gt;
+
+&lt;p&gt;To put it plainly, what you do is engineer your &lt;code&gt;PIVOT&lt;/code&gt; query by running a loop once for each pivot column, and piecing together the parts. Then you pass this query to &lt;code&gt;EXECUTE()&lt;/code&gt;. Additionally, if the results of the &lt;code&gt;PIVOT&lt;/code&gt; are to go inside a table, then this table will have to be created using a &lt;code&gt;CREATE TABLE&lt;/code&gt; query, also built brick-by-brick inside a loop. Here’s what your code would look like, more or less.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--Build a query to create the table &#39;Report&#39;
+IF OBJECT_ID(&amp;quot;Report&amp;quot;) IS NOT NULL
+    DROP TABLE Report
+DECLARE @create_query VARCHAR(MAX)
+SET @create_query = &amp;quot;CREATE TABLE [Report] ( [STUDENT_NAME] VARCHAR(50)&amp;quot;
+
+--Create a temp table to store the names and IDs of the pivot columns.
+--The INSERT query here controls the order, names and formatting of the
+--pivot columns
+IF OBJECT_ID(&amp;quot;tempdb..#temp_Courses&amp;quot;) IS NOT NULL
+    DROP TABLE #temp_Courses
+CREATE TABLE #temp_Courses([COURSE_ID] VARCHAR(10), [COURSE_NAME] VARCHAR(50), [ROW_NUM] BIGINT);
+INSERT INTO #temp_Courses
+SELECT *, ROW_NUMBER() OVER (ORDER BY [COURSE_NAME] ASC) AS [ROW_NUM] FROM Courses;
+
+--Get the count of pivot columns; this will be used in our loop below
+DECLARE @column_count INT;
+SET @column_count = (SELECT COUNT(*) FROM #temp_Courses);
+
+--We&#39;ll build two parts of our PIVOT query separately, and add them together later
+--(A look at the syntax of a PIVOT query will reveal why this was needed)
+DECLARE @pivot_query VARCHAR(MAX);
+DECLARE @column_id_list VARCHAR(MAX);
+SET @pivot_query = &amp;quot;SELECT [STUDENT_NAME]&amp;quot;;
+SET @column_id_list = &amp;quot;&amp;quot;;
+
+DECLARE @row_number INT;
+SET @row_number = 1;
+
+DECLARE @column_id VARCHAR(10)
+DECLARE @column_name VARCHAR(50)
+--Loop through the records in Courses, putting together your PIVOT query piece-by-piece
+WHILE @row_number &amp;lt;= @column_count
+BEGIN
+SET @column_id = (SELECT COURSE_ID FROM #temp_Courses WHERE ROW_NUM = @row_number);
+SET @column_name = (SELECT COURSE_NAME FROM #temp_Courses WHERE ROW_NUM = @row_number);
+
+SET @create_query = @create_query + &amp;quot;, [&amp;quot; + @column_name + &amp;quot;] VARCHAR(2)&amp;quot;;
+SET @pivot_query = @pivot_query + &amp;quot;, [&amp;quot; + @column_id + &amp;quot;] AS [&amp;quot; + @column_name + &amp;quot;]&amp;quot;;
+
+SET @column_id_list = @column_id_list + CASE WHEN @row_number = 1 THEN &amp;quot;&amp;quot; ELSE &amp;quot;, &amp;quot; END + &amp;quot;[&amp;quot; + @column_id + &amp;quot;]&amp;quot;;
+SET @row_number = @row_number + 1;
+END
+
+SET @create_query = @create_query + &amp;quot;);&amp;quot;
+SET @pivot_query = @pivot_query + &amp;quot; FROM (
+                        SELECT G.STUDENT_ID [STUDENT_ID], S.STUDENT_NAME [STUDENT_NAME], G.COURSE_ID [COURSE_ID], G.GRADE [GRADE]
+                        FROM
+                            Grades G
+                            LEFT OUTER JOIN
+                            Students S
+                        ON  G.STUDENT_ID = S.STUDENT_ID
+                     ) J
+                    PIVOT (
+                        MAX([GRADE]) FOR [COURSE_ID] IN (&amp;quot; + @column_id_list + &amp;quot;)
+                    ) AS P;&amp;quot;;
+
+--Drop the temp table
+IF OBJECT_ID(&amp;quot;tempdb..#temp_Courses&amp;quot;) IS NOT NULL
+    DROP TABLE #temp_Courses
+
+--Execute the pivot-query
+EXECUTE(@create_query + &amp;quot;INSERT INTO [Report] &amp;quot; + @pivot_query)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The generated SQL queries look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CREATE TABLE [Report] (
+    [STUDENT_NAME] VARCHAR(50),
+    [Algorithms: Design and Analysis, Part 1] VARCHAR(2),
+    [Critical Thinking in Global Challenges] VARCHAR(2),
+    [Developing Innovative Ideas for New Companies] VARCHAR(2),
+    [E-learning and Digital Cultures] VARCHAR(2),
+    [India`s Rivers] VARCHAR(2),
+    [Intermediate Algebra] VARCHAR(2),
+    [Introduction to Philosophy] VARCHAR(2),
+    [Nutrition for Health Promotion] VARCHAR(2),
+    [Pre-Calculus] VARCHAR(2),
+    [Principles of Public Health] VARCHAR(2)
+);
+
+INSERT INTO [Report]
+SELECT  [STUDENT_NAME],
+        [2000000009] AS [Algorithms: Design and Analysis, Part 1],
+        [2000000010] AS [Critical Thinking in Global Challenges],
+        [2000000005] AS [Developing Innovative Ideas for New Companies],
+        [2000000003] AS [E-learning and Digital Cultures],
+        [2000000004] AS [India`s Rivers],
+        [2000000001] AS [Intermediate Algebra],
+        [2000000007] AS [Introduction to Philosophy],
+        [2000000006] AS [Nutrition for Health Promotion],
+        [2000000002] AS [Pre-Calculus],
+        [2000000008] AS [Principles of Public Health]
+FROM (
+        SELECT G.STUDENT_ID [STUDENT_ID],
+               S.STUDENT_NAME [STUDENT_NAME],
+               G.COURSE_ID [COURSE_ID],
+               G.GRADE [GRADE]
+        FROM   Grades G
+               LEFT OUTER JOIN
+               Students S
+               ON G.STUDENT_ID = S.STUDENT_ID
+     ) J
+PIVOT (
+        MAX([GRADE])
+        FOR [COURSE_ID]
+        IN
+        ([2000000009], [2000000010], [2000000005], [2000000003], [2000000004], [2000000001], [2000000007], [2000000006], [2000000002], [2000000008])
+) AS P;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;but-watch-out&#34;&gt;But Watch Out!&lt;/h4&gt;
+
+&lt;p&gt;Column names used in the pivot query should not exceed the SQL Server limit of 128 characters. Like in the above query, if any course name were to exceed 128 characters, the &lt;code&gt;EXECUTE&lt;/code&gt; would fail. This is a limitation imposed by SQL Server.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
