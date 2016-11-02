@@ -1,0 +1,176 @@
+<!doctype html>
+<html class="no-js" lang="en-us">
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Binary Indexed Trees</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Chitharanjan Das">
+<meta name="description" content="">
+<meta name="generator" content="Hugo 0.16" />
+<link rel="apple-touch-icon" sizes="57x57" href="http://cdax.github.io/img/icons/apple-icon-57x57.png?v=2">
+<link rel="apple-touch-icon" sizes="60x60" href="http://cdax.github.io/img/icons/apple-icon-60x60.png?v=2">
+<link rel="apple-touch-icon" sizes="72x72" href="http://cdax.github.io/img/icons/apple-icon-72x72.png?v=2">
+<link rel="apple-touch-icon" sizes="76x76" href="http://cdax.github.io/img/icons/apple-icon-76x76.png?v=2">
+<link rel="apple-touch-icon" sizes="114x114" href="http://cdax.github.io/img/icons/apple-icon-114x114.png?v=2">
+<link rel="apple-touch-icon" sizes="120x120" href="http://cdax.github.io/img/icons/apple-icon-120x120.png?v=2">
+<link rel="apple-touch-icon" sizes="144x144" href="http://cdax.github.io/img/icons/apple-icon-144x144.png?v=2">
+<link rel="apple-touch-icon" sizes="152x152" href="http://cdax.github.io/img/icons/apple-icon-152x152.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.github.io/img/icons/apple-icon-180x180.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192"  href="http://cdax.github.io/img/icons/android-icon-192x192.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="http://cdax.github.io/img/icons/favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="http://cdax.github.io/img/icons/favicon-96x96.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="http://cdax.github.io/img/icons/favicon-16x16.png?v=2">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/img/icons/ms-icon-144x144.png?v=2">
+<meta name="theme-color" content="#ffffff">
+
+
+<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://cdax.github.io/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/main.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/ionicons.min.css">
+
+    </head>
+    <body>
+        
+        <nav class="main-nav">
+	
+	
+		<a href='http://cdax.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Binary Indexed Trees</h1>
+                    <h2 class="headline">November 27, 2014</h2>
+                </header>
+                <section id="post-body">
+                    
+
+<blockquote>
+<p>&ldquo;A problem that seems difficult may have a simple, unexpected solution.&rdquo; Unlike the advanced methods, the aha! insights of algorithms don&rsquo;t come only after extensive study; they&rsquo;re available to any programmer willing to think seriously before, during and after coding.</p>
+</blockquote>
+
+<p><em>Jon Bentley (quoting Martin Gardner), in the column Aha! Algorithms from his book Programming Pearls</em></p>
+
+<h4 id="the-origin-of-bits">The Origin of BITs</h4>
+
+<p>The Binary Indexed Tree is hands down the most elegant data structure that I&rsquo;ve had the pleasure of studying. It offers an embarrassingly simple yet highly efficient solution to the problem of maintaining cumulative object frequencies.</p>
+
+<p>Imagine you&rsquo;re supposed to keep track of the number of times each symbol appears in a long string, knowing the complete universe of possible symbols (or the <em>symbol alphabet</em>). Two operations are key - <code>UPDATE</code> the frequency of a symbol as it is read from the string, and <code>QUERY</code> the frequency of a symbol at any given time.</p>
+
+<p>A third kind of operation becomes important when a meaningful order can be imposed on the symbol alphabet, like say if the alphabet was a list of numbers that can be sorted. Here, it might be useful to track the cumulative frequency or <code>COUNT</code> of symbols less than a given symbol <em>x</em>.</p>
+
+<p>The Binary Indexed Tree solves each of the <code>UPDATE</code>, <code>QUERY</code> and <code>COUNT</code> problems in O(M) time, and using O(n) space where n is the cardinality of the symbol alphabet, and M is just the number of set bits (1s) in n&rsquo;s binary representation!</p>
+
+<p>BITs were first described in a 1994 paper titled <a href="http://pdf.aminer.org/001/073/976/a_new_data_structure_for_cumulative_frequency_tables.pdf">A New Data Structure for Cumulative Frequency Tables</a> by Peter Fenwick, and are also known by their eponymous name, Fenwick Trees.</p>
+
+<h4 id="the-aha-insight">The Aha! Insight</h4>
+
+<p>The unexpected search technique used by BITs can be better understood by drawing parallels with the way many people learn how to convert from binary to decimal notation. We use the following lookup table:</p>
+
+<table>  
+    <tbody><tr>
+        <th><strong>Bit position, i</strong></th>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>...</td>
+        <td>n</td>
+    </tr>
+    <tr>
+        <th><strong>Value, v<sub>i</sub></strong></th>
+        <td>1</td>
+        <td>2</td>
+        <td>4</td>
+        <td>...</td>
+        <td>2<sup>n</sup></td>
+    </tr>
+</tbody></table>
+
+<p>and the decimal representation is simply the sum of the values related with the positions of the set bits. For 13, for example:</p>
+
+<p>13 = (1101)<sub>2</sub> = v<sub>3</sub> + v<sub>2</sub> + v<sub>0</sub> = 8 + 4 + 1</p>
+
+<p>The Fenwick Tree is an array analogous to the lookup table above, where each of the array elements si, is a carefully computed partial frequency sum (a sub-frequency). If fi is the actual frequency of the ith element, and r is the position of the least significant bit in i (for example, r1 = 0, r2 = 1, r3 = 0, and so on), then</p>
+
+<p>s<sub>i</sub> = f<sub>i - 2<sup>r</sup> + 1</sub> + f<sub>i - 2<sup>r</sup> + 2</sub> + ... + f<sub>i</sub></p>
+
+<h4 id="three-key-observations">Three key observations</h4>
+
+<ul>
+<li>Note that the element frequencies that make up s<sub>i</sub> and s<sub>i - 2<sup>r</sup></sub> are disjoint sets.</li>
+<li>Note also, that s<sub>0</sub> = f<sub>0</sub></li>
+<li>Finally, note that any frequency f<sub>j</sub> appears in each of the sums s<sub>i</sub> where j ≥ i - 2<sup>r</sup> + 1</li>
+</ul>
+
+<p>Talking in terms of bits, i - 2<sup>r</sup> can be computed by stripping away the least significant bit from i. For more on bit-twiddling, take a look at this <a href="https://graphics.stanford.edu/~seander/bithacks.html">useful reference guide</a>.</p>
+
+<h4 id="implementing-count-and-query">Implementing <code>COUNT</code> and <code>QUERY</code></h4>
+
+<h5 id="count"><code>COUNT</code></h5>
+
+<p>The cumulative frequency up until the ith element, COUNT<sub>i</sub> is defined as the sum of the actual frequencies of all elements less than or equal to the ith. COUNT<sub>i</sub> can be calculated from the Fenwick Tree by observing that:</p>
+
+<p>COUNT<sub>i</sub> <br>
+= f<sub>0</sub> + ... + f<sub>i - 1</sub> + f<sub>i</sub><br>
+= f<sub>0</sub> + ... + f<sub>i - 2<sup>r</sup> - 1</sub> + f<sub>i - 2<sup>r</sup></sub> + (f<sub>i - 2<sup>r</sup> + 1</sub> + f<sub>i - 2<sup>r</sup> + 2</sub> + ... + f<sub>i</sub>)<br>
+= s<sub>0</sub> + ... + s<sub>i - 2<sup>r</sup></sub> + s<sub>i</sub></p>
+
+<p>In order to compute COUNT<sub>i</sub>, we start with the sub-frequency at index i and at every step add a new sub-frequency after stripping away i&rsquo;s least significant bit. This continues till i runs out of set bits, i.e., till i becomes equal to zero. For example,</p>
+
+<p>COUNT<sub>13</sub> = s<sub>13</sub> + s<sub>12</sub> + s<sub>8</sub> + s<sub>0</sub></p>
+
+<h5 id="query"><code>QUERY</code></h5>
+
+<p>Retrieving the actual frequency of the element at index <em>i</em> is as simple as calculating COUNT<sub>i</sub> and COUNT<sub>i - 1</sub> and computing the difference. Both <code>QUERY</code> and <code>COUNT</code> are thus equally efficient.</p>
+
+<p>Never forget that <code>QUERY</code> can be made even faster by identifying the longest common suffix in the binary representations for <em>i</em> and <em>i - 1</em>. (How does this help?)</p>
+
+                </section>
+                <section class="section topics">
+                    Tagged with
+                    <ul class="topics inline">
+                        
+                            <li class="topic"><a href="http://cdax.github.io/tags/algorithms">algorithms</a></li>
+                        
+                            <li class="topic"><a href="http://cdax.github.io/tags/data-structures">data structures</a></li>
+                        
+                    </ul>
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                
+                    <div class="avatar-name">
+                        <img class="avatar" src="http://cdax.github.io/img/avatar.jpg">
+                        <div>
+                            <span class="dark">Chitharanjan Das</span>
+                            <span>Software Developer</span>
+                        </div>
+                    </div>
+                    
+                <section id="sharing">
+                    
+                </section>
+            </footer>
+            <footer id="footer">
+    
+    <p class="small">
+    
+        © 2016, Chitharanjan Das
+    
+    </p>
+</footer>
+
+        </section>
+
+    </body>
+</html>
