@@ -1,4 +1,4 @@
-baseurl = "https://cdax.github.io/"
+baseurl = "http://cdax.tech/"
 languageCode = "en-us"
 title = "Chitharanjan's Blog"
 theme = "phantasm"
