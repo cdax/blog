@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.github.io/tags/javascript/</link>
+    <link>https://cdax.github.io/tags/javascript/</link>
     <description>Recent content in Javascript on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 27 Feb 2015 20:33:49 +0530</lastBuildDate>
-    <atom:link href="http://cdax.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdax.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>If Arundhati Roy wrote JavaScript</title>
-      <link>http://cdax.github.io/post/if-roy-wrote-js/</link>
+      <link>https://cdax.github.io/post/if-roy-wrote-js/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.github.io/post/if-roy-wrote-js/</guid>
+      <guid>https://cdax.github.io/post/if-roy-wrote-js/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://anguscroll.com/&#34;&gt;Angus Croll’s&lt;/a&gt; &lt;a href=&#34;http://www.amazon.com/Hemingway-Wrote-JavaScript-Angus-Croll/dp/1593275854/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017264&amp;amp;sr=8-1&amp;amp;keywords=if+hemingway+wrote+javascript&#34;&gt;If Hemingway Wrote JavaScript&lt;/a&gt; is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.github.io/img/thirteen_authors_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/thirteen_authors_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://cdas.svbtle.com/if-arundhati-roy-wrote-javascript&#34;&gt;No Starch Press&lt;/a&gt; has been publishing many thoroughly readable programming books over the years, including the much-acclaimed &lt;a href=&#34;http://www.amazon.com/Eloquent-JavaScript-Modern-Introduction-Programming/dp/1593275846/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017353&amp;amp;sr=8-1&amp;amp;keywords=eloquent+javascript&#34;&gt;Eloquent JavaScript&lt;/a&gt; and &lt;a href=&#34;http://www.amazon.com/Learn-Some-Erlang-Great-Good/dp/1593274351/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017394&amp;amp;sr=8-1&amp;amp;keywords=learn+you+some+erlang+for+great+good&#34;&gt;Learn You Some Erlang for Great Good!&lt;/a&gt; Although If Hemingway has a far more leisurely style than the other books, it is by no means a lesser spectacle of code craftsmanship. Reading some of the examples requires (or, like in my case, inspires) a proper understanding of scoping, hoisting, and closures among other ideas.&lt;/p&gt;
 
@@ -154,7 +154,7 @@
 
 &lt;p&gt;Angus Croll calls this &lt;a href=&#34;https://javascriptweblog.wordpress.com/2010/04/27/the-russian-doll-principle-re-writing%C2%A0functions%C2%A0at%C2%A0runtime/&#34;&gt;the Russian Doll pattern&lt;/a&gt;. Peter Michaux calls this &lt;a href=&#34;http://michaux.ca/articles/lazy-function-definition-pattern&#34;&gt;the lazy function definition pattern&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.github.io/img/matryoshka.JPG&#34; alt=&#34;A Russian Matryoshka doll&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/matryoshka.JPG&#34; alt=&#34;A Russian Matryoshka doll&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Often I’ve found myself writing functions that must do something one way the first time, and then a different way the next time. My own inelegant solution has always looked something like this:&lt;/p&gt;
 
@@ -187,15 +187,15 @@
     
     <item>
       <title>Underscore Magic!</title>
-      <link>http://cdax.github.io/post/underscore-magic/</link>
+      <link>https://cdax.github.io/post/underscore-magic/</link>
       <pubDate>Fri, 26 Dec 2014 13:42:48 +0530</pubDate>
       
-      <guid>http://cdax.github.io/post/underscore-magic/</guid>
+      <guid>https://cdax.github.io/post/underscore-magic/</guid>
       <description>
 
 &lt;p&gt;Front-end developers should know &lt;a href=&#34;http://underscorejs.org/&#34;&gt;Underscore.js&lt;/a&gt; like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of &lt;em&gt;Write less, do more&lt;/em&gt; to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like &lt;em&gt;Backbone.js&lt;/em&gt; and &lt;em&gt;Ghost&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.github.io/img/underscore.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/underscore.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin &lt;a href=&#34;http://lodash.com/&#34;&gt;Lo-Dash&lt;/a&gt;) put to use.&lt;/p&gt;
 
@@ -276,10 +276,10 @@
     
     <item>
       <title>Javascript&#39;s &#34;void&#34; operator</title>
-      <link>http://cdax.github.io/post/void-0/</link>
+      <link>https://cdax.github.io/post/void-0/</link>
       <pubDate>Thu, 25 Dec 2014 13:53:53 +0530</pubDate>
       
-      <guid>http://cdax.github.io/post/void-0/</guid>
+      <guid>https://cdax.github.io/post/void-0/</guid>
       <description>
 
 &lt;p&gt;Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight &lt;em&gt;Backbone.js&lt;/em&gt;, so I thought its &lt;a href=&#34;http://backbonejs.org/docs/backbone.html&#34;&gt;annotated source&lt;/a&gt; would be the perfect place to start.&lt;/p&gt;

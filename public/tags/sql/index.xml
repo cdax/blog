@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sql on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.github.io/tags/sql/</link>
+    <link>https://cdax.github.io/tags/sql/</link>
     <description>Recent content in Sql on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 05 Feb 2013 12:10:43 +0530</lastBuildDate>
-    <atom:link href="http://cdax.github.io/tags/sql/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdax.github.io/tags/sql/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Dynamic Pivoting with T-SQL</title>
-      <link>http://cdax.github.io/post/dynamic-pivoting-t-sql/</link>
+      <link>https://cdax.github.io/post/dynamic-pivoting-t-sql/</link>
       <pubDate>Tue, 05 Feb 2013 12:10:43 +0530</pubDate>
       
-      <guid>http://cdax.github.io/post/dynamic-pivoting-t-sql/</guid>
+      <guid>https://cdax.github.io/post/dynamic-pivoting-t-sql/</guid>
       <description>
 
 &lt;p&gt;In this post, I will share a cheap trick technique for pivoting a variable number of columns using Microsoft’s Transact-SQL. The idea of writing dynamic SQL to accomplish a pivot is nothing new, and can be found in discussion forums all over the web. Anyway, I’ve been looking for something to blog about, so I thought I’d go into more detail with this.&lt;/p&gt;
