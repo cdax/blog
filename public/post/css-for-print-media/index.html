@@ -1,0 +1,194 @@
+<!doctype html>
+<html class="no-js" lang="en-us">
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>CSS for Print Media</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Chitharanjan Das">
+<meta name="description" content="">
+<meta name="generator" content="Hugo 0.16" />
+<link rel="apple-touch-icon" sizes="57x57" href="http://cdax.github.io/img/icons/apple-icon-57x57.png?v=2">
+<link rel="apple-touch-icon" sizes="60x60" href="http://cdax.github.io/img/icons/apple-icon-60x60.png?v=2">
+<link rel="apple-touch-icon" sizes="72x72" href="http://cdax.github.io/img/icons/apple-icon-72x72.png?v=2">
+<link rel="apple-touch-icon" sizes="76x76" href="http://cdax.github.io/img/icons/apple-icon-76x76.png?v=2">
+<link rel="apple-touch-icon" sizes="114x114" href="http://cdax.github.io/img/icons/apple-icon-114x114.png?v=2">
+<link rel="apple-touch-icon" sizes="120x120" href="http://cdax.github.io/img/icons/apple-icon-120x120.png?v=2">
+<link rel="apple-touch-icon" sizes="144x144" href="http://cdax.github.io/img/icons/apple-icon-144x144.png?v=2">
+<link rel="apple-touch-icon" sizes="152x152" href="http://cdax.github.io/img/icons/apple-icon-152x152.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.github.io/img/icons/apple-icon-180x180.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192"  href="http://cdax.github.io/img/icons/android-icon-192x192.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="http://cdax.github.io/img/icons/favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="http://cdax.github.io/img/icons/favicon-96x96.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="http://cdax.github.io/img/icons/favicon-16x16.png?v=2">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/img/icons/ms-icon-144x144.png?v=2">
+<meta name="theme-color" content="#ffffff">
+
+
+<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://cdax.github.io/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/main.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/ionicons.min.css">
+
+    </head>
+    <body>
+        
+        <nav class="main-nav">
+	
+	
+		<a href='http://cdax.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>CSS for Print Media</h1>
+                    <h2 class="headline">November 25, 2014</h2>
+                </header>
+                <section id="post-body">
+                    
+
+<p>I never really felt it was important to style web pages for the print medium till a few days ago when I was formatting my résumé. The theme that I&rsquo;ve forked to use on this blog employs <code>font-kerning</code> and <code>anti-aliasing</code> to make my posts look like text on paper. This made me curious to see what my resume would look like if printed.</p>
+
+<p>The <em>Print Preview</em> was embarrassing. The text was huge and there were gaps everywhere. Paragraphs were getting split between pages in all the wrong places. What was more, the page count stood at 6 A4 pages because of the oversized text. Much has been written about the importance of brevity when it comes to job applications. What if a prospective employer wanted to take a printout for their records, and then had their printer spew out pages after pages of poorly formatted text?</p>
+
+<p>I decided to spend some time collecting best practices from all over the web. This blogpost is a choice collection of the essential ideas that one needs to know in order to write CSS for the printer.</p>
+
+<h4 id="media-queries-to-the-rescue">Media Queries to the Rescue</h4>
+
+<p>Media queries have traditionally been used for making websites responsive &ndash; to make sure your content looks good on the most common screen sizes. But, as the name suggests, they can be used to query not just screen sizes, but just about any detail about the medium. For example, you can add print styles in the following two ways:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">&lt;!--Styles for screens--&gt;</span>  
+<span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">link</span> <span style="color: #a6e22e">rel</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;stylesheet&quot;</span> <span style="color: #a6e22e">src</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;screen.css&quot;</span><span style="color: #f8f8f2">&gt;</span>
+...
+<span style="color: #75715e">&lt;!--Styles for printers--&gt;</span>
+<span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">link</span> <span style="color: #a6e22e">rel</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;stylesheet&quot;</span> <span style="color: #a6e22e">media</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;print&quot;</span> <span style="color: #a6e22e">src</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;print.css&quot;</span><span style="color: #f8f8f2">&gt;</span>
+</pre></div>
+
+
+<p>&hellip;or, right inside screen.css, like so:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">@media</span> <span style="color: #f92672">(print)</span> <span style="color: #f8f8f2">{</span>  
+    <span style="color: #75715e">/*Styles for printers go in here*/</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>Media queries can be used to achieve many more details, like whether the printer is monochrome or color. I encourage you to read more about them on <a href="http://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries">MDN</a></p>
+
+<p>But what exactly does one need to keep in mind while writing printer styles?</p>
+
+<h4 id="drop-the-headers-footers-and-backgrounds">Drop the Headers, Footers and Backgrounds</h4>
+
+<p>When a reader prints out your blogpost, they probably don&rsquo;t want any of the navigation, search boxes, or other header elements. Likewise, sitemaps and other links that go into your footer aren&rsquo;t usually required. The same background color that makes your website look nice might be superfluous when it comes to printing on a monochrome printer. Therefore, you&rsquo;ll likely need to add the following to <code>print.css</code>:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">header,</span> <span style="color: #f92672">footer</span> <span style="color: #f8f8f2">{</span>  
+    <span style="color: #f8f8f2">display</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">none;</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #f92672">body</span> <span style="color: #f8f8f2">{</span>  
+    <span style="color: #f8f8f2">background</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">white;</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<h4 id="bring-out-the-page-breaks">Bring out the Page-breaks</h4>
+
+<p>In most situations, you don&rsquo;t want page-breaks to be inserted into your content arbitrarily. To control where your content is split across pages, you can use the <code>page-break-before</code> and <code>page-break-after</code> properties, like so:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>...  
+<span style="color: #75715e">&lt;!-- inserts a page-break here --&gt;</span>
+<span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">class</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;page-break&quot;</span><span style="color: #f8f8f2">&gt;&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+...
+</pre></div>
+
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">.page-break</span> <span style="color: #f8f8f2">{</span>  
+    <span style="color: #f8f8f2">display</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">block;</span>
+    <span style="color: #f8f8f2">page-break-before</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">always;</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>These properties support a bunch of useful options, like <code>avoid</code>, <code>left</code> and <code>right</code>. Read more about them <a href="http://developer.mozilla.org/en-US/docs/Web/CSS/page-break-after">here</a>.</p>
+
+<h4 id="the-ideal-font-size">The Ideal font-size</h4>
+
+<p>Failing to land at the perfect px number after many trials, I finally resorted to A List Apart for some help. They have a great article explaining their print stylesheet, and the author suggests the use of a point-size instead of a pixel-size:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">p</span> <span style="color: #f8f8f2">{</span>  
+    <span style="color: #f8f8f2">font-size</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">12pt</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<h4 id="links">Links</h4>
+
+<p>Let&rsquo;s face it &ndash; hyperlinks are mostly useless when it comes to the print medium. However, keep in mind that as long as they&rsquo;re important (and short) enough, your readers might actually be willing to make the effort to type them into a browser. So just make sure all of the links you <em>really</em> want your readers to see, are displayed on paper. For example,</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">a</span> <span style="color: #a6e22e">href</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;/resume&quot;</span><span style="color: #f8f8f2">&gt;</span>Résumé<span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">a</span><span style="color: #f8f8f2">&gt;&lt;</span><span style="color: #f92672">span</span> <span style="color: #a6e22e">class</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;print-only&quot;</span><span style="color: #f8f8f2">&gt;</span>(www.blog.me/resume)<span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">span</span><span style="color: #f8f8f2">&gt;</span>
+</pre></div>
+
+
+<p>Your stylesheet would then look like:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">.print-only</span> <span style="color: #f8f8f2">{</span>  
+    <span style="color: #f8f8f2">display</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">none;</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">@media</span> <span style="color: #f92672">(print)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">.print-only</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #f8f8f2">display</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">inline;</span>
+    <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<h4 id="further-reading">Further Reading</h4>
+
+<p>For more on writing print stylesheets, you can check out this <a href="http://alistapart.com/article/goingtoprint">fantastic article at A List Apart</a>.</p>
+
+                </section>
+                <section class="section topics">
+                    Tagged with
+                    <ul class="topics inline">
+                        
+                            <li class="topic"><a href="http://cdax.github.io/tags/css">css</a></li>
+                        
+                    </ul>
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                
+                    <div class="avatar-name">
+                        <img class="avatar" src="http://cdax.github.io/img/avatar.jpg">
+                        <div>
+                            <span class="dark">Chitharanjan Das</span>
+                            <span>Software Developer</span>
+                        </div>
+                    </div>
+                    
+                <section id="sharing">
+                    
+                </section>
+            </footer>
+            <footer id="footer">
+    
+    <p class="small">
+    
+        © 2016, Chitharanjan Das
+    
+    </p>
+</footer>
+
+        </section>
+
+    </body>
+</html>
