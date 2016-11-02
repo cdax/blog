@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Structures on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/data-structures/</link>
+    <link>https://cdax.github.io/tags/data-structures/</link>
     <description>Recent content in Data Structures on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 27 Nov 2014 13:28:06 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/tags/data-structures/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdax.github.io/tags/data-structures/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Binary Indexed Trees</title>
-      <link>http://cdax.tech/post/binary-indexed-trees/</link>
+      <link>https://cdax.github.io/post/binary-indexed-trees/</link>
       <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/binary-indexed-trees/</guid>
+      <guid>https://cdax.github.io/post/binary-indexed-trees/</guid>
       <description>
 
 &lt;blockquote&gt;

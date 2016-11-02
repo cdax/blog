@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/post/</link>
+    <link>https://cdax.github.io/post/</link>
     <description>Recent content in Posts on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 08 Mar 2015 20:53:15 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdax.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>(Solution to) Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break-sol/</link>
+      <link>https://cdax.github.io/post/prison-break-sol/</link>
       <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break-sol/</guid>
+      <guid>https://cdax.github.io/post/prison-break-sol/</guid>
       <description>
 
 &lt;blockquote&gt;
 &lt;p&gt;Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Can you figure such a way out of the prison?&lt;/p&gt;
 
@@ -31,7 +31,7 @@
 
 &lt;p&gt;Having solved similar problems before, you decide to colour the map like a chessboard – for ease of making logical deductions. Since adjacent cells have doors between them, you can imagine yourself navigating the chessboard-prison exactly the way &lt;a href=&#34;http://en.wikipedia.org/wiki/Pawn_%28chess%29&#34;&gt;a pawn&lt;/a&gt; would.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break-sol.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/prison-break-sol.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It’s easy to see that a pawn-move from one cell to an adjacent cell will always be a move from a white square to a black square, or vice-versa. This means that you’ll require an even number of pawn-moves (at least two) to get from a square of one colour, to another square of the same colour.&lt;/p&gt;
 
@@ -43,15 +43,15 @@
     
     <item>
       <title>If Arundhati Roy wrote JavaScript</title>
-      <link>http://cdax.tech/post/if-roy-wrote-js/</link>
+      <link>https://cdax.github.io/post/if-roy-wrote-js/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/if-roy-wrote-js/</guid>
+      <guid>https://cdax.github.io/post/if-roy-wrote-js/</guid>
       <description>
 
 &lt;p&gt;&lt;a href=&#34;http://anguscroll.com/&#34;&gt;Angus Croll’s&lt;/a&gt; &lt;a href=&#34;http://www.amazon.com/Hemingway-Wrote-JavaScript-Angus-Croll/dp/1593275854/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017264&amp;amp;sr=8-1&amp;amp;keywords=if+hemingway+wrote+javascript&#34;&gt;If Hemingway Wrote JavaScript&lt;/a&gt; is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/thirteen_authors_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/thirteen_authors_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://cdas.svbtle.com/if-arundhati-roy-wrote-javascript&#34;&gt;No Starch Press&lt;/a&gt; has been publishing many thoroughly readable programming books over the years, including the much-acclaimed &lt;a href=&#34;http://www.amazon.com/Eloquent-JavaScript-Modern-Introduction-Programming/dp/1593275846/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017353&amp;amp;sr=8-1&amp;amp;keywords=eloquent+javascript&#34;&gt;Eloquent JavaScript&lt;/a&gt; and &lt;a href=&#34;http://www.amazon.com/Learn-Some-Erlang-Great-Good/dp/1593274351/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017394&amp;amp;sr=8-1&amp;amp;keywords=learn+you+some+erlang+for+great+good&#34;&gt;Learn You Some Erlang for Great Good!&lt;/a&gt; Although If Hemingway has a far more leisurely style than the other books, it is by no means a lesser spectacle of code craftsmanship. Reading some of the examples requires (or, like in my case, inspires) a proper understanding of scoping, hoisting, and closures among other ideas.&lt;/p&gt;
 
@@ -186,7 +186,7 @@
 
 &lt;p&gt;Angus Croll calls this &lt;a href=&#34;https://javascriptweblog.wordpress.com/2010/04/27/the-russian-doll-principle-re-writing%C2%A0functions%C2%A0at%C2%A0runtime/&#34;&gt;the Russian Doll pattern&lt;/a&gt;. Peter Michaux calls this &lt;a href=&#34;http://michaux.ca/articles/lazy-function-definition-pattern&#34;&gt;the lazy function definition pattern&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/matryoshka.JPG&#34; alt=&#34;A Russian Matryoshka doll&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/matryoshka.JPG&#34; alt=&#34;A Russian Matryoshka doll&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Often I’ve found myself writing functions that must do something one way the first time, and then a different way the next time. My own inelegant solution has always looked something like this:&lt;/p&gt;
 
@@ -219,15 +219,15 @@
     
     <item>
       <title>Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break/</link>
+      <link>https://cdax.github.io/post/prison-break/</link>
       <pubDate>Fri, 20 Feb 2015 20:50:11 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break/</guid>
+      <guid>https://cdax.github.io/post/prison-break/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Can you figure such a way out of the prison?&lt;/p&gt;
 
@@ -237,10 +237,10 @@
     
     <item>
       <title>MongoDB: Selecting Documents at Random</title>
-      <link>http://cdax.tech/post/mongodb-select-random-docs/</link>
+      <link>https://cdax.github.io/post/mongodb-select-random-docs/</link>
       <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/mongodb-select-random-docs/</guid>
+      <guid>https://cdax.github.io/post/mongodb-select-random-docs/</guid>
       <description>
 
 &lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
@@ -286,15 +286,15 @@
     
     <item>
       <title>Underscore Magic!</title>
-      <link>http://cdax.tech/post/underscore-magic/</link>
+      <link>https://cdax.github.io/post/underscore-magic/</link>
       <pubDate>Fri, 26 Dec 2014 13:42:48 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/underscore-magic/</guid>
+      <guid>https://cdax.github.io/post/underscore-magic/</guid>
       <description>
 
 &lt;p&gt;Front-end developers should know &lt;a href=&#34;http://underscorejs.org/&#34;&gt;Underscore.js&lt;/a&gt; like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of &lt;em&gt;Write less, do more&lt;/em&gt; to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like &lt;em&gt;Backbone.js&lt;/em&gt; and &lt;em&gt;Ghost&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/underscore.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/underscore.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin &lt;a href=&#34;http://lodash.com/&#34;&gt;Lo-Dash&lt;/a&gt;) put to use.&lt;/p&gt;
 
@@ -375,10 +375,10 @@
     
     <item>
       <title>Javascript&#39;s &#34;void&#34; operator</title>
-      <link>http://cdax.tech/post/void-0/</link>
+      <link>https://cdax.github.io/post/void-0/</link>
       <pubDate>Thu, 25 Dec 2014 13:53:53 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/void-0/</guid>
+      <guid>https://cdax.github.io/post/void-0/</guid>
       <description>
 
 &lt;p&gt;Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight &lt;em&gt;Backbone.js&lt;/em&gt;, so I thought its &lt;a href=&#34;http://backbonejs.org/docs/backbone.html&#34;&gt;annotated source&lt;/a&gt; would be the perfect place to start.&lt;/p&gt;
@@ -425,10 +425,10 @@
     
     <item>
       <title>Binary Indexed Trees</title>
-      <link>http://cdax.tech/post/binary-indexed-trees/</link>
+      <link>https://cdax.github.io/post/binary-indexed-trees/</link>
       <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/binary-indexed-trees/</guid>
+      <guid>https://cdax.github.io/post/binary-indexed-trees/</guid>
       <description>
 
 &lt;blockquote&gt;
@@ -515,10 +515,10 @@
     
     <item>
       <title>CSS for Print Media</title>
-      <link>http://cdax.tech/post/css-for-print-media/</link>
+      <link>https://cdax.github.io/post/css-for-print-media/</link>
       <pubDate>Tue, 25 Nov 2014 14:06:28 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/css-for-print-media/</guid>
+      <guid>https://cdax.github.io/post/css-for-print-media/</guid>
       <description>
 
 &lt;p&gt;I never really felt it was important to style web pages for the print medium till a few days ago when I was formatting my résumé. The theme that I&amp;rsquo;ve forked to use on this blog employs &lt;code&gt;font-kerning&lt;/code&gt; and &lt;code&gt;anti-aliasing&lt;/code&gt; to make my posts look like text on paper. This made me curious to see what my resume would look like if printed.&lt;/p&gt;
@@ -625,10 +625,10 @@
     
     <item>
       <title>The Coffee Can Problem</title>
-      <link>http://cdax.tech/post/coffee-can/</link>
+      <link>https://cdax.github.io/post/coffee-can/</link>
       <pubDate>Fri, 31 Oct 2014 14:16:01 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/coffee-can/</guid>
+      <guid>https://cdax.github.io/post/coffee-can/</guid>
       <description>
 
 &lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
@@ -680,10 +680,10 @@
     
     <item>
       <title>Fast Modular Exponentiation</title>
-      <link>http://cdax.tech/post/fast-modular-exponentiation/</link>
+      <link>https://cdax.github.io/post/fast-modular-exponentiation/</link>
       <pubDate>Mon, 06 Oct 2014 14:45:24 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/fast-modular-exponentiation/</guid>
+      <guid>https://cdax.github.io/post/fast-modular-exponentiation/</guid>
       <description>
 
 &lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
@@ -769,10 +769,10 @@
     
     <item>
       <title>Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India?</title>
-      <link>http://cdax.tech/post/1975-emergency/</link>
+      <link>https://cdax.github.io/post/1975-emergency/</link>
       <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/1975-emergency/</guid>
+      <guid>https://cdax.github.io/post/1975-emergency/</guid>
       <description>&lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/History/Why-is-the-National-Emergency-of-1975-seen-as-one-of-the-most-controversial-times-in-the-History-of-India&#34;&gt;Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -823,10 +823,10 @@
     
     <item>
       <title>What major issues did India have at the time of its independence that are now resolved?</title>
-      <link>http://cdax.tech/post/india-at-independence/</link>
+      <link>https://cdax.github.io/post/india-at-independence/</link>
       <pubDate>Wed, 14 May 2014 00:32:26 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/india-at-independence/</guid>
+      <guid>https://cdax.github.io/post/india-at-independence/</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/What-major-issues-did-India-have-at-the-time-of-its-independence-that-are-now-resolved&#34;&gt;What major issues did India have at the time of its independence that are now resolved?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
@@ -855,10 +855,10 @@
     
     <item>
       <title>Why is Ashoka Maurya given the title of &#39;Great&#39;?</title>
-      <link>http://cdax.tech/post/ashoka-the-great/</link>
+      <link>https://cdax.github.io/post/ashoka-the-great/</link>
       <pubDate>Wed, 16 Oct 2013 00:27:50 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/ashoka-the-great/</guid>
+      <guid>https://cdax.github.io/post/ashoka-the-great/</guid>
       <description>&lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/Why-is-Ashoka-Maurya-given-the-title-of-Great&#34;&gt;Why is Ashoka Maurya given the title of &amp;lsquo;Great&amp;rsquo;?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -882,10 +882,10 @@
     
     <item>
       <title>What was pre-Aryan india like?</title>
-      <link>http://cdax.tech/post/pre-aryan-india/</link>
+      <link>https://cdax.github.io/post/pre-aryan-india/</link>
       <pubDate>Tue, 08 Oct 2013 00:23:32 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/pre-aryan-india/</guid>
+      <guid>https://cdax.github.io/post/pre-aryan-india/</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/What-was-pre-Aryan-india-like&#34;&gt;What was pre-Aryan india like?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
@@ -918,10 +918,10 @@
     
     <item>
       <title>The Kasol Affair</title>
-      <link>http://cdax.tech/post/kasol/</link>
+      <link>https://cdax.github.io/post/kasol/</link>
       <pubDate>Wed, 13 Feb 2013 22:46:27 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/kasol/</guid>
+      <guid>https://cdax.github.io/post/kasol/</guid>
       <description>
 
 &lt;p&gt;It’s been four months since my first trip to &lt;a href=&#34;http://en.wikipedia.org/wiki/Kasol&#34;&gt;Kasol&lt;/a&gt;. Looking back, I don’t regret not having kept an account of how I spent my time there. There’s a certain infectious quality about the relaxed air at Kasol. Once you’re there, enjoy the cool weather, eat the good food, live at the cheap hotels and meet the strange people. Of course there’s a lot else to do, but keeping a journal of my adventures was never a priority.&lt;/p&gt;
@@ -936,7 +936,7 @@
 
 &lt;p&gt;Once you’ve reached Bhuntar, the first thing to do is to make sure you draw out enough cash to sustain your stay in Kasol because up in the Parvati Valley, banks, ATMs and the police do not exist. After that, hitch a bus to Kasol, which is still a good 30 kilometers off and get set for the bus ride of your life — the vehicle plies chillingly close to the edges of Manikaran Road, that winds its way around mountains. Each bend in the road offers its own thrills. It’s incredible how two buses heading in opposite directions on the same narrow strip with a bottomless fall on one side, still manage to breeze past each other quite peacefully. In the two and a half hours that it takes to get to Kasol, the bus usually makes no more than two stops at nondescript settlements along the road.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/kasol-growth.jpg&#34; alt=&#34;Cannabis growing wild in Kasol&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/kasol-growth.jpg&#34; alt=&#34;Cannabis growing wild in Kasol&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I personally feel that if you’ve got the time and the legs for it, then trekking those 30 kilometers to Kasol is the best way to get there. The picturesque landscape is dotted with apple orchards and a variety of birds, and Kasol announces itself with a sudden overgrowth of wild Cannabis (called Bhang by the locals, just in case you want to ask someone where to find some).&lt;/p&gt;
 
@@ -946,7 +946,7 @@
 
 &lt;p&gt;There is an abundance of inns and cyber cafes, travel agencies and handicraft shops. At the cyber cafes, I saw tourists talking to their families and friends back home over Facebook and Skype. While the owners of shops greeted me with suspicious looks, almost every foreigner carried a telling smile on his/her face. In places, the air smelled of burnt grass, and you knew that these smiles came from perpetual bliss supplemented with good, cheap food. A small bridge passing over the river Parvati offered an unimaginably scenic spot for visitors to hang out and smoke together in peace.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/moondance-cafe-view.jpg&#34; alt=&#34;The view from Moondance Cafe&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/moondance-cafe-view.jpg&#34; alt=&#34;The view from Moondance Cafe&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I stayed at &lt;em&gt;Hotel Kasol Inn&lt;/em&gt;, which offered a decent room with a double bed for just Rs. 300 per night. However, that much money gives you just one sheet and one blanket with which you must face the cold air of the valley. So it’s a good idea to carry your own quilts or blankets. The inn-keeper, though he seemed to be charging an extra Rs. 100 off dating/married couples, was a friendly man. He offered us some of his prized hash at an alleged discount, even before we (my flatmate and I) had checked into our rooms — or perhaps that was a marketing tactic. Outside Kasol Inn, we met a man who had probably one day just decided to abandon his life in his home town or city, and settle in Kasol. He made a living as a tattoo artist who was also a part-time t-shirt print designer.&lt;/p&gt;
 
@@ -966,7 +966,7 @@
 
 &lt;p&gt;Getting back from Kasol is easy thanks to the many travel agents in the area. If you try to pay them plastic money however, they’ll charge you an extra Rs. 100, stating that they’ll have to travel to the nearest bank, which lies 30 kilometers away. Book a ticket from Bhuntar’s bus depot to wherever you’re headed next, and to get to Bhuntar, stop any bus on its way there from Manikaran.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/kasol-parvati.jpg&#34; alt=&#34;The Parvati River, flowing through Kasol&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/kasol-parvati.jpg&#34; alt=&#34;The Parvati River, flowing through Kasol&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I’m far from finished with Kasol. I’ll be back there a few more times later in life. To a land frozen in time, where people will still be grooving to the tunes of Altaf Raja.&lt;/p&gt;
 </description>

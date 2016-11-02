@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Puzzles on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/puzzles/</link>
+    <link>https://cdax.github.io/tags/puzzles/</link>
     <description>Recent content in Puzzles on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 08 Mar 2015 20:53:15 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/tags/puzzles/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdax.github.io/tags/puzzles/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>(Solution to) Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break-sol/</link>
+      <link>https://cdax.github.io/post/prison-break-sol/</link>
       <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break-sol/</guid>
+      <guid>https://cdax.github.io/post/prison-break-sol/</guid>
       <description>
 
 &lt;blockquote&gt;
 &lt;p&gt;Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Can you figure such a way out of the prison?&lt;/p&gt;
 
@@ -31,7 +31,7 @@
 
 &lt;p&gt;Having solved similar problems before, you decide to colour the map like a chessboard – for ease of making logical deductions. Since adjacent cells have doors between them, you can imagine yourself navigating the chessboard-prison exactly the way &lt;a href=&#34;http://en.wikipedia.org/wiki/Pawn_%28chess%29&#34;&gt;a pawn&lt;/a&gt; would.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break-sol.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/prison-break-sol.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It’s easy to see that a pawn-move from one cell to an adjacent cell will always be a move from a white square to a black square, or vice-versa. This means that you’ll require an even number of pawn-moves (at least two) to get from a square of one colour, to another square of the same colour.&lt;/p&gt;
 
@@ -43,15 +43,15 @@
     
     <item>
       <title>Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break/</link>
+      <link>https://cdax.github.io/post/prison-break/</link>
       <pubDate>Fri, 20 Feb 2015 20:50:11 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break/</guid>
+      <guid>https://cdax.github.io/post/prison-break/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdax.github.io/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Can you figure such a way out of the prison?&lt;/p&gt;
 
@@ -61,10 +61,10 @@
     
     <item>
       <title>The Coffee Can Problem</title>
-      <link>http://cdax.tech/post/coffee-can/</link>
+      <link>https://cdax.github.io/post/coffee-can/</link>
       <pubDate>Fri, 31 Oct 2014 14:16:01 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/coffee-can/</guid>
+      <guid>https://cdax.github.io/post/coffee-can/</guid>
       <description>
 
 &lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
@@ -116,10 +116,10 @@
     
     <item>
       <title>Tales from the Cryptology Book</title>
-      <link>http://cdax.tech/post/tales-from-the-cryptology-book/</link>
+      <link>https://cdax.github.io/post/tales-from-the-cryptology-book/</link>
       <pubDate>Sat, 23 Jan 2010 20:39:26 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/tales-from-the-cryptology-book/</guid>
+      <guid>https://cdax.github.io/post/tales-from-the-cryptology-book/</guid>
       <description>&lt;p&gt;So last Wednesday, I picked up this great book from my college library (down here, it’s called the ‘Resource Center (RC)’). At the risk of sounding clichéd, I’d like to point out that finding a good book in the RC is like searching for a needle in a you-know-where. But back to the book. It’s called Cryptological Mathematics, authored by Robert Edward Lewand and published by the Mathematical Association of America.&lt;/p&gt;
 
 &lt;p&gt;Now, I’ve been searching for a good book to get started with cryptology ever since I participated in a cryptanalysis event at last year’s Synapse. This so far, has been my best find. The style is perfect for beginners like me. But one has to have some background in algebra and number theory to better understand the encryption and decryption algorithms. OK, so I admit that not all famous ciphers have been explained. But who cares? Those are the ones that’ve been broken! The book imbibes in the reader the right spirit required for cryptanalysis… blah, blah, doopity-doop! THIS BOOK IS JUST A WHOLE LOT OF FUN!!&lt;/p&gt;

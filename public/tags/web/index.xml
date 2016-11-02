@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/web/</link>
+    <link>https://cdax.github.io/tags/web/</link>
     <description>Recent content in Web on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 13 Mar 2010 08:32:16 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cdax.github.io/tags/web/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Flash vs HTML5</title>
-      <link>http://cdax.tech/post/flash-v-html5/</link>
+      <link>https://cdax.github.io/post/flash-v-html5/</link>
       <pubDate>Sat, 13 Mar 2010 08:32:16 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/flash-v-html5/</guid>
+      <guid>https://cdax.github.io/post/flash-v-html5/</guid>
       <description>&lt;p&gt;The last few months have been full of heavy speculation regarding, well, the future of a certain pioneering RIA technology that goes by the name of Adobe Flash. All this fuss hasn’t been without good reason though. Over the years, not only has Flash managed in helping to sculpt the most interactive and visually delectable portion of the World Wide Web, it has also succeeded in creating a formidable string of (potentially?) rival technologies. There was a time when all the buzz around AJAX was touted as Flash’s ultimate death-knell. And more recently, with the release of something called HTML 5, it’s de-ja-vu all over again. In the meanwhile, Sun came up with its JavaFX, and of course, Microsoft (Zune, Bing) with Silverlight.&lt;/p&gt;
 
 &lt;p&gt;Early signs indicate that an HTML take-over of Flash’s core feature-set over the web is imminent[1]. It is all a question of how long it will take, like the Browser Wars (1995-2002) showed us. At this very instant, a battle is brewing between online giants over which video format to adopt as a common standard for the much talked-about HTML5 video. Uniformity, as it turns out, is one of the basic ideas behind HTML5. However, with bigwigs like Apple(MPEG-4/H.264), Microsoft(VC-1), Mozilla(Ogg Vorbis) and Google(unspecified) locking horns on this one already, it is unsettling to think of all the other standards they will fight over in the near future, and all the (developer-)time they will waste on it. Furthermore, the time that the new HTML5 compliant browsers will take to achieve significant market penetration remains a major reason behind the argument that Flash will not be displaced from its dominant position for a few years to come.
