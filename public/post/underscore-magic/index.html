@@ -1,0 +1,173 @@
+<!doctype html>
+<html class="no-js" lang="en-us">
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Underscore Magic!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Chitharanjan Das">
+<meta name="description" content="">
+<meta name="generator" content="Hugo 0.16" />
+<link rel="apple-touch-icon" sizes="57x57" href="http://cdax.github.io/img/icons/apple-icon-57x57.png?v=2">
+<link rel="apple-touch-icon" sizes="60x60" href="http://cdax.github.io/img/icons/apple-icon-60x60.png?v=2">
+<link rel="apple-touch-icon" sizes="72x72" href="http://cdax.github.io/img/icons/apple-icon-72x72.png?v=2">
+<link rel="apple-touch-icon" sizes="76x76" href="http://cdax.github.io/img/icons/apple-icon-76x76.png?v=2">
+<link rel="apple-touch-icon" sizes="114x114" href="http://cdax.github.io/img/icons/apple-icon-114x114.png?v=2">
+<link rel="apple-touch-icon" sizes="120x120" href="http://cdax.github.io/img/icons/apple-icon-120x120.png?v=2">
+<link rel="apple-touch-icon" sizes="144x144" href="http://cdax.github.io/img/icons/apple-icon-144x144.png?v=2">
+<link rel="apple-touch-icon" sizes="152x152" href="http://cdax.github.io/img/icons/apple-icon-152x152.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.github.io/img/icons/apple-icon-180x180.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192"  href="http://cdax.github.io/img/icons/android-icon-192x192.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="http://cdax.github.io/img/icons/favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="http://cdax.github.io/img/icons/favicon-96x96.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="http://cdax.github.io/img/icons/favicon-16x16.png?v=2">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/img/icons/ms-icon-144x144.png?v=2">
+<meta name="theme-color" content="#ffffff">
+
+
+<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://cdax.github.io/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/main.css">
+<link rel="stylesheet" href="http://cdax.github.io/css/ionicons.min.css">
+
+    </head>
+    <body>
+        
+        <nav class="main-nav">
+	
+	
+		<a href='http://cdax.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Underscore Magic!</h1>
+                    <h2 class="headline">December 26, 2014</h2>
+                </header>
+                <section id="post-body">
+                    
+
+<p>Front-end developers should know <a href="http://underscorejs.org/">Underscore.js</a> like the backs of their hands. It brings jQuery&rsquo;s philosophy of <em>Write less, do more</em> to the area of array/object manipulation. It&rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like <em>Backbone.js</em> and <em>Ghost</em>.</p>
+
+<p><img src="http://cdax.github.io/img/underscore.png" alt="" /></p>
+
+<p>In this post, I&rsquo;m going to talk about three cool ways in which I&rsquo;ve seen Underscore (or its cousin <a href="http://lodash.com/">Lo-Dash</a>) put to use.</p>
+
+<h4 id="working-with-request-parameters">Working with Request Parameters</h4>
+
+<p>I noticed these tricks while going through the source of <em>Ghost</em>. Ghost server has a number of API endpoints, each with a set of blacklisted/whitelisted request parameters. So what happens when someone tries to meddle with the API calls made by the client-side app? Something like this:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//pick() returns a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys)  </span>
+<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">pick</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">whitelistedParams</span><span style="color: #f8f8f2">);</span>  
+</pre></div>
+
+
+<p>&hellip;or this:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//omit() returns a copy of the object, filtered to omit the blacklisted keys (or array of keys)  </span>
+<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">omit</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">blacklistedParams</span><span style="color: #f8f8f2">);</span>  
+</pre></div>
+
+
+<p>Similarly, in order to normalize/standardize a request by adding in default values for required parameters, simply do:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//defaults() fills in undefined properties in object with the first value present in the following list of defaults objects  </span>
+<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">defaults</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">defaultRequest</span><span style="color: #f8f8f2">);</span>
+</pre></div>
+
+
+<h4 id="chaining">Chaining</h4>
+
+<p>When <code>chain()</code> is called on an array/object, Underscore attaches its own methods to it, returning a <em>wrapped object</em>. The beauty of <code>chain()</code> is that the following two lines of code become equivalent:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//Imperative style  </span>
+<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">pick</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">whitelistedParams</span><span style="color: #f8f8f2">);</span>  
+<span style="color: #75715e">//Functional style</span>
+<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">chain</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">)</span>  
+                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">pick</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">whitelistedParams</span><span style="color: #f8f8f2">)</span>
+                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">();</span>
+</pre></div>
+
+
+<p>The call to <code>value()</code> at the end strips off underscore methods from the wrapped object returned by the previous method in the chain. Here&rsquo;s another example of this <em>functional</em> way of writing JavaScript:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">chain</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">)</span>  
+                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">keys</span><span style="color: #f8f8f2">()</span>
+                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">size</span><span style="color: #f8f8f2">()</span>
+                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">();</span>
+                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">();</span>
+</pre></div>
+
+
+<h4 id="templating">Templating</h4>
+
+<p>Underscore also comes with an inbuilt templating method that parses and populates Embedded JS templates, taking values from a passed-in object. In fact, this is a fairly common pattern in Backbone.js:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//Defining the template  </span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">viewTemplate</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">template</span><span style="color: #f8f8f2">(</span>  
+                    <span style="color: #e6db74">&quot;&lt;p&gt;Hi! I&#39;m &lt;%= firstName %&gt;&quot;</span> <span style="color: #f92672">+</span>
+                    <span style="color: #e6db74">&quot; and I&#39;m &lt;%= age %&gt; &quot;</span> <span style="color: #f92672">+</span>
+                    <span style="color: #e6db74">&quot;&lt;% if(age === 1) { %&gt;&quot;</span> <span style="color: #f92672">+</span>
+                        <span style="color: #e6db74">&quot;year&quot;</span> <span style="color: #f92672">+</span>
+                    <span style="color: #e6db74">&quot;&lt;% } else { %&gt;&quot;</span> <span style="color: #f92672">+</span>
+                        <span style="color: #e6db74">&quot;years&quot;</span> <span style="color: #f92672">+</span>
+                    <span style="color: #e6db74">&quot;&lt;% } %&gt; old.&lt;/p&gt;&quot;</span>
+                  <span style="color: #f8f8f2">);</span>
+<span style="color: #75715e">//Populating the template</span>
+<span style="color: #a6e22e">$</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;.view&quot;</span><span style="color: #f8f8f2">).</span><span style="color: #a6e22e">append</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">viewTemplate</span><span style="color: #f8f8f2">({</span>
+    <span style="color: #a6e22e">firstName</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Chitharanjan&quot;</span><span style="color: #f8f8f2">,</span>
+    <span style="color: #a6e22e">lastName</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Das&quot;</span><span style="color: #f8f8f2">,</span>
+    <span style="color: #a6e22e">age</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">24</span>
+<span style="color: #f8f8f2">});</span>
+</pre></div>
+
+
+<h4 id="read-the-docs">Read the Docs!</h4>
+
+<p>Underscore can be used to achieve a lot more fancy-ness than can be put into a couple of blogposts. To find out more, head on over to <a href="http://underscorejs.org/">the docs</a>.</p>
+
+                </section>
+                <section class="section topics">
+                    Tagged with
+                    <ul class="topics inline">
+                        
+                            <li class="topic"><a href="http://cdax.github.io/tags/javascript">javascript</a></li>
+                        
+                    </ul>
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                
+                    <div class="avatar-name">
+                        <img class="avatar" src="http://cdax.github.io/img/avatar.jpg">
+                        <div>
+                            <span class="dark">Chitharanjan Das</span>
+                            <span>Software Developer</span>
+                        </div>
+                    </div>
+                    
+                <section id="sharing">
+                    
+                </section>
+            </footer>
+            <footer id="footer">
+    
+    <p class="small">
+    
+        © 2016, Chitharanjan Das
+    
+    </p>
+</footer>
+
+        </section>
+
+    </body>
+</html>
