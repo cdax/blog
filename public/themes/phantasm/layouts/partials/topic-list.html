@@ -1,5 +1,0 @@
-<ul class="topics">
-  {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
-    <li class="topic"><a href="/tags/{{ $name | urlize }}">{{ $name }}</a></li>
-  {{ end }}
-</ul>
