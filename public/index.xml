@@ -6,8 +6,109 @@
     <description>Recent content on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 08 Mar 2015 20:53:15 +0530</lastBuildDate>
+    <lastBuildDate>Wed, 19 Oct 2016 20:54:22 +0530</lastBuildDate>
     <atom:link href="http://cdax.tech/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Regular Expression Lookaround</title>
+      <link>http://cdax.tech/post/regex-lookaround/</link>
+      <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
+      
+      <guid>http://cdax.tech/post/regex-lookaround/</guid>
+      <description>
+
+&lt;p&gt;Regular expression &lt;em&gt;lookahead&lt;/em&gt; and &lt;em&gt;lookbehind&lt;/em&gt;, collectively called &lt;em&gt;lookaround&lt;/em&gt;, are zero-length assertions. They&amp;rsquo;re called zero-length assertions because they do not consume characters in the string, but only assert whether a match is possible or not.&lt;/p&gt;
+
+&lt;p&gt;Lookarounds are very useful, because they allow you to create regular expressions that are impossible to create without them, or that would get very unmanageable without them.&lt;/p&gt;
+
+&lt;h4 id=&#34;negative-lookahead&#34;&gt;Negative lookahead&lt;/h4&gt;
+
+&lt;p&gt;Negative lookahead is useful when you want to match only those instances of a pattern that are not followed by another pattern. For example, the regular expression &lt;code&gt;a(?![bcd])&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; when it isn&amp;rsquo;t followed by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookahead:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all commas not followed by a space&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;,(?!\s)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;You will know (the good from the bad) when you are calm, at peace. Passive.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;A Jedi uses the Force for knowledge and defense,never for attack.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;,&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;negative-lookbehind&#34;&gt;Negative lookbehind&lt;/h4&gt;
+
+&lt;p&gt;Negative lookbehind is useful when you want to match only those instances of a pattern that are not preceded by another pattern. For example, the regular expression &lt;code&gt;(?&amp;lt;![bcd])a&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it isn&amp;rsquo;t preceded by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookbehind:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `Vader` not preceded by the pattern `Darth\s`&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;(?&amp;lt;!Darth\s)Vader&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;If you end your training now — if you choose the quick and easy path as&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Vader did — you will become an agent of evil.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;Vader&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;positive-lookahead&#34;&gt;Positive lookahead&lt;/h4&gt;
+
+&lt;p&gt;Positive lookahead is useful when you want to match only those instances of a pattern that are followed by another pattern. For example, the regular expression &lt;code&gt;a(?=[bcd])&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it is followed by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for positive lookahead:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `dark` that are followed by the pattern `\sside`&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;dark(?=\sside)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Yes, a Jedi’s strength flows from the Force. But beware of the dark side.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Anger, fear, aggression; the dark side of the Force are they. Easily they&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;flow, quick to join you in a fight. If once you start down the dark path,&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;forever will it dominate your destiny, consume you it will, as it did&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Obi-Wan’s apprentice.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;dark&amp;#39;, &amp;#39;dark&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;positive-lookbehind&#34;&gt;Positive lookbehind&lt;/h4&gt;
+
+&lt;p&gt;Positive lookbehind is useful when you want to match only those instances of a pattern that are preceded by another pattern. For example, the regular expression &lt;code&gt;(?&amp;lt;=[bcd])a&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it is preceded by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookahead:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `I` that are preceded by the pattern `have\s`&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;(?&amp;lt;=have\s)I&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Ready are you? What know you of ready? For eight hundred years have I trained&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;deepest commitment, the most serious mind. This one a long time have I watched.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;All his life has he looked away… to the future, to the horizon. Never his mind&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;A Jedi craves not these things. You are reckless.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;I&amp;#39;, &amp;#39;I&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+    </item>
     
     <item>
       <title>(Solution to) Prison Break: A Simple Counting Problem</title>
@@ -913,62 +1014,6 @@
 &lt;h4 id=&#34;legacy&#34;&gt;Legacy&lt;/h4&gt;
 
 &lt;p&gt;A number of cults and practices that originated in pre-Aryan India were adapted, re-adapted and exported to other cultures by subsequent settlers and are visible even today &amp;ndash; these include the deity Shiva, goddess worship and phallic worship, and possibly fire worship and sacrifice as well. However, I am yet to learn about entire tribes that have survived largely unchanged from that era.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>The Kasol Affair</title>
-      <link>http://cdax.tech/post/kasol/</link>
-      <pubDate>Wed, 13 Feb 2013 22:46:27 +0530</pubDate>
-      
-      <guid>http://cdax.tech/post/kasol/</guid>
-      <description>
-
-&lt;p&gt;It’s been four months since my first trip to &lt;a href=&#34;http://en.wikipedia.org/wiki/Kasol&#34;&gt;Kasol&lt;/a&gt;. Looking back, I don’t regret not having kept an account of how I spent my time there. There’s a certain infectious quality about the relaxed air at Kasol. Once you’re there, enjoy the cool weather, eat the good food, live at the cheap hotels and meet the strange people. Of course there’s a lot else to do, but keeping a journal of my adventures was never a priority.&lt;/p&gt;
-
-&lt;p&gt;Nevertheless, while listening to an &lt;a href=&#34;http://www.youtube.com/watch?v=3uTzfhqdcn8&#34;&gt;Altaf Raja classic&lt;/a&gt; at work today, I finally chose to put something down out of sheer nostalgia (they listen to a lot of Altaf Raja up in the hills of Himachal Pradesh). I don’t intend to write a guide for someone already planning to backpack up to Kasol; there are many reliable travel guides out there. However, I do hope to get someone curious about places they may have never known to exist.&lt;/p&gt;
-
-&lt;h4 id=&#34;getting-there&#34;&gt;Getting There&lt;/h4&gt;
-
-&lt;p&gt;Not many trains dare to ply over the Himalayan terrain, but the small town of Bhuntar, being in proximity to popular tourist destinations like Kasol, Kullu and Manali, boasts the luxury of &lt;a href=&#34;http://en.wikipedia.org/wiki/Bhuntar_Airport&#34;&gt;a domestic airport&lt;/a&gt;. The Bhuntar Airport, erected on the west bank of the Beas river, is quite a sight but recent withdrawal of services by debt-ridden carriers Air India and Kingfisher have meant that it has been in-operational for a while. Ground staff sit around killing their time, even while people in search of a public toilet relieve themselves in a hidden corner of the Airport complex.&lt;/p&gt;
-
-&lt;p&gt;Just a kilometer or two away from this airport however, is the fully-functional Bhuntar bus depot. Buses arrive from most major North Indian towns, and it’s a twelve-hour journey from New Delhi’s ISBT Kashmere Gate in particular. You can book a seat in one of the inimitable Volvo buses for anywhere between Rs. 700 to 1000. As a note of caution, be very careful when selecting your bus at Kashmere Gate. Never trust hawkers who will offer you a cheap price by splitting your journey into two bus rides — this will usually end up with you getting stranded in an unknown town.&lt;/p&gt;
-
-&lt;p&gt;Once you’ve reached Bhuntar, the first thing to do is to make sure you draw out enough cash to sustain your stay in Kasol because up in the Parvati Valley, banks, ATMs and the police do not exist. After that, hitch a bus to Kasol, which is still a good 30 kilometers off and get set for the bus ride of your life — the vehicle plies chillingly close to the edges of Manikaran Road, that winds its way around mountains. Each bend in the road offers its own thrills. It’s incredible how two buses heading in opposite directions on the same narrow strip with a bottomless fall on one side, still manage to breeze past each other quite peacefully. In the two and a half hours that it takes to get to Kasol, the bus usually makes no more than two stops at nondescript settlements along the road.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/kasol-growth.jpg&#34; alt=&#34;Cannabis growing wild in Kasol&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I personally feel that if you’ve got the time and the legs for it, then trekking those 30 kilometers to Kasol is the best way to get there. The picturesque landscape is dotted with apple orchards and a variety of birds, and Kasol announces itself with a sudden overgrowth of wild Cannabis (called Bhang by the locals, just in case you want to ask someone where to find some).&lt;/p&gt;
-
-&lt;h4 id=&#34;staying-there&#34;&gt;Staying There&lt;/h4&gt;
-
-&lt;p&gt;When the bus finally dropped me off at Kasol, I wasn’t concerned about immediately finding a place to stay, but I took some time to walk around and soak in the sudden change in sights and sounds. On either side of the main road were restaurants, cafes and bakeries — many of them had their names written in Hebrew. Over the years, a lot of Israelis have made Kasol their home, and it’s not difficult to see why. I walked into one peculiar looking shack, attracted by the sound of music playing inside it, but all I found was a deserted kitchen and empty chairs and tables. An unattended laptop computer played songs in a loop from a playlist. This is how I found this place both nights during my stay in Kasol — deserted, with music playing on a computer and an empty kitchen.&lt;/p&gt;
-
-&lt;p&gt;There is an abundance of inns and cyber cafes, travel agencies and handicraft shops. At the cyber cafes, I saw tourists talking to their families and friends back home over Facebook and Skype. While the owners of shops greeted me with suspicious looks, almost every foreigner carried a telling smile on his/her face. In places, the air smelled of burnt grass, and you knew that these smiles came from perpetual bliss supplemented with good, cheap food. A small bridge passing over the river Parvati offered an unimaginably scenic spot for visitors to hang out and smoke together in peace.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/moondance-cafe-view.jpg&#34; alt=&#34;The view from Moondance Cafe&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I stayed at &lt;em&gt;Hotel Kasol Inn&lt;/em&gt;, which offered a decent room with a double bed for just Rs. 300 per night. However, that much money gives you just one sheet and one blanket with which you must face the cold air of the valley. So it’s a good idea to carry your own quilts or blankets. The inn-keeper, though he seemed to be charging an extra Rs. 100 off dating/married couples, was a friendly man. He offered us some of his prized hash at an alleged discount, even before we (my flatmate and I) had checked into our rooms — or perhaps that was a marketing tactic. Outside Kasol Inn, we met a man who had probably one day just decided to abandon his life in his home town or city, and settle in Kasol. He made a living as a tattoo artist who was also a part-time t-shirt print designer.&lt;/p&gt;
-
-&lt;h4 id=&#34;eating-there&#34;&gt;Eating There&lt;/h4&gt;
-
-&lt;p&gt;I had caught a cold on my way from Bhuntar to Kasol, so after checking in, I set about looking for some warm soup. I entered a small shack owned by two Sikkhimese women. Their only other patron at the time was a man who spoke in Spanish, entertained a stray dog and flirted off-handedly with the younger of the two women. I ordered half a bowl of Thukpa, and some Momos. All of this cost me just Rs. 30. Thukpa is Sikkimese noodle soup prepared with an array of chopped vegetables, served piping hot. It helped my cold.&lt;/p&gt;
-
-&lt;p&gt;The next morning I walked over to Moondance Cafe, which is a local favourite. Laid out seductively on a rack in their bakery, I saw a range of breads and cakes. And then there were breads and cakes that came stuffed with, and covered in that unearthly God-sauce, Nutella. Nowhere else have I seen everyday food tailored so beautifully to delight hungry people. People at Kasol were observed to be a whole lot hungrier than is normal. From Moondance I had a baguette, a spanish omelette, a coffee and a muffin and the cashier had my bill made out for a little over Rs. 50.&lt;/p&gt;
-
-&lt;p&gt;The only other place I ate at during my stay — three places in twenty four hours is the best I could manage — was Bhoj Restaurant. They boasted a Specials menu, great music and an ambience that was even more chilled out than outside. I chose to have some lasagna, which didn’t turn out as well as I’d imagined. There are quite a few other places that I missed out on, most notably the cleverly named Wunder Bar, Little Italy, and that deserted kitchen that seemed to have an acute shortage of staff.&lt;/p&gt;
-
-&lt;h4 id=&#34;what-to-do-there&#34;&gt;What to do There&lt;/h4&gt;
-
-&lt;p&gt;I heard people like to trek and go white water rafting in and around Kasol. But when you’re short on time and forced to prioritize, choose the one most rewarding activity. Walk about, look around and take a hint.&lt;/p&gt;
-
-&lt;h4 id=&#34;getting-back&#34;&gt;Getting Back&lt;/h4&gt;
-
-&lt;p&gt;Getting back from Kasol is easy thanks to the many travel agents in the area. If you try to pay them plastic money however, they’ll charge you an extra Rs. 100, stating that they’ll have to travel to the nearest bank, which lies 30 kilometers away. Book a ticket from Bhuntar’s bus depot to wherever you’re headed next, and to get to Bhuntar, stop any bus on its way there from Manikaran.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/kasol-parvati.jpg&#34; alt=&#34;The Parvati River, flowing through Kasol&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I’m far from finished with Kasol. I’ll be back there a few more times later in life. To a land frozen in time, where people will still be grooving to the tunes of Altaf Raja.&lt;/p&gt;
 </description>
     </item>
     

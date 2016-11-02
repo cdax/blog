@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Regex on Chitharanjan&#39;s Blog</title>
+    <link>http://cdax.tech/tags/regex/</link>
+    <description>Recent content in Regex on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Oct 2016 20:54:22 +0530</lastBuildDate>
+    <atom:link href="http://cdax.tech/tags/regex/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Regular Expression Lookaround</title>
+      <link>http://cdax.tech/post/regex-lookaround/</link>
+      <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
+      
+      <guid>http://cdax.tech/post/regex-lookaround/</guid>
+      <description>
+
+&lt;p&gt;Regular expression &lt;em&gt;lookahead&lt;/em&gt; and &lt;em&gt;lookbehind&lt;/em&gt;, collectively called &lt;em&gt;lookaround&lt;/em&gt;, are zero-length assertions. They&amp;rsquo;re called zero-length assertions because they do not consume characters in the string, but only assert whether a match is possible or not.&lt;/p&gt;
+
+&lt;p&gt;Lookarounds are very useful, because they allow you to create regular expressions that are impossible to create without them, or that would get very unmanageable without them.&lt;/p&gt;
+
+&lt;h4 id=&#34;negative-lookahead&#34;&gt;Negative lookahead&lt;/h4&gt;
+
+&lt;p&gt;Negative lookahead is useful when you want to match only those instances of a pattern that are not followed by another pattern. For example, the regular expression &lt;code&gt;a(?![bcd])&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; when it isn&amp;rsquo;t followed by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookahead:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all commas not followed by a space&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;,(?!\s)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;You will know (the good from the bad) when you are calm, at peace. Passive.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;A Jedi uses the Force for knowledge and defense,never for attack.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;,&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;negative-lookbehind&#34;&gt;Negative lookbehind&lt;/h4&gt;
+
+&lt;p&gt;Negative lookbehind is useful when you want to match only those instances of a pattern that are not preceded by another pattern. For example, the regular expression &lt;code&gt;(?&amp;lt;![bcd])a&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it isn&amp;rsquo;t preceded by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookbehind:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `Vader` not preceded by the pattern `Darth\s`&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;(?&amp;lt;!Darth\s)Vader&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;If you end your training now — if you choose the quick and easy path as&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Vader did — you will become an agent of evil.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;Vader&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;positive-lookahead&#34;&gt;Positive lookahead&lt;/h4&gt;
+
+&lt;p&gt;Positive lookahead is useful when you want to match only those instances of a pattern that are followed by another pattern. For example, the regular expression &lt;code&gt;a(?=[bcd])&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it is followed by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for positive lookahead:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `dark` that are followed by the pattern `\sside`&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;dark(?=\sside)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Yes, a Jedi’s strength flows from the Force. But beware of the dark side.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Anger, fear, aggression; the dark side of the Force are they. Easily they&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;flow, quick to join you in a fight. If once you start down the dark path,&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;forever will it dominate your destiny, consume you it will, as it did&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Obi-Wan’s apprentice.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;dark&amp;#39;, &amp;#39;dark&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;positive-lookbehind&#34;&gt;Positive lookbehind&lt;/h4&gt;
+
+&lt;p&gt;Positive lookbehind is useful when you want to match only those instances of a pattern that are preceded by another pattern. For example, the regular expression &lt;code&gt;(?&amp;lt;=[bcd])a&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it is preceded by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookahead:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `I` that are preceded by the pattern `have\s`&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;(?&amp;lt;=have\s)I&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Ready are you? What know you of ready? For eight hundred years have I trained&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;deepest commitment, the most serious mind. This one a long time have I watched.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;All his life has he looked away… to the future, to the horizon. Never his mind&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;A Jedi craves not these things. You are reckless.&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;I&amp;#39;, &amp;#39;I&amp;#39;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>
