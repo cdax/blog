@@ -11,10 +11,10 @@
     
     <item>
       <title>Closure in Python</title>
-      <link>http://cdax.tech/post/python-closures/</link>
+      <link>http://cdax.tech/post/python-closure/</link>
       <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/python-closures/</guid>
+      <guid>http://cdax.tech/post/python-closure/</guid>
       <description>
 
 &lt;p&gt;In Python, a function can be defined inside of another function. This &lt;em&gt;inner&lt;/em&gt; function has access to variables defined in every function it is nested within. This is called &lt;em&gt;closure&lt;/em&gt;. Douglas Crockford has said that:&lt;/p&gt;
@@ -23,7 +23,7 @@
 &lt;p&gt;Closures are the source of enormous expressive power.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;However, Crockford had said this about closures in &lt;em&gt;Javascript: The Good Parts&lt;/em&gt;, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences. Also, a lot has changed in the way the language deals with closures between Python 2 and 3.&lt;/p&gt;
+&lt;p&gt;However, Crockford had said this about closures in &lt;em&gt;Javascript: The Good Parts&lt;/em&gt;, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences. Also, a fair bit has changed in the way the language deals with closures between Python 2 and 3.&lt;/p&gt;
 
 &lt;h3 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h3&gt;
 
@@ -35,6 +35,12 @@
 &lt;li&gt;&lt;a href=&#34;writeable-closure-python-2&#34;&gt;Simulating writeable closure in Python 2&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#writeable-closure-python-3&#34;&gt;Closure in Python 3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#closure-applications&#34;&gt;Applications of Closure&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#closure-for-partials&#34;&gt;Partial Application&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#closure-for-memoization&#34;&gt;Memoization&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;a-name-closure-python-2-a-closure-in-python-2&#34;&gt;&lt;a name=&#34;closure-python-2&#34;&gt;&lt;/a&gt;Closure in Python 2&lt;/h3&gt;
@@ -177,7 +183,7 @@ inner() was invoked 5 times
 
 &lt;h3 id=&#34;a-name-writeable-closure-python-3-a-closure-in-python-3&#34;&gt;&lt;a name=&#34;writeable-closure-python-3&#34;&gt;&lt;/a&gt;Closure in Python 3&lt;/h3&gt;
 
-&lt;p&gt;In Python 3, the &lt;code&gt;nonlocal&lt;/code&gt; qualifier can be used to inform the compiler that a variable is already bound to an outer function&amp;rsquo;s scope, and should not be created afresh. Because of this, it becomes possible to update closure variables without enclosing them inside a dictionary.&lt;/p&gt;
+&lt;p&gt;In Python 3, the &lt;code&gt;nonlocal&lt;/code&gt; qualifier can be used to inform the compiler that a variable is already bound to an outer function&amp;rsquo;s scope, and should not be created afresh. Because of this, it becomes possible to update closure variables without enclosing them inside a dictionary like in Python 2.&lt;/p&gt;
 
 &lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v4&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
     &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
@@ -189,6 +195,181 @@ inner() was invoked 5 times
     &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;inner() was invoked {n} times&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(n&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;counter))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
+
+&lt;p&gt;Invoking this function prints the following result:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; outer_v4()
+inner() was invoked 5 times
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id=&#34;a-name-closure-applications-a-applications-of-closure&#34;&gt;&lt;a name=&#34;closure-applications&#34;&gt;&lt;/a&gt;Applications of Closure&lt;/h3&gt;
+
+&lt;h4 id=&#34;a-name-closure-for-partials-a-partial-application&#34;&gt;&lt;a name=&#34;closure-for-partials&#34;&gt;&lt;/a&gt;Partial Application&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;Partial application&lt;/em&gt; is a technique for creating a version of a function where some of the function&amp;rsquo;s arguments are pre-filled. Say you have a function &lt;code&gt;fn(arg1, arg2, ..., argn)&lt;/code&gt; and you would like a version &lt;code&gt;fn_simple&lt;/code&gt; of this function where the values of arguments &lt;code&gt;arg1&lt;/code&gt; and &lt;code&gt;arg2&lt;/code&gt; are fixed. &lt;code&gt;fn_simple&lt;/code&gt; can then be invoked with the shorter argument list &lt;code&gt;arg3, arg4, ..., argn&lt;/code&gt;. We can say that while &lt;code&gt;fn&lt;/code&gt; is a more generic function, &lt;code&gt;fn_simple&lt;/code&gt; is a specialized version of &lt;code&gt;fn&lt;/code&gt; that works for some fixed values of &lt;code&gt;arg1&lt;/code&gt; and &lt;code&gt;arg2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this manner, partial application can greatly simplify your APIs by allowing you to create and use multiple specialized versions of generic functions. Since the meat of the code lives inside the generic function, partial application also promotes code reuse. Let&amp;rsquo;s work through an example to better understand this concept. Consider the following function that prints out messages spoken by characters in a play to each other.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;speak&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(character,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;message):&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;%s: %s&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(character,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;message))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We use this function by passing in the name of a character, followed by the message:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; speak(&amp;quot;Luke&amp;quot;, &amp;quot;All right, I&amp;#39;ll give it a try.&amp;quot;)
+Luke: All right, I&amp;#39;ll give it a try.
+&amp;gt;&amp;gt;&amp;gt; speak(&amp;quot;Yoda&amp;quot;, &amp;quot;No. Try not. Do... or do not. There is no try.&amp;quot;)
+Yoda: No. Try not. Do... or do not. There is no try.
+&amp;gt;&amp;gt;&amp;gt; speak(&amp;quot;R2D2&amp;quot;, &amp;quot;Beep-boop&amp;quot;)
+R2D2: Beep-boop
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Using closure and partial application, we can generate character-specific versions of this function, like so:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;partial_speak&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(character):&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;speak_wrapper&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(message):&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;speak(character,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;message)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;speak_wrapper&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can now create specialized versions of the &lt;code&gt;speak&lt;/code&gt; function for Yoda, Luke and R2D2:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; yoda_speak = partial_speak(&amp;quot;Yoda&amp;quot;)
+&amp;gt;&amp;gt;&amp;gt; luke_speak = partial_speak(&amp;quot;Luke&amp;quot;)
+&amp;gt;&amp;gt;&amp;gt; r2d2_speak = partial_speak(&amp;quot;R2D2&amp;quot;)
+&amp;gt;&amp;gt;&amp;gt; luke_speak(&amp;quot;I don&amp;#39;t, I don&amp;#39;t believe it.&amp;quot;)
+Luke: I don&amp;#39;t, I don&amp;#39;t believe it.
+&amp;gt;&amp;gt;&amp;gt; yoda_speak(&amp;quot;That is why you fail.&amp;quot;)
+Yoda: That is why you fail.
+&amp;gt;&amp;gt;&amp;gt; r2d2_speak(&amp;quot;Beep-boop&amp;quot;)
+R2D2: Beep-boop
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;PRO-TIP&lt;/em&gt;&lt;/strong&gt; Python&amp;rsquo;s standard library module &lt;code&gt;functools&lt;/code&gt; offers a &lt;code&gt;partial&lt;/code&gt; method that can be used to create specialized versions of any function:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; from functools import partial
+&amp;gt;&amp;gt;&amp;gt; yoda_speak = partial(speak, &amp;quot;Yoda&amp;quot;)
+&amp;gt;&amp;gt;&amp;gt; luke_speak = partial(speak, &amp;quot;Luke&amp;quot;)
+&amp;gt;&amp;gt;&amp;gt; r2d2_speak = partial(speak, &amp;quot;R2D2&amp;quot;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;a-name-closure-for-memoization-a-memoization&#34;&gt;&lt;a name=&#34;closure-for-memoization&#34;&gt;&lt;/a&gt;Memoization&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;Memoization&lt;/em&gt; is an optimization technique where previous return values of a function are cached. Whenever an input value repeats, re-computation can be avoided and the cached value can be returned. For instance, consider the following function that returns the &lt;em&gt;n-th&lt;/em&gt; Fibonacci number:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(n):&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can check how many times the &lt;code&gt;fibonacci&lt;/code&gt; function was called for a given input by using the &lt;code&gt;cProfile&lt;/code&gt; module:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; import cProfile
+&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fibonacci(10)&amp;#39;)
+
+179 function calls (3 primitive calls) in 0.000 seconds
+
+Ordered by: standard name
+
+     ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      177/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:1(fibonacci)
+          1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
+          1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For an input value of &lt;em&gt;10&lt;/em&gt;, the &lt;code&gt;fibonacci&lt;/code&gt; function was invoked a staggering 177 times (look for the value in the &lt;code&gt;ncalls&lt;/code&gt; column)! We can avoid the repetitive calls by storing previous return values inside a cache, like so:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci_maker&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{}&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(n):&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;elif&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache:&lt;/span&gt;
+            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[n]&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[n]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[n]&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Let&amp;rsquo;s profile this new and improved way of generating Fibonacci numbers:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; fn = fibonacci_maker()
+&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fn(10)&amp;#39;)
+
+21 function calls (3 primitive calls) in 0.000 seconds
+
+Ordered by: standard name
+
+    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      19/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:3(fibonacci)
+         1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
+         1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The number of &lt;code&gt;fibonacci()&lt;/code&gt; invocations has dropped drastically from 177 to just 19. What&amp;rsquo;s more, any subsequent calls to the function with the same or smaller input values will only require 1 invocation:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; fn(10)
+55
+&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fn(9)&amp;#39;)
+
+3 function calls (3 primitive calls) in 0.000 seconds
+
+Ordered by: standard name
+
+    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+         1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:3(fibonacci)
+         1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
+         1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It&amp;rsquo;s possible to write a generic &lt;code&gt;memoize()&lt;/code&gt; decorator that adds memoization capabilities to any function:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;memoize&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(fn):&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{}&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fn_wrapper&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;args):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;args_tuple&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;tuple(args)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;args_tuple&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache:&lt;/span&gt;
+            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[args_tuple]&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[args_tuple]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fn(&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;args)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[args_tuple]&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fn_wrapper&lt;/span&gt;
+
+&lt;span style=&#34;color: #a6e22e&#34;&gt;@memoize&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(n):&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Running the profiler on this memoizing version of &lt;code&gt;fibonacci&lt;/code&gt; gives back some convincing results:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fibonacci(10)&amp;#39;)
+32 function calls (4 primitive calls) in 0.000 seconds
+
+Ordered by: standard name
+
+    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      11/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:1(fibonacci)
+      19/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:3(fn_wrapper)
+         1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
+         1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There&amp;rsquo;s a bit of an overhead here, added by the 11 internal calls from &lt;code&gt;fn_wrapper&lt;/code&gt; to &lt;code&gt;fibonacci&lt;/code&gt;. However, in our case this number should grow only linearly with the input size &lt;code&gt;n&lt;/code&gt;.&lt;/p&gt;
 </description>
     </item>
     
