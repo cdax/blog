@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Chitharanjan&#39;s Blog</title>
+    <link>http://cdax.tech/tags/python/</link>
+    <description>Recent content in Python on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Nov 2016 21:37:46 +0530</lastBuildDate>
+    <atom:link href="http://cdax.tech/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Closure in Python</title>
+      <link>http://cdax.tech/post/python-closures/</link>
+      <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
+      
+      <guid>http://cdax.tech/post/python-closures/</guid>
+      <description>
+
+&lt;p&gt;In Python, a function can be defined inside of another function. This &lt;em&gt;inner&lt;/em&gt; function has access to variables defined in every function it is nested within. This is called &lt;em&gt;closure&lt;/em&gt;. Douglas Crockford has said that:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Closures are the source of enormous expressive power.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;However, Crockford had said this about closures in &lt;em&gt;Javascript: The Good Parts&lt;/em&gt;, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences. Also, a lot has changed in the way the language deals with closures between Python 2 and 3.&lt;/p&gt;
+
+&lt;h3 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#closure-python-2&#34;&gt;Closure in Python 2&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#closure-python-2-internals&#34;&gt;Under the hood&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;writeable-closure-python-2&#34;&gt;Simulating writeable closure in Python 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#writeable-closure-python-3&#34;&gt;Closure in Python 3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;a-name-closure-python-2-a-closure-in-python-2&#34;&gt;&lt;a name=&#34;closure-python-2&#34;&gt;&lt;/a&gt;Closure in Python 2&lt;/h3&gt;
+
+&lt;p&gt;In &lt;em&gt;Python 2.x&lt;/em&gt;, the outer function&amp;rsquo;s variables are made available inside the inner function&amp;rsquo;s closure as long as these variables aren&amp;rsquo;t modified by the inner function:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Help! I&amp;#39;m wrapped inside a closure!&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Invoking the outer function prints the following to the console:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; outer_v1()
+Help! I&#39;m wrapped inside a closure!
+Help! I&#39;m wrapped inside a closure!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However, the moment you try to modify the value of the variable, it escapes the closure and becomes a &lt;em&gt;new&lt;/em&gt; variable that&amp;rsquo;s scoped to the inner function:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;I&amp;#39;m scoped to the outer function.&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;I&amp;#39;m scoped to the inner function.&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Invoking the outer function now has the following result:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; outer_v2()
+I&#39;m scoped to the inner function.
+I&#39;m scoped to the outer function.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Even after the inner function has been invoked, the value of the outer function&amp;rsquo;s &lt;code&gt;msg&lt;/code&gt; variable remains unchanged. This is an indication that the variable &lt;code&gt;msg&lt;/code&gt; used inside the inner function was created afresh with the inner function as its scope.&lt;/p&gt;
+
+&lt;h4 id=&#34;a-name-closure-python-2-internals-a-under-the-hood&#34;&gt;&lt;a name=&#34;closure-python-2-internals&#34;&gt;&lt;/a&gt;Under the hood&lt;/h4&gt;
+
+&lt;p&gt;Though it&amp;rsquo;s possible to guess all of this by looking at the output from the two function calls above, we can get a much better feel for what&amp;rsquo;s going on by inspecting the &lt;em&gt;special&lt;/em&gt; &lt;code&gt;__closure__&lt;/code&gt; property of the inner function. Later, we will use the &lt;code&gt;dis&lt;/code&gt; module to generate opcode and get far more satisfying results. For instance, in the case of the first function &lt;code&gt;outer_v1&lt;/code&gt;, we can inspect the inner function&amp;rsquo;s closure like so:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; i = outer_v1()
+&amp;gt;&amp;gt;&amp;gt; i.__closure__
+(&amp;lt;cell at 0x10ae106e0: str object at 0x10ae13b70&amp;gt;,)
+&amp;gt;&amp;gt;&amp;gt; i.__closure__[0].cell_contents
+&amp;quot;Help! I&amp;#39;m wrapped inside a closure!&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We see that the string &lt;code&gt;&amp;quot;Help! I&#39;m wrapped inside a closure!&amp;quot;&lt;/code&gt; is quite literally wrapped as a tuple element inside the inner function&amp;rsquo;s &lt;code&gt;__closure__&lt;/code&gt; property. Next, let&amp;rsquo;s take a look at the opcode for &lt;code&gt;outer_v1&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; from dis import dis
+&amp;gt;&amp;gt;&amp;gt; dis(outer_v1)
+
+2           0 LOAD_CONST               1 (&amp;quot;Help! I&amp;#39;m ... closure!&amp;quot;)
+            3 STORE_DEREF              0 (msg)
+
+3           6 LOAD_CLOSURE             0 (msg)
+            9 BUILD_TUPLE              1
+           12 LOAD_CONST               2 (&amp;lt;code object ... line 3&amp;gt;)
+           15 MAKE_CLOSURE             0
+           18 STORE_FAST               0 (inner)
+
+5          21 LOAD_FAST                0 (inner)
+           24 CALL_FUNCTION            0
+           27 POP_TOP
+
+6          28 LOAD_DEREF               0 (msg)
+           31 PRINT_ITEM
+           32 PRINT_NEWLINE
+
+7          33 LOAD_FAST                0 (inner)
+           36 RETURN_VALUE
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The key instructions to watch out for, are &lt;code&gt;6 LOAD_CLOSURE 0&lt;/code&gt; and &lt;code&gt;15 MAKE_CLOSURE 0&lt;/code&gt;. According to the Python docs, the &lt;a href=&#34;https://docs.python.org/2/library/dis.html#opcode-LOAD_CLOSURE&#34;&gt;LOAD_CLOSURE&lt;/a&gt; instruction adds a value to the free variable storage array (&lt;code&gt;co_freevars&lt;/code&gt;) of the inner function, and  &lt;a href=&#34;https://docs.python.org/2/library/dis.html#opcode-MAKE_CLOSURE&#34;&gt;MAKE_CLOSURE&lt;/a&gt; then assigns the list of all loaded closure variables to the inner function&amp;rsquo;s &lt;code&gt;__closure__&lt;/code&gt; property. These instructions are missing from the opcode of the second version of our outer function, &lt;code&gt;outer_v2&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; from dis import dis
+&amp;gt;&amp;gt;&amp;gt; dis(outer_v2)
+
+2           0 LOAD_CONST               1 (&amp;quot;I&amp;#39;m scoped ... function.&amp;quot;)
+            3 STORE_FAST               0 (msg)
+
+3           6 LOAD_CONST               2 (&amp;lt;code object ... line 3&amp;gt;)
+            9 MAKE_FUNCTION            0
+           12 STORE_FAST               1 (inner)
+
+6          15 LOAD_FAST                1 (inner)
+           18 CALL_FUNCTION            0
+           21 POP_TOP
+
+7          22 LOAD_FAST                0 (msg)
+           25 PRINT_ITEM
+           26 PRINT_NEWLINE
+
+8          27 LOAD_FAST                1 (inner)
+           30 RETURN_VALUE
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And as you would expect in this case, the &lt;code&gt;__closure__&lt;/code&gt; property of the inner function is set to &lt;code&gt;None&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; i = outer_v2()
+&amp;gt;&amp;gt;&amp;gt; i.__closure__ is None
+True
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id=&#34;a-name-writeable-closure-python-2-a-simulating-writeable-closure-in-python-2&#34;&gt;&lt;a name=&#34;writeable-closure-python-2&#34;&gt;&lt;/a&gt;Simulating writeable closure in Python 2&lt;/h4&gt;
+
+&lt;p&gt;Python&amp;rsquo;s &lt;code&gt;dict&lt;/code&gt; data structure can be employed to simulate a writeable closure in Python:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v3&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;closure&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;counter&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;closure[&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;counter&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;xrange(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;inner() was invoked {n} times&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(n&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;closure[&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;counter&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Invoking the outer function prints the following to the console:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; outer_v3()
+inner() was invoked 5 times
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As you might have guessed, this is due to the fact that we can update the key-value pairs in-place inside the &lt;code&gt;closure&lt;/code&gt; dictionary variable without assigning it an entirely different dictionary object. In other words, we&amp;rsquo;re able to achieve this because &lt;a href=&#34;https://docs.python.org/2/library/stdtypes.html#mapping-types-dict&#34;&gt;Python dictionaries are mutable&lt;/a&gt;, while &lt;a href=&#34;https://docs.python.org/2/library/stdtypes.html#typesseq-mutable&#34;&gt;Python strings are immutable&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;a-name-writeable-closure-python-3-a-closure-in-python-3&#34;&gt;&lt;a name=&#34;writeable-closure-python-3&#34;&gt;&lt;/a&gt;Closure in Python 3&lt;/h3&gt;
+
+&lt;p&gt;In Python 3, the &lt;code&gt;nonlocal&lt;/code&gt; qualifier can be used to inform the compiler that a variable is already bound to an outer function&amp;rsquo;s scope, and should not be created afresh. Because of this, it becomes possible to update closure variables without enclosing them inside a dictionary.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v4&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;nonlocal&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# `counter` is present in an outer scope&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;range(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;inner() was invoked {n} times&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(n&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;counter))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

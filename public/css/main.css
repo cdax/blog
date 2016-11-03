@@ -4,6 +4,10 @@
   margin-bottom: 20px;
 }
 
+.post ul {
+  padding: 0 1em;
+}
+
 #post-list li {
   margin-bottom: 10px;
 }
