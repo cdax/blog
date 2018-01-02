@@ -7,12 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Chitharanjan Das">
 <meta name="description" content="">
-<meta name="generator" content="Hugo 0.16" />
-<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.tech/img/icons/apple-touch-icon.png?v=3">
-<link rel="icon" type="image/png" href="http://cdax.tech/img/icons/favicon-32x32.png?v=3" sizes="32x32">
-<link rel="icon" type="image/png" href="http://cdax.tech/img/icons/favicon-16x16.png?v=3" sizes="16x16">
-<link rel="manifest" href="http://cdax.tech/img/icons/manifest.json">
-<link rel="mask-icon" href="http://cdax.tech/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
+<meta name="generator" content="Hugo 0.32.1" />
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.me/img/icons/apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" href="http://cdax.me/img/icons/favicon-32x32.png?v=3" sizes="32x32">
+<link rel="icon" type="image/png" href="http://cdax.me/img/icons/favicon-16x16.png?v=3" sizes="16x16">
+<link rel="manifest" href="http://cdax.me/img/icons/manifest.json">
+<link rel="mask-icon" href="http://cdax.me/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
 <meta name="theme-color" content="#ffffff">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/img/icons/mstile-150x150.png?v=3">
@@ -20,9 +20,9 @@
 
 
 <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="http://cdax.tech/css/normalize.css">
-<link rel="stylesheet" href="http://cdax.tech/css/main.css">
-<link rel="stylesheet" href="http://cdax.tech/css/ionicons.min.css">
+<link rel="stylesheet" href="http://cdax.me/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.me/css/main.css">
+<link rel="stylesheet" href="http://cdax.me/css/ionicons.min.css">
 
     </head>
     <body>
@@ -30,7 +30,7 @@
         <nav class="main-nav">
 	
 	
-		<a href='http://cdax.tech/'> <span class="arrow">←</span>Home</a>
+		<a href='http://cdax.me/'> <span class="arrow">←</span>Home</a>
 	
 
 	
@@ -50,7 +50,7 @@
 
 <p><a href="http://anguscroll.com/">Angus Croll’s</a> <a href="http://www.amazon.com/Hemingway-Wrote-JavaScript-Angus-Croll/dp/1593275854/ref=sr_1_1?ie=UTF8&amp;qid=1425017264&amp;sr=8-1&amp;keywords=if+hemingway+wrote+javascript">If Hemingway Wrote JavaScript</a> is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.</p>
 
-<p><img src="http://cdax.tech/img/thirteen_authors_2.jpg" alt="" /></p>
+<p><img src="http://cdax.me/img/thirteen_authors_2.jpg" alt="" /></p>
 
 <p><a href="http://cdas.svbtle.com/if-arundhati-roy-wrote-javascript">No Starch Press</a> has been publishing many thoroughly readable programming books over the years, including the much-acclaimed <a href="http://www.amazon.com/Eloquent-JavaScript-Modern-Introduction-Programming/dp/1593275846/ref=sr_1_1?ie=UTF8&amp;qid=1425017353&amp;sr=8-1&amp;keywords=eloquent+javascript">Eloquent JavaScript</a> and <a href="http://www.amazon.com/Learn-Some-Erlang-Great-Good/dp/1593274351/ref=sr_1_1?ie=UTF8&amp;qid=1425017394&amp;sr=8-1&amp;keywords=learn+you+some+erlang+for+great+good">Learn You Some Erlang for Great Good!</a> Although If Hemingway has a far more leisurely style than the other books, it is by no means a lesser spectacle of code craftsmanship. Reading some of the examples requires (or, like in my case, inspires) a proper understanding of scoping, hoisting, and closures among other ideas.</p>
 
@@ -58,15 +58,11 @@
 
 <p>In this post, I’ll introduce a few basic JavaScript abstractions with help from one of Angus’s snippets, taken from the chapter on Arundhati Roy. The challenge is to create a chainable function that takes one string(word) per function call, but when called without an argument, returns a list of all previously passed-in words. e.g., the function sayIt() will be used thus:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">sayIt</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;Hello&quot;</span><span style="color: #f8f8f2">)(</span><span style="color: #e6db74">&quot;world!&quot;</span><span style="color: #f8f8f2">)());</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">sayIt</span>(<span style="color:#e6db74">&#34;Hello&#34;</span>)(<span style="color:#e6db74">&#34;world!&#34;</span>)());</code></pre></div>
 
 <p>…resulting in the following:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>Hello world!
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Hello world!</code></pre></div>
 
 <h4 id="arundhati-roy-s-javascript-solution">Arundhati Roy’s JavaScript solution</h4>
 
@@ -76,38 +72,36 @@
 
 <p>Here it is in all its glory, reproduced with permission from Angus and No Starch:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// 1) Start with the answer. 2) Move on to the Grubby Details.</span>
-<span style="color: #75715e">// A viable try-able plan.</span>
-<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">sayIt</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 1) Start with the answer. 2) Move on to the Grubby Details.
+</span><span style="color:#75715e">// A viable try-able plan.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sayIt</span>(<span style="color:#a6e22e">word</span>) {
 
-    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TheSayItSaveItThing</span>(<span style="color:#a6e22e">word</span>);
 
-    <span style="color: #75715e">// Does Whatever-it-is-you-need-it-to.</span>
-    <span style="color: #75715e">// Loyal, Dependable, Weak-kneed.</span>
-    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #75715e">// When invoked it Saves.</span>
-        <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
-        <span style="color: #75715e">// When addressed it Says.</span>
-        <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toString</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-            <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">join</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39; &#39;</span><span style="color: #f8f8f2">);</span>
-        <span style="color: #f8f8f2">}</span>
-        <span style="color: #75715e">// Then it waits to be re-summoned.</span>
-        <span style="color: #75715e">// Not invoking. Not recursing. Just waiting.</span>
-        <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">;</span>
-    <span style="color: #f8f8f2">}</span>
+    <span style="color:#75715e">// Does Whatever-it-is-you-need-it-to.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Loyal, Dependable, Weak-kneed.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">TheSayItSaveItThing</span>(<span style="color:#a6e22e">word</span>) {
+        <span style="color:#75715e">// When invoked it Saves.
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">KochuFunction</span>(<span style="color:#a6e22e">word</span>);
+        <span style="color:#75715e">// When addressed it Says.
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">TheSayItSaveItThing</span>.<span style="color:#a6e22e">toString</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TheStretchableFetchableThing</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#39; &#39;</span>);
+        }
+        <span style="color:#75715e">// Then it waits to be re-summoned.
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// Not invoking. Not recursing. Just waiting.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TheSayItSaveItThing</span>;
+    }
 
-    <span style="color: #75715e">// Why change KochuFunction when KochuFunction can change itself?</span>
-    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">TheStretchableFetchableThing</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">];</span>
-        <span style="color: #a6e22e">KochuFunction</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-            <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">push</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
-        <span style="color: #f8f8f2">}</span>
-        <span style="color: #75715e">// KochuFunction is no longer what it was.</span>
-        <span style="color: #75715e">// Or thought it&#39;d be. Ever.</span>
-    <span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+    <span style="color:#75715e">// Why change KochuFunction when KochuFunction can change itself?
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">KochuFunction</span>(<span style="color:#a6e22e">word</span>) {
+        <span style="color:#a6e22e">TheStretchableFetchableThing</span> <span style="color:#f92672">=</span> [<span style="color:#a6e22e">word</span>];
+        <span style="color:#a6e22e">KochuFunction</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">word</span>) {
+            <span style="color:#a6e22e">TheStretchableFetchableThing</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">word</span>);
+        }
+        <span style="color:#75715e">// KochuFunction is no longer what it was.
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// Or thought it&#39;d be. Ever.
+</span><span style="color:#75715e"></span>    }
+}</code></pre></div>
 
 <p><em>Roy’s debut JavaScript function, received with almost the same fanfare as her debut novel.</em></p>
 
@@ -119,23 +113,19 @@
 
 <p>In C++:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">;</span>
-<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">6</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">cout</span> <span style="color: #f92672">&lt;&lt;</span> <span style="color: #f8f8f2">a;</span> <span style="color: #75715e">// Prints 5</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;
+<span style="color:#66d9ef">if</span>(<span style="color:#ae81ff">1</span>) {
+    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>;
+}
+cout <span style="color:#f92672">&lt;&lt;</span> a; <span style="color:#f92672">//</span> Prints <span style="color:#ae81ff">5</span></code></pre></div>
 
 <p>In JavaScript:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #a6e22e">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">;</span>
-<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">true</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span> <span style="color: #75715e">// This if-block has no scope of its own, and as a result...</span>
-    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">a</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">6</span><span style="color: #f8f8f2">;</span> <span style="color: #75715e">// ...&#39;a&#39; still references the variable declared two lines above</span>
-<span style="color: #f8f8f2">}</span>
-<span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">a</span><span style="color: #f8f8f2">);</span> <span style="color: #75715e">// Prints 6</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;
+<span style="color:#66d9ef">if</span>(<span style="color:#66d9ef">true</span>) { <span style="color:#75715e">// This if-block has no scope of its own, and as a result...
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>; <span style="color:#75715e">// ...&#39;a&#39; still references the variable declared two lines above
+</span><span style="color:#75715e"></span>}
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">a</span>); <span style="color:#960050;background-color:#1e0010">// Prints 6</span></code></pre></div>
 
 <p>The story of <code>sayIt()</code> revolves around three main characters. The functions <code>TheSayItSaveItThing()</code> and <code>KochuFunction()</code>, and the list <code>TheStretchableFetchableThing</code>. Let’s take a closer look and identify the scope of each.</p>
 
@@ -149,29 +139,27 @@
 
 <p>As opposed to how we see the code, here is how the interpreter sees it:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">function</span> <span style="color: #a6e22e">sayIt</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sayIt</span>(<span style="color:#a6e22e">word</span>) {
 
-    <span style="color: #75715e">// KochuFunction()&#39;s definition has been hoisted</span>
-    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">TheStretchableFetchableThing</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">];</span>
-        <span style="color: #a6e22e">KochuFunction</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-            <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">push</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
-        <span style="color: #f8f8f2">}</span>
-    <span style="color: #f8f8f2">}</span>
+    <span style="color:#75715e">// KochuFunction()&#39;s definition has been hoisted
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">KochuFunction</span>(<span style="color:#a6e22e">word</span>) {
+        <span style="color:#a6e22e">TheStretchableFetchableThing</span> <span style="color:#f92672">=</span> [<span style="color:#a6e22e">word</span>];
+        <span style="color:#a6e22e">KochuFunction</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">word</span>) {
+            <span style="color:#a6e22e">TheStretchableFetchableThing</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">word</span>);
+        }
+    }
 
-    <span style="color: #75715e">// TheSayItSaveItThing()&#39;s definition has also been hoisted</span>
-    <span style="color: #66d9ef">function</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
-        <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">toString</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-            <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">join</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39; &#39;</span><span style="color: #f8f8f2">);</span>
-        <span style="color: #f8f8f2">}</span>
-        <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">;</span>
-    <span style="color: #f8f8f2">}</span>
+    <span style="color:#75715e">// TheSayItSaveItThing()&#39;s definition has also been hoisted
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">TheSayItSaveItThing</span>(<span style="color:#a6e22e">word</span>) {
+        <span style="color:#a6e22e">KochuFunction</span>(<span style="color:#a6e22e">word</span>);
+        <span style="color:#a6e22e">TheSayItSaveItThing</span>.<span style="color:#a6e22e">toString</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TheStretchableFetchableThing</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#39; &#39;</span>);
+        }
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TheSayItSaveItThing</span>;
+    }
 
-    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">TheSayItSaveItThing</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TheSayItSaveItThing</span>(<span style="color:#a6e22e">word</span>);
+}</code></pre></div>
 
 <h4 id="closures">Closures</h4>
 
@@ -185,32 +173,28 @@
 
 <p>Angus Croll calls this <a href="https://javascriptweblog.wordpress.com/2010/04/27/the-russian-doll-principle-re-writing%C2%A0functions%C2%A0at%C2%A0runtime/">the Russian Doll pattern</a>. Peter Michaux calls this <a href="http://michaux.ca/articles/lazy-function-definition-pattern">the lazy function definition pattern</a>.</p>
 
-<p><img src="http://cdax.tech/img/matryoshka.JPG" alt="A Russian Matryoshka doll" /></p>
+<p><img src="http://cdax.me/img/matryoshka.JPG" alt="A Russian Matryoshka doll" /></p>
 
 <p>Often I’ve found myself writing functions that must do something one way the first time, and then a different way the next time. My own inelegant solution has always looked something like this:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">int</span> <span style="color: #a6e22e">firstCall</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">;</span>
-<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">firstCall</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #75715e">// do something</span>
-    <span style="color: #a6e22e">firstCall</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">;</span>
-<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #75715e">// do something else</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">firstCall</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+<span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">firstCall</span>) {
+    <span style="color:#75715e">// do something
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">firstCall</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#75715e">// do something else
+</span><span style="color:#75715e"></span>}</code></pre></div>
 
 <p>However, with this approach, each function call has an associated branching cost. The if statement needs to be checked for all the calls, even though the result will be the same every time except the first. The Russian Doll pattern eliminates this unnecessary cost by changing the function’s definition after the first invocation!</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// KochuFunction()&#39;s definition has been hoisted</span>
-<span style="color: #66d9ef">function</span> <span style="color: #a6e22e">KochuFunction</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">TheStretchableFetchableThing</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">];</span>
-    <span style="color: #75715e">// KochuFunction redefines itself inside its own body, like a Matryoshka doll</span>
-    <span style="color: #a6e22e">KochuFunction</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">TheStretchableFetchableThing</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">push</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">word</span><span style="color: #f8f8f2">);</span>
-    <span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// KochuFunction()&#39;s definition has been hoisted
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">KochuFunction</span>(<span style="color:#a6e22e">word</span>) {
+    <span style="color:#a6e22e">TheStretchableFetchableThing</span> <span style="color:#f92672">=</span> [<span style="color:#a6e22e">word</span>];
+    <span style="color:#75715e">// KochuFunction redefines itself inside its own body, like a Matryoshka doll
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">KochuFunction</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">word</span>) {
+        <span style="color:#a6e22e">TheStretchableFetchableThing</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">word</span>);
+    }
+}</code></pre></div>
 
 <p>If Hemingway wrote JavaScript has been a fascinating read so far, and I highly recommend it to admirers of JavaScript everywhere, the same way I’d recommend The God of Small Things to admirers of English literature.</p>
 
@@ -219,7 +203,7 @@
                     Tagged with
                     <ul class="topics inline">
                         
-                            <li class="topic"><a href="http://cdax.tech/tags/javascript">javascript</a></li>
+                            <li class="topic"><a href="http://cdax.me/tags/javascript">javascript</a></li>
                         
                     </ul>
                 </section>
@@ -227,7 +211,7 @@
             <footer id="post-meta" class="clearfix">
                 
                     <div class="avatar-name">
-                        <img class="avatar" src="http://cdax.tech/img/avatar.jpg">
+                        <img class="avatar" src="http://cdax.me/img/avatar.jpg">
                         <div>
                             <span class="dark">Chitharanjan Das</span>
                             <span>Software Developer</span>

@@ -2,326 +2,43 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/javascript/</link>
+    <link>http://cdax.me/tags/javascript/</link>
     <description>Recent content in Javascript on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>© 2016, Chitharanjan Das</copyright>
     <lastBuildDate>Fri, 27 Feb 2015 20:33:49 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://cdax.me/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>If Arundhati Roy wrote JavaScript</title>
-      <link>http://cdax.tech/post/if-roy-wrote-js/</link>
+      <link>http://cdax.me/post/if-roy-wrote-js/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/if-roy-wrote-js/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://anguscroll.com/&#34;&gt;Angus Croll’s&lt;/a&gt; &lt;a href=&#34;http://www.amazon.com/Hemingway-Wrote-JavaScript-Angus-Croll/dp/1593275854/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017264&amp;amp;sr=8-1&amp;amp;keywords=if+hemingway+wrote+javascript&#34;&gt;If Hemingway Wrote JavaScript&lt;/a&gt; is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/thirteen_authors_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cdas.svbtle.com/if-arundhati-roy-wrote-javascript&#34;&gt;No Starch Press&lt;/a&gt; has been publishing many thoroughly readable programming books over the years, including the much-acclaimed &lt;a href=&#34;http://www.amazon.com/Eloquent-JavaScript-Modern-Introduction-Programming/dp/1593275846/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017353&amp;amp;sr=8-1&amp;amp;keywords=eloquent+javascript&#34;&gt;Eloquent JavaScript&lt;/a&gt; and &lt;a href=&#34;http://www.amazon.com/Learn-Some-Erlang-Great-Good/dp/1593274351/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017394&amp;amp;sr=8-1&amp;amp;keywords=learn+you+some+erlang+for+great+good&#34;&gt;Learn You Some Erlang for Great Good!&lt;/a&gt; Although If Hemingway has a far more leisurely style than the other books, it is by no means a lesser spectacle of code craftsmanship. Reading some of the examples requires (or, like in my case, inspires) a proper understanding of scoping, hoisting, and closures among other ideas.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-challenge&#34;&gt;The Challenge&lt;/h4&gt;
-
-&lt;p&gt;In this post, I’ll introduce a few basic JavaScript abstractions with help from one of Angus’s snippets, taken from the chapter on Arundhati Roy. The challenge is to create a chainable function that takes one string(word) per function call, but when called without an argument, returns a list of all previously passed-in words. e.g., the function sayIt() will be used thus:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;console&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;sayIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;world!&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)());&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;…resulting in the following:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Hello world!
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;arundhati-roy-s-javascript-solution&#34;&gt;Arundhati Roy’s JavaScript solution&lt;/h4&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;The plot of The God of Small Things is non-linear. So is Roy’s JavaScript code. - Angus Croll&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here it is in all its glory, reproduced with permission from Angus and No Starch:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;// 1) Start with the answer. 2) Move on to the Grubby Details.&lt;/span&gt;
-&lt;span style=&#34;color: #75715e&#34;&gt;// A viable try-able plan.&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;sayIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// Does Whatever-it-is-you-need-it-to.&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// Loyal, Dependable, Weak-kneed.&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// When invoked it Saves.&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// When addressed it Says.&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;toString&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;join&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// Then it waits to be re-summoned.&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// Not invoking. Not recursing. Just waiting.&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// Why change KochuFunction when KochuFunction can change itself?&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;push&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction is no longer what it was.&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// Or thought it&amp;#39;d be. Ever.&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;em&gt;Roy’s debut JavaScript function, received with almost the same fanfare as her debut novel.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;There are more than a couple of things going on here.&lt;/p&gt;
-
-&lt;h4 id=&#34;scoping&#34;&gt;Scoping&lt;/h4&gt;
-
-&lt;p&gt;For months, JavaScript’s scoping rules remained a source of confusion for me thanks to the C-style syntax and constructs. I finally had my moment of clarity after coming across an excellent blogpost on the subject. One major takeaway from that post is that names in JavaScript have function-level scope as opposed to the C family’s block-level scope. What this means is that in C++ (for example) the if and while blocks have their own scopes, isolated from all external scopes while in JavaScript, scope isolation exists only for functions, not blocks. The following is an illustrated example:&lt;/p&gt;
-
-&lt;p&gt;In C++:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;cout&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;a;&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// Prints 5&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;In JavaScript:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// This if-block has no scope of its own, and as a result...&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// ...&amp;#39;a&amp;#39; still references the variable declared two lines above&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;console&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// Prints 6&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The story of &lt;code&gt;sayIt()&lt;/code&gt; revolves around three main characters. The functions &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt;, and the list &lt;code&gt;TheStretchableFetchableThing&lt;/code&gt;. Let’s take a closer look and identify the scope of each.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sayIt()&lt;/code&gt; works by maintaining an ordered list of all the passed-in arguments. This list, &lt;code&gt;TheStretchableFetchableThing&lt;/code&gt; is never formally declared as a var. The interpreter will therefore assign it to the topmost(global) scope.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt; on the other hand are declared as functions inside &lt;code&gt;sayIt()&lt;/code&gt;, and are therefore assigned to &lt;code&gt;sayIt()&lt;/code&gt;’s function-level scope.&lt;/p&gt;
-
-&lt;h4 id=&#34;hoisting&#34;&gt;Hoisting&lt;/h4&gt;
-
-&lt;p&gt;The outermost function, &lt;code&gt;sayIt()&lt;/code&gt; has a return statement sitting neatly on top of all other lines of code. Hoisting is the process by which JavaScript pulls all var and function declarations to the top of their respective scopes. Hoisting is what is responsible for ensuring that &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt; are defined before that return statement is executed.&lt;/p&gt;
-
-&lt;p&gt;As opposed to how we see the code, here is how the interpreter sees it:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;sayIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction()&amp;#39;s definition has been hoisted&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;push&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// TheSayItSaveItThing()&amp;#39;s definition has also been hoisted&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;toString&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;join&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;closures&#34;&gt;Closures&lt;/h4&gt;
-
-&lt;p&gt;In JavaScript, a closure is created when a function accesses a name that was declared in an external scope. Or in other words, a closure is an inner function accessing variables that were declared outside its own function-level scope.&lt;/p&gt;
-
-&lt;p&gt;In the program above, for example, both &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt; are closures, accessing the global TheStretchableFetchableThing. Additionally, &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; also accesses &lt;code&gt;KochuFunction()&lt;/code&gt;. Closures are a very powerful JavaScript feature, as best explained &lt;a href=&#34;http://c2.com/cgi/wiki?ClosuresAndObjectsAreEquivalent&amp;amp;utm_content=buffer7063c&amp;amp;utm_medium=social&amp;amp;utm_source=twitter.com&amp;amp;utm_campaign=buffer&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-russian-doll&#34;&gt;‘The Russian Doll’&lt;/h4&gt;
-
-&lt;p&gt;The power of scoping, hoisting and closures is revealed in the definition and subsequent re-definition of &lt;code&gt;KochuFunction()&lt;/code&gt; in the code above. The first call to &lt;code&gt;KochuFunction()&lt;/code&gt; seeds a new list with the passed-in argument, and then changes its own definition, so that subsequent calls will simply keep pushing to this list.&lt;/p&gt;
-
-&lt;p&gt;Angus Croll calls this &lt;a href=&#34;https://javascriptweblog.wordpress.com/2010/04/27/the-russian-doll-principle-re-writing%C2%A0functions%C2%A0at%C2%A0runtime/&#34;&gt;the Russian Doll pattern&lt;/a&gt;. Peter Michaux calls this &lt;a href=&#34;http://michaux.ca/articles/lazy-function-definition-pattern&#34;&gt;the lazy function definition pattern&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/matryoshka.JPG&#34; alt=&#34;A Russian Matryoshka doll&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Often I’ve found myself writing functions that must do something one way the first time, and then a different way the next time. My own inelegant solution has always looked something like this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;firstCall&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;firstCall&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// do something&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;firstCall&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// do something else&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;However, with this approach, each function call has an associated branching cost. The if statement needs to be checked for all the calls, even though the result will be the same every time except the first. The Russian Doll pattern eliminates this unnecessary cost by changing the function’s definition after the first invocation!&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction()&amp;#39;s definition has been hoisted&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;];&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction redefines itself inside its own body, like a Matryoshka doll&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;push&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;If Hemingway wrote JavaScript has been a fascinating read so far, and I highly recommend it to admirers of JavaScript everywhere, the same way I’d recommend The God of Small Things to admirers of English literature.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/if-roy-wrote-js/</guid>
+      <description>Angus Croll’s If Hemingway Wrote JavaScript is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.</description>
     </item>
     
     <item>
       <title>Underscore Magic!</title>
-      <link>http://cdax.tech/post/underscore-magic/</link>
+      <link>http://cdax.me/post/underscore-magic/</link>
       <pubDate>Fri, 26 Dec 2014 13:42:48 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/underscore-magic/</guid>
-      <description>
-
-&lt;p&gt;Front-end developers should know &lt;a href=&#34;http://underscorejs.org/&#34;&gt;Underscore.js&lt;/a&gt; like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of &lt;em&gt;Write less, do more&lt;/em&gt; to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like &lt;em&gt;Backbone.js&lt;/em&gt; and &lt;em&gt;Ghost&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/underscore.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin &lt;a href=&#34;http://lodash.com/&#34;&gt;Lo-Dash&lt;/a&gt;) put to use.&lt;/p&gt;
-
-&lt;h4 id=&#34;working-with-request-parameters&#34;&gt;Working with Request Parameters&lt;/h4&gt;
-
-&lt;p&gt;I noticed these tricks while going through the source of &lt;em&gt;Ghost&lt;/em&gt;. Ghost server has a number of API endpoints, each with a set of blacklisted/whitelisted request parameters. So what happens when someone tries to meddle with the API calls made by the client-side app? Something like this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//pick() returns a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys)  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pick&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;whitelistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&amp;hellip;or this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//omit() returns a copy of the object, filtered to omit the blacklisted keys (or array of keys)  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;omit&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;blacklistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Similarly, in order to normalize/standardize a request by adding in default values for required parameters, simply do:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//defaults() fills in undefined properties in object with the first value present in the following list of defaults objects  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;defaults&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;defaultRequest&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;chaining&#34;&gt;Chaining&lt;/h4&gt;
-
-&lt;p&gt;When &lt;code&gt;chain()&lt;/code&gt; is called on an array/object, Underscore attaches its own methods to it, returning a &lt;em&gt;wrapped object&lt;/em&gt;. The beauty of &lt;code&gt;chain()&lt;/code&gt; is that the following two lines of code become equivalent:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//Imperative style  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pick&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;whitelistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;  
-&lt;span style=&#34;color: #75715e&#34;&gt;//Functional style&lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;chain&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;  
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pick&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;whitelistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The call to &lt;code&gt;value()&lt;/code&gt; at the end strips off underscore methods from the wrapped object returned by the previous method in the chain. Here&amp;rsquo;s another example of this &lt;em&gt;functional&lt;/em&gt; way of writing JavaScript:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;chain&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;  
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;keys&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;size&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;templating&#34;&gt;Templating&lt;/h4&gt;
-
-&lt;p&gt;Underscore also comes with an inbuilt templating method that parses and populates Embedded JS templates, taking values from a passed-in object. In fact, this is a fairly common pattern in Backbone.js:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//Defining the template  &lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;viewTemplate&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;  
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;p&amp;gt;Hi! I&amp;#39;m &amp;lt;%= firstName %&amp;gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot; and I&amp;#39;m &amp;lt;%= age %&amp;gt; &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;% if(age === 1) { %&amp;gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;year&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;% } else { %&amp;gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;years&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;% } %&amp;gt; old.&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;
-                  &lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;span style=&#34;color: #75715e&#34;&gt;//Populating the template&lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;$&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;.view&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;append&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;viewTemplate&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;({&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;firstName&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Chitharanjan&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;lastName&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Das&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;age&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;24&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;});&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;read-the-docs&#34;&gt;Read the Docs!&lt;/h4&gt;
-
-&lt;p&gt;Underscore can be used to achieve a lot more fancy-ness than can be put into a couple of blogposts. To find out more, head on over to &lt;a href=&#34;http://underscorejs.org/&#34;&gt;the docs&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/underscore-magic/</guid>
+      <description>Front-end developers should know Underscore.js like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of Write less, do more to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like Backbone.js and Ghost.
+In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin Lo-Dash) put to use.</description>
     </item>
     
     <item>
       <title>Javascript&#39;s &#34;void&#34; operator</title>
-      <link>http://cdax.tech/post/void-0/</link>
+      <link>http://cdax.me/post/void-0/</link>
       <pubDate>Thu, 25 Dec 2014 13:53:53 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/void-0/</guid>
-      <description>
-
-&lt;p&gt;Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight &lt;em&gt;Backbone.js&lt;/em&gt;, so I thought its &lt;a href=&#34;http://backbonejs.org/docs/backbone.html&#34;&gt;annotated source&lt;/a&gt; would be the perfect place to start.&lt;/p&gt;
-
-&lt;p&gt;After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for &lt;code&gt;null&lt;/code&gt;/&lt;code&gt;undefined&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;parse&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;parse&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;the-plot-thickens&#34;&gt;The Plot Thickens&lt;/h4&gt;
-
-&lt;p&gt;To my eyes, void 0 looked like an open invitation to learn another bit of JavaScript trivia. I was on to &lt;a href=&#34;http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void&#34;&gt;MDN&lt;/a&gt; and &lt;a href=&#34;http://stackoverflow.com/questions/7452341/what-does-void-0-mean&#34;&gt;Stack Overflow&lt;/a&gt; in a flash.&lt;/p&gt;
-
-&lt;p&gt;Here&amp;rsquo;s what MDN&amp;rsquo;s got to say about &lt;code&gt;void&lt;/code&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;The &lt;code&gt;void&lt;/code&gt; operator evaluates the given expression and then returns &lt;code&gt;undefined&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;em&gt;Aha!&lt;/em&gt; So that line above was indeed a check for &lt;code&gt;undefined&lt;/code&gt;. Try it out! Open up your browser&amp;rsquo;s console and type in the following&amp;hellip;&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;  
-&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Hello, world.&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;  
-&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&amp;hellip;to see your browser say &lt;code&gt;undefined&lt;/code&gt;, &lt;code&gt;undefined&lt;/code&gt;, &lt;code&gt;undefined&lt;/code&gt;!&lt;/p&gt;
-
-&lt;p&gt;But wait, what about all those other ways of checking whether a variable is undefined. How is &lt;code&gt;x === void 0&lt;/code&gt; better than any of those? What about &lt;code&gt;x === undefined&lt;/code&gt; or &lt;code&gt;typeof x === &amp;quot;undefined&amp;quot;&lt;/code&gt;?&lt;/p&gt;
-
-&lt;h4 id=&#34;undefined-is-just-another-variable&#34;&gt;&lt;code&gt;undefined&lt;/code&gt; is just another variable&lt;/h4&gt;
-
-&lt;p&gt;My most surprising learning from this was that &lt;code&gt;undefined&lt;/code&gt; (in some old browsers) is just another global variable that can be overridden. If you&amp;rsquo;re using any of these old browsers, try this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;alert&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;undefined&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Not undefined&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;In a world where &lt;code&gt;undefined&lt;/code&gt; is mutable and could easily be overridden by you or any of your dependencies, &lt;code&gt;x === undefined&lt;/code&gt; is not a reliable check. &lt;code&gt;typeof x === &amp;quot;undefined&amp;quot;&lt;/code&gt; still remains a pretty solid candidate, however. For more JavaScript gotchas like the mutability of undefined, head on over to &lt;a href=&#34;http://wtf.js/&#34;&gt;wtf.js&lt;/a&gt;&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/void-0/</guid>
+      <description>Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight Backbone.js, so I thought its annotated source would be the perfect place to start.
+After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for null/undefined.</description>
     </item>
     
   </channel>

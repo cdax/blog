@@ -7,12 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Chitharanjan Das">
 <meta name="description" content="">
-<meta name="generator" content="Hugo 0.16" />
-<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.tech/img/icons/apple-touch-icon.png?v=3">
-<link rel="icon" type="image/png" href="http://cdax.tech/img/icons/favicon-32x32.png?v=3" sizes="32x32">
-<link rel="icon" type="image/png" href="http://cdax.tech/img/icons/favicon-16x16.png?v=3" sizes="16x16">
-<link rel="manifest" href="http://cdax.tech/img/icons/manifest.json">
-<link rel="mask-icon" href="http://cdax.tech/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
+<meta name="generator" content="Hugo 0.32.1" />
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.me/img/icons/apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" href="http://cdax.me/img/icons/favicon-32x32.png?v=3" sizes="32x32">
+<link rel="icon" type="image/png" href="http://cdax.me/img/icons/favicon-16x16.png?v=3" sizes="16x16">
+<link rel="manifest" href="http://cdax.me/img/icons/manifest.json">
+<link rel="mask-icon" href="http://cdax.me/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
 <meta name="theme-color" content="#ffffff">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/img/icons/mstile-150x150.png?v=3">
@@ -20,9 +20,9 @@
 
 
 <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="http://cdax.tech/css/normalize.css">
-<link rel="stylesheet" href="http://cdax.tech/css/main.css">
-<link rel="stylesheet" href="http://cdax.tech/css/ionicons.min.css">
+<link rel="stylesheet" href="http://cdax.me/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.me/css/main.css">
+<link rel="stylesheet" href="http://cdax.me/css/ionicons.min.css">
 
     </head>
     <body>
@@ -30,7 +30,7 @@
         <nav class="main-nav">
 	
 	
-		<a href='http://cdax.tech/'> <span class="arrow">←</span>Home</a>
+		<a href='http://cdax.me/'> <span class="arrow">←</span>Home</a>
 	
 
 	
@@ -52,9 +52,7 @@
 
 <p>After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for <code>null</code>/<code>undefined</code>.</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">options</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">parse</span> <span style="color: #f92672">===</span> <span style="color: #66d9ef">void</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">options</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">parse</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">;</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">options</span>.<span style="color:#a6e22e">parse</span> <span style="color:#f92672">===</span> <span style="color:#66d9ef">void</span> <span style="color:#ae81ff">0</span>) <span style="color:#a6e22e">options</span>.<span style="color:#a6e22e">parse</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;</code></pre></div>
 
 <h4 id="the-plot-thickens">The Plot Thickens</h4>
 
@@ -68,11 +66,9 @@
 
 <p><em>Aha!</em> So that line above was indeed a check for <code>undefined</code>. Try it out! Open up your browser&rsquo;s console and type in the following&hellip;</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">&gt;&gt;</span> <span style="color: #66d9ef">void</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>  
-<span style="color: #f92672">&gt;&gt;</span> <span style="color: #66d9ef">void</span> <span style="color: #e6db74">&quot;Hello, world.&quot;</span><span style="color: #f8f8f2">;</span>  
-<span style="color: #f92672">&gt;&gt;</span> <span style="color: #66d9ef">void</span> <span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">);</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#f92672">&gt;&gt;</span> <span style="color:#66d9ef">void</span> <span style="color:#ae81ff">0</span>;  
+<span style="color:#f92672">&gt;&gt;</span> <span style="color:#66d9ef">void</span> <span style="color:#e6db74">&#34;Hello, world.&#34;</span>;  
+<span style="color:#f92672">&gt;&gt;</span> <span style="color:#66d9ef">void</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>);</code></pre></div>
 
 <p>&hellip;to see your browser say <code>undefined</code>, <code>undefined</code>, <code>undefined</code>!</p>
 
@@ -82,9 +78,7 @@
 
 <p>My most surprising learning from this was that <code>undefined</code> (in some old browsers) is just another global variable that can be overridden. If you&rsquo;re using any of these old browsers, try this:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">alert</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">undefined</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;Not undefined&quot;</span><span style="color: #f8f8f2">)</span>  
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">alert</span>(<span style="color:#66d9ef">undefined</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Not undefined&#34;</span>)  </code></pre></div>
 
 <p>In a world where <code>undefined</code> is mutable and could easily be overridden by you or any of your dependencies, <code>x === undefined</code> is not a reliable check. <code>typeof x === &quot;undefined&quot;</code> still remains a pretty solid candidate, however. For more JavaScript gotchas like the mutability of undefined, head on over to <a href="http://wtf.js/">wtf.js</a></p>
 
@@ -93,7 +87,7 @@
                     Tagged with
                     <ul class="topics inline">
                         
-                            <li class="topic"><a href="http://cdax.tech/tags/javascript">javascript</a></li>
+                            <li class="topic"><a href="http://cdax.me/tags/javascript">javascript</a></li>
                         
                     </ul>
                 </section>
@@ -101,7 +95,7 @@
             <footer id="post-meta" class="clearfix">
                 
                     <div class="avatar-name">
-                        <img class="avatar" src="http://cdax.tech/img/avatar.jpg">
+                        <img class="avatar" src="http://cdax.me/img/avatar.jpg">
                         <div>
                             <span class="dark">Chitharanjan Das</span>
                             <span>Software Developer</span>

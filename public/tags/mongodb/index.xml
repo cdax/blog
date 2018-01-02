@@ -2,60 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mongodb on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/mongodb/</link>
+    <link>http://cdax.me/tags/mongodb/</link>
     <description>Recent content in Mongodb on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>© 2016, Chitharanjan Das</copyright>
     <lastBuildDate>Sun, 28 Dec 2014 13:01:57 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://cdax.me/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>MongoDB: Selecting Documents at Random</title>
-      <link>http://cdax.tech/post/mongodb-select-random-docs/</link>
+      <link>http://cdax.me/post/mongodb-select-random-docs/</link>
       <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/mongodb-select-random-docs/</guid>
-      <description>
-
-&lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
-
-&lt;p&gt;While implementing the back-end for &lt;a href=&#34;http://math-bin.herokuapp.com/&#34;&gt;Mathbin&lt;/a&gt;, I wanted an API endpoint that would return a random document from a Mongo collection. A very naive way of approaching this would be to select all documents and then picking the document at a random index in the returned array.&lt;/p&gt;
-
-&lt;p&gt;Now, I don&amp;rsquo;t expect Mathbin&amp;rsquo;s database to hit big numbers anytime soon, but this really got me thinking about how this problem could be solved efficiently for collections having millions, maybe billions of documents.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-solution&#34;&gt;The Solution&lt;/h4&gt;
-
-&lt;p&gt;There&amp;rsquo;s a nice solution that makes retrieval very efficient at the price of some extra storage. The idea is to associate a random value with each document while inserting it into the collection. This can be achieved in Mongoose using a numeric field with a default value of &lt;code&gt;Math.random()&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Later, during retrieval, a simple filter gets the job done:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;randomDoc&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Collection&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;findOne&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;gte&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(Math.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;random&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;());&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;a-better-solution&#34;&gt;A Better Solution&lt;/h4&gt;
-
-&lt;p&gt;The problem with the solution above is that if the collection has very few documents, there&amp;rsquo;s a very good chance that the filter might return no document at all. &lt;em&gt;What are the odds that the random value generated in the query will be less than at least one document?&lt;/em&gt; Not very good when the number of documents is too little. So how do we make this better?&lt;/p&gt;
-
-&lt;p&gt;If the &lt;em&gt;greater-than-or-equals&lt;/em&gt; query fails, simply flip it around:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//Uses Mongoose promises to pass values from one async call to the next  &lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;pivot&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Math.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;random&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;  
-&lt;span style=&#34;color: #a6e22e&#34;&gt;Collection&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;findOne&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;gte&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pvt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;exec&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt;  
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;then&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;//If the gte filter returned nothing, try an lt filter!&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Collection&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;findOne&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;lt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pvt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;exec&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;then&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;//At this point, snippet contains a random document from the collection.&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;error&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;console&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;end&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;And we&amp;rsquo;re set! The only way this could fail now is if the Collection is empty to begin with &amp;ndash; an easy edge case to handle. Let me know what you think in the comments.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/mongodb-select-random-docs/</guid>
+      <description>The Problem While implementing the back-end for Mathbin, I wanted an API endpoint that would return a random document from a Mongo collection. A very naive way of approaching this would be to select all documents and then picking the document at a random index in the returned array.
+Now, I don&amp;rsquo;t expect Mathbin&amp;rsquo;s database to hit big numbers anytime soon, but this really got me thinking about how this problem could be solved efficiently for collections having millions, maybe billions of documents.</description>
     </item>
     
   </channel>

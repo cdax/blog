@@ -2,1347 +2,229 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/post/</link>
+    <link>http://cdax.me/post/</link>
     <description>Recent content in Posts on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>© 2016, Chitharanjan Das</copyright>
     <lastBuildDate>Wed, 02 Nov 2016 21:37:46 +0530</lastBuildDate>
-    <atom:link href="http://cdax.tech/post/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://cdax.me/post/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Closure in Python</title>
-      <link>http://cdax.tech/post/python-closure/</link>
+      <link>http://cdax.me/post/python-closure/</link>
       <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/python-closure/</guid>
-      <description>
-
-&lt;p&gt;In Python, a function can be defined inside of another function. This &lt;em&gt;inner&lt;/em&gt; function has access to variables defined in every function it is nested within. This is called &lt;em&gt;closure&lt;/em&gt;. Douglas Crockford has said that:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Closures are the source of enormous expressive power.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;However, Crockford had said this about closures in &lt;em&gt;Javascript: The Good Parts&lt;/em&gt;, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences. Also, a fair bit has changed in the way the language deals with closures between Python 2 and 3.&lt;/p&gt;
-
-&lt;h3 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#closure-python-2&#34;&gt;Closure in Python 2&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#closure-python-2-internals&#34;&gt;Under the hood&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;writeable-closure-python-2&#34;&gt;Simulating writeable closure in Python 2&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#writeable-closure-python-3&#34;&gt;Closure in Python 3&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#closure-applications&#34;&gt;Applications of Closure&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#closure-for-partials&#34;&gt;Partial Application&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#closure-for-memoization&#34;&gt;Memoization&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;a-name-closure-python-2-a-closure-in-python-2&#34;&gt;&lt;a name=&#34;closure-python-2&#34;&gt;&lt;/a&gt;Closure in Python 2&lt;/h3&gt;
-
-&lt;p&gt;In &lt;em&gt;Python 2.x&lt;/em&gt;, the outer function&amp;rsquo;s variables are made available inside the inner function&amp;rsquo;s closure as long as these variables aren&amp;rsquo;t modified by the inner function:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Help! I&amp;#39;m wrapped inside a closure!&amp;quot;&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Invoking the outer function prints the following to the console:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; outer_v1()
-Help! I&#39;m wrapped inside a closure!
-Help! I&#39;m wrapped inside a closure!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;However, the moment you try to modify the value of the variable, it escapes the closure and becomes a &lt;em&gt;new&lt;/em&gt; variable that&amp;rsquo;s scoped to the inner function:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;I&amp;#39;m scoped to the outer function.&amp;quot;&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;I&amp;#39;m scoped to the inner function.&amp;quot;&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Invoking the outer function now has the following result:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; outer_v2()
-I&#39;m scoped to the inner function.
-I&#39;m scoped to the outer function.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Even after the inner function has been invoked, the value of the outer function&amp;rsquo;s &lt;code&gt;msg&lt;/code&gt; variable remains unchanged. This is an indication that the variable &lt;code&gt;msg&lt;/code&gt; used inside the inner function was created afresh with the inner function as its scope.&lt;/p&gt;
-
-&lt;h4 id=&#34;a-name-closure-python-2-internals-a-under-the-hood&#34;&gt;&lt;a name=&#34;closure-python-2-internals&#34;&gt;&lt;/a&gt;Under the hood&lt;/h4&gt;
-
-&lt;p&gt;Though it&amp;rsquo;s possible to guess all of this by looking at the output from the two function calls above, we can get a much better feel for what&amp;rsquo;s going on by inspecting the &lt;em&gt;special&lt;/em&gt; &lt;code&gt;__closure__&lt;/code&gt; property of the inner function. Later, we will use the &lt;code&gt;dis&lt;/code&gt; module to generate opcode and get far more satisfying results. For instance, in the case of the first function &lt;code&gt;outer_v1&lt;/code&gt;, we can inspect the inner function&amp;rsquo;s closure like so:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; i = outer_v1()
-&amp;gt;&amp;gt;&amp;gt; i.__closure__
-(&amp;lt;cell at 0x10ae106e0: str object at 0x10ae13b70&amp;gt;,)
-&amp;gt;&amp;gt;&amp;gt; i.__closure__[0].cell_contents
-&amp;quot;Help! I&amp;#39;m wrapped inside a closure!&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;We see that the string &lt;code&gt;&amp;quot;Help! I&#39;m wrapped inside a closure!&amp;quot;&lt;/code&gt; is quite literally wrapped as a tuple element inside the inner function&amp;rsquo;s &lt;code&gt;__closure__&lt;/code&gt; property. Next, let&amp;rsquo;s take a look at the opcode for &lt;code&gt;outer_v1&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; from dis import dis
-&amp;gt;&amp;gt;&amp;gt; dis(outer_v1)
-
-2           0 LOAD_CONST               1 (&amp;quot;Help! I&amp;#39;m ... closure!&amp;quot;)
-            3 STORE_DEREF              0 (msg)
-
-3           6 LOAD_CLOSURE             0 (msg)
-            9 BUILD_TUPLE              1
-           12 LOAD_CONST               2 (&amp;lt;code object ... line 3&amp;gt;)
-           15 MAKE_CLOSURE             0
-           18 STORE_FAST               0 (inner)
-
-5          21 LOAD_FAST                0 (inner)
-           24 CALL_FUNCTION            0
-           27 POP_TOP
-
-6          28 LOAD_DEREF               0 (msg)
-           31 PRINT_ITEM
-           32 PRINT_NEWLINE
-
-7          33 LOAD_FAST                0 (inner)
-           36 RETURN_VALUE
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The key instructions to watch out for, are &lt;code&gt;6 LOAD_CLOSURE 0&lt;/code&gt; and &lt;code&gt;15 MAKE_CLOSURE 0&lt;/code&gt;. According to the Python docs, the &lt;a href=&#34;https://docs.python.org/2/library/dis.html#opcode-LOAD_CLOSURE&#34;&gt;LOAD_CLOSURE&lt;/a&gt; instruction adds a value to the free variable storage array (&lt;code&gt;co_freevars&lt;/code&gt;) of the inner function, and  &lt;a href=&#34;https://docs.python.org/2/library/dis.html#opcode-MAKE_CLOSURE&#34;&gt;MAKE_CLOSURE&lt;/a&gt; then assigns the list of all loaded closure variables to the inner function&amp;rsquo;s &lt;code&gt;__closure__&lt;/code&gt; property. These instructions are missing from the opcode of the second version of our outer function, &lt;code&gt;outer_v2&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; from dis import dis
-&amp;gt;&amp;gt;&amp;gt; dis(outer_v2)
-
-2           0 LOAD_CONST               1 (&amp;quot;I&amp;#39;m scoped ... function.&amp;quot;)
-            3 STORE_FAST               0 (msg)
-
-3           6 LOAD_CONST               2 (&amp;lt;code object ... line 3&amp;gt;)
-            9 MAKE_FUNCTION            0
-           12 STORE_FAST               1 (inner)
-
-6          15 LOAD_FAST                1 (inner)
-           18 CALL_FUNCTION            0
-           21 POP_TOP
-
-7          22 LOAD_FAST                0 (msg)
-           25 PRINT_ITEM
-           26 PRINT_NEWLINE
-
-8          27 LOAD_FAST                1 (inner)
-           30 RETURN_VALUE
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;And as you would expect in this case, the &lt;code&gt;__closure__&lt;/code&gt; property of the inner function is set to &lt;code&gt;None&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; i = outer_v2()
-&amp;gt;&amp;gt;&amp;gt; i.__closure__ is None
-True
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;a-name-writeable-closure-python-2-a-simulating-writeable-closure-in-python-2&#34;&gt;&lt;a name=&#34;writeable-closure-python-2&#34;&gt;&lt;/a&gt;Simulating writeable closure in Python 2&lt;/h4&gt;
-
-&lt;p&gt;Python&amp;rsquo;s &lt;code&gt;dict&lt;/code&gt; data structure can be employed to simulate a writeable closure in Python:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v3&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;closure&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;counter&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;closure[&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;counter&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;xrange(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;):&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;inner() was invoked {n} times&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(n&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;closure[&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;counter&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;])&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Invoking the outer function prints the following to the console:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; outer_v3()
-inner() was invoked 5 times
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;As you might have guessed, this is due to the fact that we can update the key-value pairs in-place inside the &lt;code&gt;closure&lt;/code&gt; dictionary variable without assigning it an entirely different dictionary object. In other words, we&amp;rsquo;re able to achieve this because &lt;a href=&#34;https://docs.python.org/2/library/stdtypes.html#mapping-types-dict&#34;&gt;Python dictionaries are mutable&lt;/a&gt;, while &lt;a href=&#34;https://docs.python.org/2/library/stdtypes.html#typesseq-mutable&#34;&gt;Python strings are immutable&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;a-name-writeable-closure-python-3-a-closure-in-python-3&#34;&gt;&lt;a name=&#34;writeable-closure-python-3&#34;&gt;&lt;/a&gt;Closure in Python 3&lt;/h3&gt;
-
-&lt;p&gt;In Python 3, the &lt;code&gt;nonlocal&lt;/code&gt; qualifier can be used to inform the compiler that a variable is already bound to an outer function&amp;rsquo;s scope, and should not be created afresh. Because of this, it becomes possible to update closure variables without enclosing them inside a dictionary like in Python 2.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;outer_v4&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;inner&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;nonlocal&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# `counter` is present in an outer scope&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;counter&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;range(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;):&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;inner()&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;inner() was invoked {n} times&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(n&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;counter))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Invoking this function prints the following result:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; outer_v4()
-inner() was invoked 5 times
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3 id=&#34;a-name-closure-applications-a-applications-of-closure&#34;&gt;&lt;a name=&#34;closure-applications&#34;&gt;&lt;/a&gt;Applications of Closure&lt;/h3&gt;
-
-&lt;h4 id=&#34;a-name-closure-for-partials-a-partial-application&#34;&gt;&lt;a name=&#34;closure-for-partials&#34;&gt;&lt;/a&gt;Partial Application&lt;/h4&gt;
-
-&lt;p&gt;&lt;em&gt;Partial application&lt;/em&gt; is a technique for creating a version of a function where some of the function&amp;rsquo;s arguments are pre-filled. Say you have a function &lt;code&gt;fn(arg1, arg2, ..., argn)&lt;/code&gt; and you would like a version &lt;code&gt;fn_simple&lt;/code&gt; of this function where the values of arguments &lt;code&gt;arg1&lt;/code&gt; and &lt;code&gt;arg2&lt;/code&gt; are fixed. &lt;code&gt;fn_simple&lt;/code&gt; can then be invoked with the shorter argument list &lt;code&gt;arg3, arg4, ..., argn&lt;/code&gt;. We can say that while &lt;code&gt;fn&lt;/code&gt; is a more generic function, &lt;code&gt;fn_simple&lt;/code&gt; is a specialized version of &lt;code&gt;fn&lt;/code&gt; that works for some fixed values of &lt;code&gt;arg1&lt;/code&gt; and &lt;code&gt;arg2&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;In this manner, partial application can greatly simplify your APIs by allowing you to create and use multiple specialized versions of generic functions. Since the meat of the code lives inside the generic function, partial application also promotes code reuse. Let&amp;rsquo;s work through an example to better understand this concept. Consider the following function that prints out messages spoken by characters in a play to each other.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;speak&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(character,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;message):&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;%s: %s&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(character,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;message))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;We use this function by passing in the name of a character, followed by the message:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; speak(&amp;quot;Luke&amp;quot;, &amp;quot;All right, I&amp;#39;ll give it a try.&amp;quot;)
-Luke: All right, I&amp;#39;ll give it a try.
-&amp;gt;&amp;gt;&amp;gt; speak(&amp;quot;Yoda&amp;quot;, &amp;quot;No. Try not. Do... or do not. There is no try.&amp;quot;)
-Yoda: No. Try not. Do... or do not. There is no try.
-&amp;gt;&amp;gt;&amp;gt; speak(&amp;quot;R2D2&amp;quot;, &amp;quot;Beep-boop&amp;quot;)
-R2D2: Beep-boop
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Using closure and partial application, we can generate character-specific versions of this function, like so:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;partial_speak&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(character):&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;speak_wrapper&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(message):&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;speak(character,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;message)&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;speak_wrapper&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;We can now create specialized versions of the &lt;code&gt;speak&lt;/code&gt; function for Yoda, Luke and R2D2:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; yoda_speak = partial_speak(&amp;quot;Yoda&amp;quot;)
-&amp;gt;&amp;gt;&amp;gt; luke_speak = partial_speak(&amp;quot;Luke&amp;quot;)
-&amp;gt;&amp;gt;&amp;gt; r2d2_speak = partial_speak(&amp;quot;R2D2&amp;quot;)
-&amp;gt;&amp;gt;&amp;gt; luke_speak(&amp;quot;I don&amp;#39;t, I don&amp;#39;t believe it.&amp;quot;)
-Luke: I don&amp;#39;t, I don&amp;#39;t believe it.
-&amp;gt;&amp;gt;&amp;gt; yoda_speak(&amp;quot;That is why you fail.&amp;quot;)
-Yoda: That is why you fail.
-&amp;gt;&amp;gt;&amp;gt; r2d2_speak(&amp;quot;Beep-boop&amp;quot;)
-R2D2: Beep-boop
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;PRO-TIP&lt;/em&gt;&lt;/strong&gt; Python&amp;rsquo;s standard library module &lt;code&gt;functools&lt;/code&gt; offers a &lt;code&gt;partial&lt;/code&gt; method that can be used to create specialized versions of any function:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; from functools import partial
-&amp;gt;&amp;gt;&amp;gt; yoda_speak = partial(speak, &amp;quot;Yoda&amp;quot;)
-&amp;gt;&amp;gt;&amp;gt; luke_speak = partial(speak, &amp;quot;Luke&amp;quot;)
-&amp;gt;&amp;gt;&amp;gt; r2d2_speak = partial(speak, &amp;quot;R2D2&amp;quot;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;a-name-closure-for-memoization-a-memoization&#34;&gt;&lt;a name=&#34;closure-for-memoization&#34;&gt;&lt;/a&gt;Memoization&lt;/h4&gt;
-
-&lt;p&gt;&lt;em&gt;Memoization&lt;/em&gt; is an optimization technique where previous return values of a function are cached. Whenever an input value repeats, re-computation can be avoided and the cached value can be returned. For instance, consider the following function that returns the &lt;em&gt;n-th&lt;/em&gt; Fibonacci number:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(n):&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;We can check how many times the &lt;code&gt;fibonacci&lt;/code&gt; function was called for a given input by using the &lt;code&gt;cProfile&lt;/code&gt; module:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; import cProfile
-&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fibonacci(10)&amp;#39;)
-
-179 function calls (3 primitive calls) in 0.000 seconds
-
-Ordered by: standard name
-
-     ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-      177/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:1(fibonacci)
-          1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
-          1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;For an input value of &lt;em&gt;10&lt;/em&gt;, the &lt;code&gt;fibonacci&lt;/code&gt; function was invoked a staggering 177 times (look for the value in the &lt;code&gt;ncalls&lt;/code&gt; column)! We can avoid the repetitive calls by storing previous return values inside a cache, like so:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci_maker&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{}&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(n):&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;elif&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache:&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[n]&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[n]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[n]&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Let&amp;rsquo;s profile this new and improved way of generating Fibonacci numbers:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; fn = fibonacci_maker()
-&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fn(10)&amp;#39;)
-
-21 function calls (3 primitive calls) in 0.000 seconds
-
-Ordered by: standard name
-
-    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-      19/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:3(fibonacci)
-         1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
-         1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The number of &lt;code&gt;fibonacci()&lt;/code&gt; invocations has dropped drastically from 177 to just 19. What&amp;rsquo;s more, any subsequent calls to the function with the same or smaller input values will only require 1 invocation:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; fn(10)
-55
-&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fn(9)&amp;#39;)
-
-3 function calls (3 primitive calls) in 0.000 seconds
-
-Ordered by: standard name
-
-    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-         1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:3(fibonacci)
-         1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
-         1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;It&amp;rsquo;s possible to write a generic &lt;code&gt;memoize()&lt;/code&gt; decorator that adds memoization capabilities to any function:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;memoize&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(fn):&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{}&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fn_wrapper&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;args):&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;args_tuple&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;tuple(args)&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;args_tuple&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache:&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[args_tuple]&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[args_tuple]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fn(&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;args)&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;cache[args_tuple]&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fn_wrapper&lt;/span&gt;
-
-&lt;span style=&#34;color: #a6e22e&#34;&gt;@memoize&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;fibonacci&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(n):&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;n&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;fibonacci(n&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Running the profiler on this memoizing version of &lt;code&gt;fibonacci&lt;/code&gt; gives back some convincing results:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; cProfile.run(&amp;#39;fibonacci(10)&amp;#39;)
-32 function calls (4 primitive calls) in 0.000 seconds
-
-Ordered by: standard name
-
-    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-      11/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:1(fibonacci)
-      19/1    0.000    0.000    0.000    0.000 &amp;lt;stdin&amp;gt;:3(fn_wrapper)
-         1    0.000    0.000    0.000    0.000 &amp;lt;string&amp;gt;:1(&amp;lt;module&amp;gt;)
-         1    0.000    0.000    0.000    0.000 {method &amp;#39;disable&amp;#39; of &amp;#39;_lsprof.Profiler&amp;#39; objects}
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;There&amp;rsquo;s a bit of an overhead here, added by the 11 internal calls from &lt;code&gt;fn_wrapper&lt;/code&gt; to &lt;code&gt;fibonacci&lt;/code&gt;. However, in our case this number should grow only linearly with the input size &lt;code&gt;n&lt;/code&gt;.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/python-closure/</guid>
+      <description>In Python, a function can be defined inside of another function. This inner function has access to variables defined in every function it is nested within. This is called closure. Douglas Crockford has said that:
+ Closures are the source of enormous expressive power.
+ However, Crockford had said this about closures in Javascript: The Good Parts, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences.</description>
     </item>
     
     <item>
       <title>Regular Expression Lookaround</title>
-      <link>http://cdax.tech/post/regex-lookaround/</link>
+      <link>http://cdax.me/post/regex-lookaround/</link>
       <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/regex-lookaround/</guid>
-      <description>
-
-&lt;p&gt;Regular expression &lt;em&gt;lookahead&lt;/em&gt; and &lt;em&gt;lookbehind&lt;/em&gt;, collectively called &lt;em&gt;lookaround&lt;/em&gt;, are zero-length assertions. They&amp;rsquo;re called zero-length assertions because they do not consume characters in the string, but only assert whether a match is possible or not.&lt;/p&gt;
-
-&lt;p&gt;Lookarounds are very useful, because they allow you to create regular expressions that are impossible to create without them, or that would get very unmanageable without them.&lt;/p&gt;
-
-&lt;h4 id=&#34;negative-lookahead&#34;&gt;Negative lookahead&lt;/h4&gt;
-
-&lt;p&gt;Negative lookahead is useful when you want to match only those instances of a pattern that are not followed by another pattern. For example, the regular expression &lt;code&gt;a(?![bcd])&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; when it isn&amp;rsquo;t followed by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookahead:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
-
-&lt;span style=&#34;color: #75715e&#34;&gt;# Match all commas not followed by a space&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;,(?!\s)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;You will know (the good from the bad) when you are calm, at peace. Passive.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;A Jedi uses the Force for knowledge and defense,never for attack.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;,&amp;#39;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;negative-lookbehind&#34;&gt;Negative lookbehind&lt;/h4&gt;
-
-&lt;p&gt;Negative lookbehind is useful when you want to match only those instances of a pattern that are not preceded by another pattern. For example, the regular expression &lt;code&gt;(?&amp;lt;![bcd])a&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it isn&amp;rsquo;t preceded by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookbehind:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
-
-&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `Vader` not preceded by the pattern `Darth\s`&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;(?&amp;lt;!Darth\s)Vader&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;If you end your training now — if you choose the quick and easy path as&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;Vader did — you will become an agent of evil.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;Vader&amp;#39;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;positive-lookahead&#34;&gt;Positive lookahead&lt;/h4&gt;
-
-&lt;p&gt;Positive lookahead is useful when you want to match only those instances of a pattern that are followed by another pattern. For example, the regular expression &lt;code&gt;a(?=[bcd])&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it is followed by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for positive lookahead:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
-
-&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `dark` that are followed by the pattern `\sside`&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;dark(?=\sside)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;Yes, a Jedi’s strength flows from the Force. But beware of the dark side.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;Anger, fear, aggression; the dark side of the Force are they. Easily they&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;flow, quick to join you in a fight. If once you start down the dark path,&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;forever will it dominate your destiny, consume you it will, as it did&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;Obi-Wan’s apprentice.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;dark&amp;#39;, &amp;#39;dark&amp;#39;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;positive-lookbehind&#34;&gt;Positive lookbehind&lt;/h4&gt;
-
-&lt;p&gt;Positive lookbehind is useful when you want to match only those instances of a pattern that are preceded by another pattern. For example, the regular expression &lt;code&gt;(?&amp;lt;=[bcd])a&lt;/code&gt; matches the character &lt;code&gt;a&lt;/code&gt; only when it is preceded by any of the characters &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s take a look at a Python snippet demonstrating a practical use-case for negative lookahead:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
-
-&lt;span style=&#34;color: #75715e&#34;&gt;# Match all instances of the pattern `I` that are preceded by the pattern `have\s`&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;compile(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;(?&amp;lt;=have\s)I&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;Ready are you? What know you of ready? For eight hundred years have I trained&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;deepest commitment, the most serious mind. This one a long time have I watched.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;All his life has he looked away… to the future, to the horizon. Never his mind&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;A Jedi craves not these things. You are reckless.&lt;/span&gt;
-&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;pattern&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;findall(text)&lt;/span&gt;  &lt;span style=&#34;color: #75715e&#34;&gt;# [&amp;#39;I&amp;#39;, &amp;#39;I&amp;#39;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-</description>
+      <guid>http://cdax.me/post/regex-lookaround/</guid>
+      <description>Regular expression lookahead and lookbehind, collectively called lookaround, are zero-length assertions. They&amp;rsquo;re called zero-length assertions because they do not consume characters in the string, but only assert whether a match is possible or not.
+Lookarounds are very useful, because they allow you to create regular expressions that are impossible to create without them, or that would get very unmanageable without them.
+Negative lookahead Negative lookahead is useful when you want to match only those instances of a pattern that are not followed by another pattern.</description>
     </item>
     
     <item>
       <title>(Solution to) Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break-sol/</link>
+      <link>http://cdax.me/post/prison-break-sol/</link>
       <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break-sol/</guid>
-      <description>
-
-&lt;blockquote&gt;
-&lt;p&gt;Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Can you figure such a way out of the prison?&lt;/p&gt;
-
-&lt;h4 id=&#34;the-solution&#34;&gt;The Solution&lt;/h4&gt;
-
-&lt;p&gt;With counting problems, as with most real-life problems, it makes a lot of sense to take a step back and think hard about the feasibility of a solution before actually setting out to discover possible solutions or to count them. Is it even possible for you, the prisoner, to escape by getting to the diagonally opposite corner cell after crossing each other cell exactly once?&lt;/p&gt;
-
-&lt;p&gt;Having solved similar problems before, you decide to colour the map like a chessboard – for ease of making logical deductions. Since adjacent cells have doors between them, you can imagine yourself navigating the chessboard-prison exactly the way &lt;a href=&#34;http://en.wikipedia.org/wiki/Pawn_%28chess%29&#34;&gt;a pawn&lt;/a&gt; would.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break-sol.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It’s easy to see that a pawn-move from one cell to an adjacent cell will always be a move from a white square to a black square, or vice-versa. This means that you’ll require an even number of pawn-moves (at least two) to get from a square of one colour, to another square of the same colour.&lt;/p&gt;
-
-&lt;p&gt;How many moves will you be making if you must pass through each cell exactly once? The answer is &lt;strong&gt;35&lt;/strong&gt;, since 35 other prison cells need to be entered exactly once, with one pawn-move per cell. &lt;em&gt;No cell may be entered more than once.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;I hope you can see by now that you’ve been had, that you’ve been at the receiving end of the prison warden’s cruel joke. &lt;em&gt;Because diagonally opposite corner cells will always be the same colour,&lt;/em&gt; and you can never get from one to the other in an odd number (35) of pawn-moves.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/prison-break-sol/</guid>
+      <description>Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.
+ Can you figure such a way out of the prison?</description>
     </item>
     
     <item>
       <title>If Arundhati Roy wrote JavaScript</title>
-      <link>http://cdax.tech/post/if-roy-wrote-js/</link>
+      <link>http://cdax.me/post/if-roy-wrote-js/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/if-roy-wrote-js/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://anguscroll.com/&#34;&gt;Angus Croll’s&lt;/a&gt; &lt;a href=&#34;http://www.amazon.com/Hemingway-Wrote-JavaScript-Angus-Croll/dp/1593275854/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017264&amp;amp;sr=8-1&amp;amp;keywords=if+hemingway+wrote+javascript&#34;&gt;If Hemingway Wrote JavaScript&lt;/a&gt; is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/thirteen_authors_2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://cdas.svbtle.com/if-arundhati-roy-wrote-javascript&#34;&gt;No Starch Press&lt;/a&gt; has been publishing many thoroughly readable programming books over the years, including the much-acclaimed &lt;a href=&#34;http://www.amazon.com/Eloquent-JavaScript-Modern-Introduction-Programming/dp/1593275846/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017353&amp;amp;sr=8-1&amp;amp;keywords=eloquent+javascript&#34;&gt;Eloquent JavaScript&lt;/a&gt; and &lt;a href=&#34;http://www.amazon.com/Learn-Some-Erlang-Great-Good/dp/1593274351/ref=sr_1_1?ie=UTF8&amp;amp;qid=1425017394&amp;amp;sr=8-1&amp;amp;keywords=learn+you+some+erlang+for+great+good&#34;&gt;Learn You Some Erlang for Great Good!&lt;/a&gt; Although If Hemingway has a far more leisurely style than the other books, it is by no means a lesser spectacle of code craftsmanship. Reading some of the examples requires (or, like in my case, inspires) a proper understanding of scoping, hoisting, and closures among other ideas.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-challenge&#34;&gt;The Challenge&lt;/h4&gt;
-
-&lt;p&gt;In this post, I’ll introduce a few basic JavaScript abstractions with help from one of Angus’s snippets, taken from the chapter on Arundhati Roy. The challenge is to create a chainable function that takes one string(word) per function call, but when called without an argument, returns a list of all previously passed-in words. e.g., the function sayIt() will be used thus:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;console&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;sayIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;world!&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)());&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;…resulting in the following:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Hello world!
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;arundhati-roy-s-javascript-solution&#34;&gt;Arundhati Roy’s JavaScript solution&lt;/h4&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;The plot of The God of Small Things is non-linear. So is Roy’s JavaScript code. - Angus Croll&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here it is in all its glory, reproduced with permission from Angus and No Starch:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;// 1) Start with the answer. 2) Move on to the Grubby Details.&lt;/span&gt;
-&lt;span style=&#34;color: #75715e&#34;&gt;// A viable try-able plan.&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;sayIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// Does Whatever-it-is-you-need-it-to.&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// Loyal, Dependable, Weak-kneed.&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// When invoked it Saves.&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// When addressed it Says.&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;toString&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;join&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// Then it waits to be re-summoned.&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// Not invoking. Not recursing. Just waiting.&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// Why change KochuFunction when KochuFunction can change itself?&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;push&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction is no longer what it was.&lt;/span&gt;
-        &lt;span style=&#34;color: #75715e&#34;&gt;// Or thought it&amp;#39;d be. Ever.&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;em&gt;Roy’s debut JavaScript function, received with almost the same fanfare as her debut novel.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;There are more than a couple of things going on here.&lt;/p&gt;
-
-&lt;h4 id=&#34;scoping&#34;&gt;Scoping&lt;/h4&gt;
-
-&lt;p&gt;For months, JavaScript’s scoping rules remained a source of confusion for me thanks to the C-style syntax and constructs. I finally had my moment of clarity after coming across an excellent blogpost on the subject. One major takeaway from that post is that names in JavaScript have function-level scope as opposed to the C family’s block-level scope. What this means is that in C++ (for example) the if and while blocks have their own scopes, isolated from all external scopes while in JavaScript, scope isolation exists only for functions, not blocks. The following is an illustrated example:&lt;/p&gt;
-
-&lt;p&gt;In C++:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;cout&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;a;&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// Prints 5&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;In JavaScript:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// This if-block has no scope of its own, and as a result...&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// ...&amp;#39;a&amp;#39; still references the variable declared two lines above&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;console&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color: #75715e&#34;&gt;// Prints 6&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The story of &lt;code&gt;sayIt()&lt;/code&gt; revolves around three main characters. The functions &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt;, and the list &lt;code&gt;TheStretchableFetchableThing&lt;/code&gt;. Let’s take a closer look and identify the scope of each.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;sayIt()&lt;/code&gt; works by maintaining an ordered list of all the passed-in arguments. This list, &lt;code&gt;TheStretchableFetchableThing&lt;/code&gt; is never formally declared as a var. The interpreter will therefore assign it to the topmost(global) scope.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt; on the other hand are declared as functions inside &lt;code&gt;sayIt()&lt;/code&gt;, and are therefore assigned to &lt;code&gt;sayIt()&lt;/code&gt;’s function-level scope.&lt;/p&gt;
-
-&lt;h4 id=&#34;hoisting&#34;&gt;Hoisting&lt;/h4&gt;
-
-&lt;p&gt;The outermost function, &lt;code&gt;sayIt()&lt;/code&gt; has a return statement sitting neatly on top of all other lines of code. Hoisting is the process by which JavaScript pulls all var and function declarations to the top of their respective scopes. Hoisting is what is responsible for ensuring that &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt; are defined before that return statement is executed.&lt;/p&gt;
-
-&lt;p&gt;As opposed to how we see the code, here is how the interpreter sees it:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;sayIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction()&amp;#39;s definition has been hoisted&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;];&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;push&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #75715e&#34;&gt;// TheSayItSaveItThing()&amp;#39;s definition has also been hoisted&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;toString&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;join&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;TheSayItSaveItThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;closures&#34;&gt;Closures&lt;/h4&gt;
-
-&lt;p&gt;In JavaScript, a closure is created when a function accesses a name that was declared in an external scope. Or in other words, a closure is an inner function accessing variables that were declared outside its own function-level scope.&lt;/p&gt;
-
-&lt;p&gt;In the program above, for example, both &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; and &lt;code&gt;KochuFunction()&lt;/code&gt; are closures, accessing the global TheStretchableFetchableThing. Additionally, &lt;code&gt;TheSayItSaveItThing()&lt;/code&gt; also accesses &lt;code&gt;KochuFunction()&lt;/code&gt;. Closures are a very powerful JavaScript feature, as best explained &lt;a href=&#34;http://c2.com/cgi/wiki?ClosuresAndObjectsAreEquivalent&amp;amp;utm_content=buffer7063c&amp;amp;utm_medium=social&amp;amp;utm_source=twitter.com&amp;amp;utm_campaign=buffer&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-russian-doll&#34;&gt;‘The Russian Doll’&lt;/h4&gt;
-
-&lt;p&gt;The power of scoping, hoisting and closures is revealed in the definition and subsequent re-definition of &lt;code&gt;KochuFunction()&lt;/code&gt; in the code above. The first call to &lt;code&gt;KochuFunction()&lt;/code&gt; seeds a new list with the passed-in argument, and then changes its own definition, so that subsequent calls will simply keep pushing to this list.&lt;/p&gt;
-
-&lt;p&gt;Angus Croll calls this &lt;a href=&#34;https://javascriptweblog.wordpress.com/2010/04/27/the-russian-doll-principle-re-writing%C2%A0functions%C2%A0at%C2%A0runtime/&#34;&gt;the Russian Doll pattern&lt;/a&gt;. Peter Michaux calls this &lt;a href=&#34;http://michaux.ca/articles/lazy-function-definition-pattern&#34;&gt;the lazy function definition pattern&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/matryoshka.JPG&#34; alt=&#34;A Russian Matryoshka doll&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Often I’ve found myself writing functions that must do something one way the first time, and then a different way the next time. My own inelegant solution has always looked something like this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;firstCall&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;firstCall&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// do something&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;firstCall&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// do something else&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;However, with this approach, each function call has an associated branching cost. The if statement needs to be checked for all the calls, even though the result will be the same every time except the first. The Russian Doll pattern eliminates this unnecessary cost by changing the function’s definition after the first invocation!&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction()&amp;#39;s definition has been hoisted&lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;];&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;// KochuFunction redefines itself inside its own body, like a Matryoshka doll&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;KochuFunction&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #a6e22e&#34;&gt;TheStretchableFetchableThing&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;push&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;word&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;If Hemingway wrote JavaScript has been a fascinating read so far, and I highly recommend it to admirers of JavaScript everywhere, the same way I’d recommend The God of Small Things to admirers of English literature.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/if-roy-wrote-js/</guid>
+      <description>Angus Croll’s If Hemingway Wrote JavaScript is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.</description>
     </item>
     
     <item>
       <title>Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break/</link>
+      <link>http://cdax.me/post/prison-break/</link>
       <pubDate>Fri, 20 Feb 2015 20:50:11 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/prison-break.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Can you figure such a way out of the prison?&lt;/p&gt;
-
-&lt;p&gt;If this seems to be taking you an embarrassingly long time, feel free to [click here for the solution]()&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/prison-break/</guid>
+      <description>Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.
+ Can you figure such a way out of the prison?</description>
     </item>
     
     <item>
       <title>MongoDB: Selecting Documents at Random</title>
-      <link>http://cdax.tech/post/mongodb-select-random-docs/</link>
+      <link>http://cdax.me/post/mongodb-select-random-docs/</link>
       <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/mongodb-select-random-docs/</guid>
-      <description>
-
-&lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
-
-&lt;p&gt;While implementing the back-end for &lt;a href=&#34;http://math-bin.herokuapp.com/&#34;&gt;Mathbin&lt;/a&gt;, I wanted an API endpoint that would return a random document from a Mongo collection. A very naive way of approaching this would be to select all documents and then picking the document at a random index in the returned array.&lt;/p&gt;
-
-&lt;p&gt;Now, I don&amp;rsquo;t expect Mathbin&amp;rsquo;s database to hit big numbers anytime soon, but this really got me thinking about how this problem could be solved efficiently for collections having millions, maybe billions of documents.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-solution&#34;&gt;The Solution&lt;/h4&gt;
-
-&lt;p&gt;There&amp;rsquo;s a nice solution that makes retrieval very efficient at the price of some extra storage. The idea is to associate a random value with each document while inserting it into the collection. This can be achieved in Mongoose using a numeric field with a default value of &lt;code&gt;Math.random()&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Later, during retrieval, a simple filter gets the job done:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;randomDoc&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Collection&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;findOne&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;gte&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(Math.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;random&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;());&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;a-better-solution&#34;&gt;A Better Solution&lt;/h4&gt;
-
-&lt;p&gt;The problem with the solution above is that if the collection has very few documents, there&amp;rsquo;s a very good chance that the filter might return no document at all. &lt;em&gt;What are the odds that the random value generated in the query will be less than at least one document?&lt;/em&gt; Not very good when the number of documents is too little. So how do we make this better?&lt;/p&gt;
-
-&lt;p&gt;If the &lt;em&gt;greater-than-or-equals&lt;/em&gt; query fails, simply flip it around:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//Uses Mongoose promises to pass values from one async call to the next  &lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;pivot&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Math.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;random&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;  
-&lt;span style=&#34;color: #a6e22e&#34;&gt;Collection&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;findOne&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;gte&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pvt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;exec&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt;  
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;then&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;//If the gte filter returned nothing, try an lt filter!&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;Collection&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;findOne&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;lt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pvt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;exec&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;then&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;function&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;snippet&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #75715e&#34;&gt;//At this point, snippet contains a random document from the collection.&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;error&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;console&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;end&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;And we&amp;rsquo;re set! The only way this could fail now is if the Collection is empty to begin with &amp;ndash; an easy edge case to handle. Let me know what you think in the comments.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/mongodb-select-random-docs/</guid>
+      <description>The Problem While implementing the back-end for Mathbin, I wanted an API endpoint that would return a random document from a Mongo collection. A very naive way of approaching this would be to select all documents and then picking the document at a random index in the returned array.
+Now, I don&amp;rsquo;t expect Mathbin&amp;rsquo;s database to hit big numbers anytime soon, but this really got me thinking about how this problem could be solved efficiently for collections having millions, maybe billions of documents.</description>
     </item>
     
     <item>
       <title>Underscore Magic!</title>
-      <link>http://cdax.tech/post/underscore-magic/</link>
+      <link>http://cdax.me/post/underscore-magic/</link>
       <pubDate>Fri, 26 Dec 2014 13:42:48 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/underscore-magic/</guid>
-      <description>
-
-&lt;p&gt;Front-end developers should know &lt;a href=&#34;http://underscorejs.org/&#34;&gt;Underscore.js&lt;/a&gt; like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of &lt;em&gt;Write less, do more&lt;/em&gt; to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like &lt;em&gt;Backbone.js&lt;/em&gt; and &lt;em&gt;Ghost&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://cdax.tech/img/underscore.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin &lt;a href=&#34;http://lodash.com/&#34;&gt;Lo-Dash&lt;/a&gt;) put to use.&lt;/p&gt;
-
-&lt;h4 id=&#34;working-with-request-parameters&#34;&gt;Working with Request Parameters&lt;/h4&gt;
-
-&lt;p&gt;I noticed these tricks while going through the source of &lt;em&gt;Ghost&lt;/em&gt;. Ghost server has a number of API endpoints, each with a set of blacklisted/whitelisted request parameters. So what happens when someone tries to meddle with the API calls made by the client-side app? Something like this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//pick() returns a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys)  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pick&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;whitelistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&amp;hellip;or this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//omit() returns a copy of the object, filtered to omit the blacklisted keys (or array of keys)  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;omit&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;blacklistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Similarly, in order to normalize/standardize a request by adding in default values for required parameters, simply do:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//defaults() fills in undefined properties in object with the first value present in the following list of defaults objects  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;defaults&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;defaultRequest&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;chaining&#34;&gt;Chaining&lt;/h4&gt;
-
-&lt;p&gt;When &lt;code&gt;chain()&lt;/code&gt; is called on an array/object, Underscore attaches its own methods to it, returning a &lt;em&gt;wrapped object&lt;/em&gt;. The beauty of &lt;code&gt;chain()&lt;/code&gt; is that the following two lines of code become equivalent:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//Imperative style  &lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pick&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;whitelistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;  
-&lt;span style=&#34;color: #75715e&#34;&gt;//Functional style&lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;chain&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;  
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;pick&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;whitelistedParams&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The call to &lt;code&gt;value()&lt;/code&gt; at the end strips off underscore methods from the wrapped object returned by the previous method in the chain. Here&amp;rsquo;s another example of this &lt;em&gt;functional&lt;/em&gt; way of writing JavaScript:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;chain&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;req&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;params&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;  
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;keys&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;size&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-                &lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;templating&#34;&gt;Templating&lt;/h4&gt;
-
-&lt;p&gt;Underscore also comes with an inbuilt templating method that parses and populates Embedded JS templates, taking values from a passed-in object. In fact, this is a fairly common pattern in Backbone.js:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;//Defining the template  &lt;/span&gt;
-&lt;span style=&#34;color: #66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;viewTemplate&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;_&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;template&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;  
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;p&amp;gt;Hi! I&amp;#39;m &amp;lt;%= firstName %&amp;gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot; and I&amp;#39;m &amp;lt;%= age %&amp;gt; &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;% if(age === 1) { %&amp;gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;year&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;% } else { %&amp;gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                        &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;years&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;
-                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;lt;% } %&amp;gt; old.&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;
-                  &lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;span style=&#34;color: #75715e&#34;&gt;//Populating the template&lt;/span&gt;
-&lt;span style=&#34;color: #a6e22e&#34;&gt;$&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;.view&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;append&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;viewTemplate&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;({&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;firstName&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Chitharanjan&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;lastName&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Das&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;age&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;24&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;});&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;read-the-docs&#34;&gt;Read the Docs!&lt;/h4&gt;
-
-&lt;p&gt;Underscore can be used to achieve a lot more fancy-ness than can be put into a couple of blogposts. To find out more, head on over to &lt;a href=&#34;http://underscorejs.org/&#34;&gt;the docs&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/underscore-magic/</guid>
+      <description>Front-end developers should know Underscore.js like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of Write less, do more to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like Backbone.js and Ghost.
+In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin Lo-Dash) put to use.</description>
     </item>
     
     <item>
       <title>Javascript&#39;s &#34;void&#34; operator</title>
-      <link>http://cdax.tech/post/void-0/</link>
+      <link>http://cdax.me/post/void-0/</link>
       <pubDate>Thu, 25 Dec 2014 13:53:53 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/void-0/</guid>
-      <description>
-
-&lt;p&gt;Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight &lt;em&gt;Backbone.js&lt;/em&gt;, so I thought its &lt;a href=&#34;http://backbonejs.org/docs/backbone.html&#34;&gt;annotated source&lt;/a&gt; would be the perfect place to start.&lt;/p&gt;
-
-&lt;p&gt;After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for &lt;code&gt;null&lt;/code&gt;/&lt;code&gt;undefined&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;parse&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;parse&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;the-plot-thickens&#34;&gt;The Plot Thickens&lt;/h4&gt;
-
-&lt;p&gt;To my eyes, void 0 looked like an open invitation to learn another bit of JavaScript trivia. I was on to &lt;a href=&#34;http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void&#34;&gt;MDN&lt;/a&gt; and &lt;a href=&#34;http://stackoverflow.com/questions/7452341/what-does-void-0-mean&#34;&gt;Stack Overflow&lt;/a&gt; in a flash.&lt;/p&gt;
-
-&lt;p&gt;Here&amp;rsquo;s what MDN&amp;rsquo;s got to say about &lt;code&gt;void&lt;/code&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;The &lt;code&gt;void&lt;/code&gt; operator evaluates the given expression and then returns &lt;code&gt;undefined&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;em&gt;Aha!&lt;/em&gt; So that line above was indeed a check for &lt;code&gt;undefined&lt;/code&gt;. Try it out! Open up your browser&amp;rsquo;s console and type in the following&amp;hellip;&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;  
-&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Hello, world.&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;  
-&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&amp;hellip;to see your browser say &lt;code&gt;undefined&lt;/code&gt;, &lt;code&gt;undefined&lt;/code&gt;, &lt;code&gt;undefined&lt;/code&gt;!&lt;/p&gt;
-
-&lt;p&gt;But wait, what about all those other ways of checking whether a variable is undefined. How is &lt;code&gt;x === void 0&lt;/code&gt; better than any of those? What about &lt;code&gt;x === undefined&lt;/code&gt; or &lt;code&gt;typeof x === &amp;quot;undefined&amp;quot;&lt;/code&gt;?&lt;/p&gt;
-
-&lt;h4 id=&#34;undefined-is-just-another-variable&#34;&gt;&lt;code&gt;undefined&lt;/code&gt; is just another variable&lt;/h4&gt;
-
-&lt;p&gt;My most surprising learning from this was that &lt;code&gt;undefined&lt;/code&gt; (in some old browsers) is just another global variable that can be overridden. If you&amp;rsquo;re using any of these old browsers, try this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;alert&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;undefined&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Not undefined&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;  
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;In a world where &lt;code&gt;undefined&lt;/code&gt; is mutable and could easily be overridden by you or any of your dependencies, &lt;code&gt;x === undefined&lt;/code&gt; is not a reliable check. &lt;code&gt;typeof x === &amp;quot;undefined&amp;quot;&lt;/code&gt; still remains a pretty solid candidate, however. For more JavaScript gotchas like the mutability of undefined, head on over to &lt;a href=&#34;http://wtf.js/&#34;&gt;wtf.js&lt;/a&gt;&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/void-0/</guid>
+      <description>Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight Backbone.js, so I thought its annotated source would be the perfect place to start.
+After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for null/undefined.</description>
     </item>
     
     <item>
       <title>Binary Indexed Trees</title>
-      <link>http://cdax.tech/post/binary-indexed-trees/</link>
+      <link>http://cdax.me/post/binary-indexed-trees/</link>
       <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/binary-indexed-trees/</guid>
-      <description>
-
-&lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;A problem that seems difficult may have a simple, unexpected solution.&amp;rdquo; Unlike the advanced methods, the aha! insights of algorithms don&amp;rsquo;t come only after extensive study; they&amp;rsquo;re available to any programmer willing to think seriously before, during and after coding.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;em&gt;Jon Bentley (quoting Martin Gardner), in the column Aha! Algorithms from his book Programming Pearls&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;the-origin-of-bits&#34;&gt;The Origin of BITs&lt;/h4&gt;
-
-&lt;p&gt;The Binary Indexed Tree is hands down the most elegant data structure that I&amp;rsquo;ve had the pleasure of studying. It offers an embarrassingly simple yet highly efficient solution to the problem of maintaining cumulative object frequencies.&lt;/p&gt;
-
-&lt;p&gt;Imagine you&amp;rsquo;re supposed to keep track of the number of times each symbol appears in a long string, knowing the complete universe of possible symbols (or the &lt;em&gt;symbol alphabet&lt;/em&gt;). Two operations are key - &lt;code&gt;UPDATE&lt;/code&gt; the frequency of a symbol as it is read from the string, and &lt;code&gt;QUERY&lt;/code&gt; the frequency of a symbol at any given time.&lt;/p&gt;
-
-&lt;p&gt;A third kind of operation becomes important when a meaningful order can be imposed on the symbol alphabet, like say if the alphabet was a list of numbers that can be sorted. Here, it might be useful to track the cumulative frequency or &lt;code&gt;COUNT&lt;/code&gt; of symbols less than a given symbol &lt;em&gt;x&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The Binary Indexed Tree solves each of the &lt;code&gt;UPDATE&lt;/code&gt;, &lt;code&gt;QUERY&lt;/code&gt; and &lt;code&gt;COUNT&lt;/code&gt; problems in O(M) time, and using O(n) space where n is the cardinality of the symbol alphabet, and M is just the number of set bits (1s) in n&amp;rsquo;s binary representation!&lt;/p&gt;
-
-&lt;p&gt;BITs were first described in a 1994 paper titled &lt;a href=&#34;http://pdf.aminer.org/001/073/976/a_new_data_structure_for_cumulative_frequency_tables.pdf&#34;&gt;A New Data Structure for Cumulative Frequency Tables&lt;/a&gt; by Peter Fenwick, and are also known by their eponymous name, Fenwick Trees.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-aha-insight&#34;&gt;The Aha! Insight&lt;/h4&gt;
-
-&lt;p&gt;The unexpected search technique used by BITs can be better understood by drawing parallels with the way many people learn how to convert from binary to decimal notation. We use the following lookup table:&lt;/p&gt;
-
-&lt;table&gt;  
-    &lt;tbody&gt;&lt;tr&gt;
-        &lt;th&gt;&lt;strong&gt;Bit position, i&lt;/strong&gt;&lt;/th&gt;
-        &lt;td&gt;0&lt;/td&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;...&lt;/td&gt;
-        &lt;td&gt;n&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;th&gt;&lt;strong&gt;Value, v&lt;sub&gt;i&lt;/sub&gt;&lt;/strong&gt;&lt;/th&gt;
-        &lt;td&gt;1&lt;/td&gt;
-        &lt;td&gt;2&lt;/td&gt;
-        &lt;td&gt;4&lt;/td&gt;
-        &lt;td&gt;...&lt;/td&gt;
-        &lt;td&gt;2&lt;sup&gt;n&lt;/sup&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;and the decimal representation is simply the sum of the values related with the positions of the set bits. For 13, for example:&lt;/p&gt;
-
-&lt;p&gt;13 = (1101)&lt;sub&gt;2&lt;/sub&gt; = v&lt;sub&gt;3&lt;/sub&gt; + v&lt;sub&gt;2&lt;/sub&gt; + v&lt;sub&gt;0&lt;/sub&gt; = 8 + 4 + 1&lt;/p&gt;
-
-&lt;p&gt;The Fenwick Tree is an array analogous to the lookup table above, where each of the array elements si, is a carefully computed partial frequency sum (a sub-frequency). If fi is the actual frequency of the ith element, and r is the position of the least significant bit in i (for example, r1 = 0, r2 = 1, r3 = 0, and so on), then&lt;/p&gt;
-
-&lt;p&gt;s&lt;sub&gt;i&lt;/sub&gt; = f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 1&lt;/sub&gt; + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 2&lt;/sub&gt; + ... + f&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;three-key-observations&#34;&gt;Three key observations&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Note that the element frequencies that make up s&lt;sub&gt;i&lt;/sub&gt; and s&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt;&lt;/sub&gt; are disjoint sets.&lt;/li&gt;
-&lt;li&gt;Note also, that s&lt;sub&gt;0&lt;/sub&gt; = f&lt;sub&gt;0&lt;/sub&gt;&lt;/li&gt;
-&lt;li&gt;Finally, note that any frequency f&lt;sub&gt;j&lt;/sub&gt; appears in each of the sums s&lt;sub&gt;i&lt;/sub&gt; where j ≥ i - 2&lt;sup&gt;r&lt;/sup&gt; + 1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Talking in terms of bits, i - 2&lt;sup&gt;r&lt;/sup&gt; can be computed by stripping away the least significant bit from i. For more on bit-twiddling, take a look at this &lt;a href=&#34;https://graphics.stanford.edu/~seander/bithacks.html&#34;&gt;useful reference guide&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;implementing-count-and-query&#34;&gt;Implementing &lt;code&gt;COUNT&lt;/code&gt; and &lt;code&gt;QUERY&lt;/code&gt;&lt;/h4&gt;
-
-&lt;h5 id=&#34;count&#34;&gt;&lt;code&gt;COUNT&lt;/code&gt;&lt;/h5&gt;
-
-&lt;p&gt;The cumulative frequency up until the ith element, COUNT&lt;sub&gt;i&lt;/sub&gt; is defined as the sum of the actual frequencies of all elements less than or equal to the ith. COUNT&lt;sub&gt;i&lt;/sub&gt; can be calculated from the Fenwick Tree by observing that:&lt;/p&gt;
-
-&lt;p&gt;COUNT&lt;sub&gt;i&lt;/sub&gt; &lt;br&gt;
-= f&lt;sub&gt;0&lt;/sub&gt; + ... + f&lt;sub&gt;i - 1&lt;/sub&gt; + f&lt;sub&gt;i&lt;/sub&gt;&lt;br&gt;
-= f&lt;sub&gt;0&lt;/sub&gt; + ... + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; - 1&lt;/sub&gt; + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt;&lt;/sub&gt; + (f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 1&lt;/sub&gt; + f&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt; + 2&lt;/sub&gt; + ... + f&lt;sub&gt;i&lt;/sub&gt;)&lt;br&gt;
-= s&lt;sub&gt;0&lt;/sub&gt; + ... + s&lt;sub&gt;i - 2&lt;sup&gt;r&lt;/sup&gt;&lt;/sub&gt; + s&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-&lt;p&gt;In order to compute COUNT&lt;sub&gt;i&lt;/sub&gt;, we start with the sub-frequency at index i and at every step add a new sub-frequency after stripping away i&amp;rsquo;s least significant bit. This continues till i runs out of set bits, i.e., till i becomes equal to zero. For example,&lt;/p&gt;
-
-&lt;p&gt;COUNT&lt;sub&gt;13&lt;/sub&gt; = s&lt;sub&gt;13&lt;/sub&gt; + s&lt;sub&gt;12&lt;/sub&gt; + s&lt;sub&gt;8&lt;/sub&gt; + s&lt;sub&gt;0&lt;/sub&gt;&lt;/p&gt;
-
-&lt;h5 id=&#34;query&#34;&gt;&lt;code&gt;QUERY&lt;/code&gt;&lt;/h5&gt;
-
-&lt;p&gt;Retrieving the actual frequency of the element at index &lt;em&gt;i&lt;/em&gt; is as simple as calculating COUNT&lt;sub&gt;i&lt;/sub&gt; and COUNT&lt;sub&gt;i - 1&lt;/sub&gt; and computing the difference. Both &lt;code&gt;QUERY&lt;/code&gt; and &lt;code&gt;COUNT&lt;/code&gt; are thus equally efficient.&lt;/p&gt;
-
-&lt;p&gt;Never forget that &lt;code&gt;QUERY&lt;/code&gt; can be made even faster by identifying the longest common suffix in the binary representations for &lt;em&gt;i&lt;/em&gt; and &lt;em&gt;i - 1&lt;/em&gt;. (How does this help?)&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/binary-indexed-trees/</guid>
+      <description>&amp;ldquo;A problem that seems difficult may have a simple, unexpected solution.&amp;rdquo; Unlike the advanced methods, the aha! insights of algorithms don&amp;rsquo;t come only after extensive study; they&amp;rsquo;re available to any programmer willing to think seriously before, during and after coding.
+ Jon Bentley (quoting Martin Gardner), in the column Aha! Algorithms from his book Programming Pearls
+The Origin of BITs The Binary Indexed Tree is hands down the most elegant data structure that I&amp;rsquo;ve had the pleasure of studying.</description>
     </item>
     
     <item>
       <title>CSS for Print Media</title>
-      <link>http://cdax.tech/post/css-for-print-media/</link>
+      <link>http://cdax.me/post/css-for-print-media/</link>
       <pubDate>Tue, 25 Nov 2014 14:06:28 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/css-for-print-media/</guid>
-      <description>
-
-&lt;p&gt;I never really felt it was important to style web pages for the print medium till a few days ago when I was formatting my résumé. The theme that I&amp;rsquo;ve forked to use on this blog employs &lt;code&gt;font-kerning&lt;/code&gt; and &lt;code&gt;anti-aliasing&lt;/code&gt; to make my posts look like text on paper. This made me curious to see what my resume would look like if printed.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Print Preview&lt;/em&gt; was embarrassing. The text was huge and there were gaps everywhere. Paragraphs were getting split between pages in all the wrong places. What was more, the page count stood at 6 A4 pages because of the oversized text. Much has been written about the importance of brevity when it comes to job applications. What if a prospective employer wanted to take a printout for their records, and then had their printer spew out pages after pages of poorly formatted text?&lt;/p&gt;
-
-&lt;p&gt;I decided to spend some time collecting best practices from all over the web. This blogpost is a choice collection of the essential ideas that one needs to know in order to write CSS for the printer.&lt;/p&gt;
-
-&lt;h4 id=&#34;media-queries-to-the-rescue&#34;&gt;Media Queries to the Rescue&lt;/h4&gt;
-
-&lt;p&gt;Media queries have traditionally been used for making websites responsive &amp;ndash; to make sure your content looks good on the most common screen sizes. But, as the name suggests, they can be used to query not just screen sizes, but just about any detail about the medium. For example, you can add print styles in the following two ways:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;&amp;lt;!--Styles for screens--&amp;gt;&lt;/span&gt;  
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;screen.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
-...
-&lt;span style=&#34;color: #75715e&#34;&gt;&amp;lt;!--Styles for printers--&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;media&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;print&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;print.css&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&amp;hellip;or, right inside screen.css, like so:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;@media&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(print)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
-    &lt;span style=&#34;color: #75715e&#34;&gt;/*Styles for printers go in here*/&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Media queries can be used to achieve many more details, like whether the printer is monochrome or color. I encourage you to read more about them on &lt;a href=&#34;http://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries&#34;&gt;MDN&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;But what exactly does one need to keep in mind while writing printer styles?&lt;/p&gt;
-
-&lt;h4 id=&#34;drop-the-headers-footers-and-backgrounds&#34;&gt;Drop the Headers, Footers and Backgrounds&lt;/h4&gt;
-
-&lt;p&gt;When a reader prints out your blogpost, they probably don&amp;rsquo;t want any of the navigation, search boxes, or other header elements. Likewise, sitemaps and other links that go into your footer aren&amp;rsquo;t usually required. The same background color that makes your website look nice might be superfluous when it comes to printing on a monochrome printer. Therefore, you&amp;rsquo;ll likely need to add the following to &lt;code&gt;print.css&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;header,&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;footer&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;none;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color: #f92672&#34;&gt;body&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;background&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;white;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;bring-out-the-page-breaks&#34;&gt;Bring out the Page-breaks&lt;/h4&gt;
-
-&lt;p&gt;In most situations, you don&amp;rsquo;t want page-breaks to be inserted into your content arbitrarily. To control where your content is split across pages, you can use the &lt;code&gt;page-break-before&lt;/code&gt; and &lt;code&gt;page-break-after&lt;/code&gt; properties, like so:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;...  
-&lt;span style=&#34;color: #75715e&#34;&gt;&amp;lt;!-- inserts a page-break here --&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;page-break&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;div&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
-...
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;.page-break&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;block;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;page-break-before&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;always;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;These properties support a bunch of useful options, like &lt;code&gt;avoid&lt;/code&gt;, &lt;code&gt;left&lt;/code&gt; and &lt;code&gt;right&lt;/code&gt;. Read more about them &lt;a href=&#34;http://developer.mozilla.org/en-US/docs/Web/CSS/page-break-after&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;the-ideal-font-size&#34;&gt;The Ideal font-size&lt;/h4&gt;
-
-&lt;p&gt;Failing to land at the perfect px number after many trials, I finally resorted to A List Apart for some help. They have a great article explaining their print stylesheet, and the author suggests the use of a point-size instead of a pixel-size:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;p&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;font-size&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;12pt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;links&#34;&gt;Links&lt;/h4&gt;
-
-&lt;p&gt;Let&amp;rsquo;s face it &amp;ndash; hyperlinks are mostly useless when it comes to the print medium. However, keep in mind that as long as they&amp;rsquo;re important (and short) enough, your readers might actually be willing to make the effort to type them into a browser. So just make sure all of the links you &lt;em&gt;really&lt;/em&gt; want your readers to see, are displayed on paper. For example,&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/resume&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;Résumé&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;a&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;span&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;print-only&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;(www.blog.me/resume)&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;span&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Your stylesheet would then look like:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;.print-only&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;  
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;none;&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color: #66d9ef&#34;&gt;@media&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;(print)&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #a6e22e&#34;&gt;.print-only&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #f8f8f2&#34;&gt;display&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;inline;&lt;/span&gt;
-    &lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4 id=&#34;further-reading&#34;&gt;Further Reading&lt;/h4&gt;
-
-&lt;p&gt;For more on writing print stylesheets, you can check out this &lt;a href=&#34;http://alistapart.com/article/goingtoprint&#34;&gt;fantastic article at A List Apart&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/css-for-print-media/</guid>
+      <description>I never really felt it was important to style web pages for the print medium till a few days ago when I was formatting my résumé. The theme that I&amp;rsquo;ve forked to use on this blog employs font-kerning and anti-aliasing to make my posts look like text on paper. This made me curious to see what my resume would look like if printed.
+The Print Preview was embarrassing. The text was huge and there were gaps everywhere.</description>
     </item>
     
     <item>
       <title>The Coffee Can Problem</title>
-      <link>http://cdax.tech/post/coffee-can/</link>
+      <link>http://cdax.me/post/coffee-can/</link>
       <pubDate>Fri, 31 Oct 2014 14:16:01 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/coffee-can/</guid>
-      <description>
-
-&lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Imagine you&amp;rsquo;ve got a can full of coffee beans &amp;ndash; some are black and the rest are white. Outside of this can, you&amp;rsquo;ve also got yourself a large reservoir of black coffee beans. You keep picking out beans from your can, two at a time. If both the beans you picked are the same colour, you&amp;rsquo;ve got to throw both of them away and add to the can with a black bean from your stockpile. On the other hand, if the beans are different colours, you&amp;rsquo;ve got to throw the black bean away and restore the white one to the can. Keep repeating this till you&amp;rsquo;re left with exactly one bean.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The &lt;em&gt;Coffee Can Problem&lt;/em&gt; is two-fold. First, you&amp;rsquo;ve got to prove that this series of experiments &lt;sub&gt;will&lt;/sub&gt; terminate with exactly one bean left in the can. And second, you need to determine the colour of the last remaining bean given the respective numbers of black and white beans that you started out with (say b&lt;sub&gt;1&lt;/sub&gt; and w&lt;sub&gt;1&lt;/sub&gt;).&lt;/p&gt;
-
-&lt;h4 id=&#34;the-solution&#34;&gt;The Solution&lt;/h4&gt;
-
-&lt;p&gt;Let&amp;rsquo;s say that just before the i-th pick, you&amp;rsquo;re left with exactly b&lt;sub&gt;i&lt;/sub&gt; black beans and w&lt;sub&gt;i&lt;/sub&gt; white beans inside the can. The i-th pick can have one of three possible outcomes:&lt;/p&gt;
-
-&lt;h5 id=&#34;outcome-i-both-the-beans-you-picked-were-black&#34;&gt;Outcome I: Both the beans you picked were BLACK&lt;/h5&gt;
-
-&lt;p&gt;If this happens, then after throwing away both beans and replacing them with one black bean from your pile, you&amp;rsquo;re left with b&lt;sub&gt;i&lt;/sub&gt; - 1 black beans and w&lt;sub&gt;i&lt;/sub&gt; white beans.&lt;/p&gt;
-
-&lt;h5 id=&#34;outcome-ii-both-the-beans-you-picked-were-white&#34;&gt;Outcome II: Both the beans you picked were WHITE&lt;/h5&gt;
-
-&lt;p&gt;In this situation, you&amp;rsquo;ve got to throw away the two white beans and replace them with a black bean. So that you&amp;rsquo;re left with b&lt;sub&gt;i&lt;/sub&gt; + 1 black beans and w&lt;sub&gt;i&lt;/sub&gt; - 2 white beans.&lt;/p&gt;
-
-&lt;h5 id=&#34;outcome-iii-the-beans-you-picked-were-different-colours&#34;&gt;Outcome III: The beans you picked were different colours&lt;/h5&gt;
-
-&lt;p&gt;In this last scenario, you&amp;rsquo;ll be throwing away the black bean and putting the white one back in the can, so that you&amp;rsquo;ve got yourself b&lt;sub&gt;i&lt;/sub&gt; - 1 black beans and w&lt;sub&gt;i&lt;/sub&gt; white beans, just like &lt;em&gt;Outcome I&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Two observations are key:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;No matter what the outcome, the total number of beans in the can will &lt;em&gt;always&lt;/em&gt; come down by one.&lt;/li&gt;
-&lt;li&gt;The number of white beans in the can will either stay the same, or drop by two, or in other words, white beans always leave the can two at a time.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;From the first observation, it directly follows that you&amp;rsquo;ll always finish with exactly one bean in the can (because each pick takes a bean away from the total).&lt;/p&gt;
-
-&lt;p&gt;And putting both observations together, it is easy to see that you&amp;rsquo;ll run out of white beans if and only if you had an even number of white beans to begin with. &lt;em&gt;It doesn&amp;rsquo;t matter how many black beans you had in the can at any point of time.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;thinking-about-corner-cases&#34;&gt;Thinking about Corner Cases&lt;/h4&gt;
-
-&lt;p&gt;The reasoning above assumes that at least one pick will always be made, so a corner case occurs when you only get one bean to begin with. &lt;em&gt;Does our solution still hold?&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;takeaways-and-source&#34;&gt;Takeaways and Source&lt;/h4&gt;
-
-&lt;p&gt;My biggest learning from this problem was about the existence of white coffee beans. Apparently, it&amp;rsquo;s an under-roasted variety that results in a lighter-than-usual brew.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Coffee Can Problem&lt;/em&gt; originally appeared in David Gries&amp;rsquo;s &lt;em&gt;Science of Programming&lt;/em&gt;, though I found it among the exercise problems in Jon Bentley&amp;rsquo;s &lt;em&gt;Programming Pearls&lt;/em&gt; (Ch. 4 - Writing Correct Programs).&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/coffee-can/</guid>
+      <description>The Problem  Imagine you&amp;rsquo;ve got a can full of coffee beans &amp;ndash; some are black and the rest are white. Outside of this can, you&amp;rsquo;ve also got yourself a large reservoir of black coffee beans. You keep picking out beans from your can, two at a time. If both the beans you picked are the same colour, you&amp;rsquo;ve got to throw both of them away and add to the can with a black bean from your stockpile.</description>
     </item>
     
     <item>
       <title>Fast Modular Exponentiation</title>
-      <link>http://cdax.tech/post/fast-modular-exponentiation/</link>
+      <link>http://cdax.me/post/fast-modular-exponentiation/</link>
       <pubDate>Mon, 06 Oct 2014 14:45:24 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/fast-modular-exponentiation/</guid>
-      <description>
-
-&lt;h4 id=&#34;the-problem&#34;&gt;The Problem&lt;/h4&gt;
-
-&lt;p&gt;&amp;hellip; is to compute &lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt; (mod m)&lt;/em&gt;, where &lt;em&gt;b&lt;/em&gt;, &lt;em&gt;e&lt;/em&gt;, and &lt;em&gt;m&lt;/em&gt; are positive integers.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;e.g.,&lt;/em&gt; for &lt;em&gt;b = 2&lt;/em&gt;, &lt;em&gt;e = 109&lt;/em&gt; and &lt;em&gt;m = 10&lt;sup&gt;9&lt;/sup&gt; + 7&lt;/em&gt;,&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt; (mod m) = 140625001&lt;/em&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;a-naive-solution&#34;&gt;A Naive Solution&lt;/h4&gt;
-
-&lt;p&gt;&amp;hellip; would be one that first computes &lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt;&lt;/em&gt; and then computes its remainder &lt;em&gt;mod m&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Speaking in terms of the basic arithmetic operations, this method would require &lt;em&gt;O(e)&lt;/em&gt; multiplications, and a lot of space to store the computed value of &lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Consider the example given above where &lt;em&gt;b&lt;/em&gt; is 2 and &lt;em&gt;e&lt;/em&gt; is 10&lt;sup&gt;9&lt;/sup&gt;. Storing the computed value of &lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt;&lt;/em&gt; in this case will require (10&lt;sup&gt;9&lt;/sup&gt; + 1) bits! Clearly, such a solution will not cut it with large values of &lt;em&gt;b&lt;/em&gt;, &lt;em&gt;e&lt;/em&gt; and &lt;em&gt;m&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;improving-the-space-bound&#34;&gt;Improving the space bound&lt;/h4&gt;
-
-&lt;p&gt;The costly &lt;em&gt;O(log&lt;sub&gt;2&lt;/sub&gt; b&lt;sup&gt;e&lt;/sup&gt;)&lt;/em&gt; bound on space can be improved significantly if, instead of computing the remainder at the end, we compute remainders after each multiplication, using the property&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;{ p × q } (mod r) = [ p × { q (mod r) } ] (mod r)&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Plugging in values for &lt;em&gt;b&lt;/em&gt;, &lt;em&gt;e&lt;/em&gt; and &lt;em&gt;m&lt;/em&gt; from the example above, we begin multiplying as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b (mod m) = 2 (mod m) = 2&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;2&lt;/sup&gt; (mod m) = [ b × { b (mod m) } ] (mod m) = [ 2 × 2 ] (mod m) = 4&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;3&lt;/sup&gt; (mod m) = [ b × { b&lt;sup&gt;2&lt;/sup&gt; (mod m) } ] (mod m) = [ 2 × 4 ] (mod m) = 8&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;hellip;and so on, till&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt; (mod m) = [ b × { b&lt;sup&gt;e - 1&lt;/sup&gt; (mod m) } ] (mod m)&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;This solution runs in &lt;em&gt;O(e)&lt;/em&gt; time, using &lt;em&gt;O(log&lt;sub&gt;2&lt;/sub&gt; (b × m))&lt;/em&gt; space. The space improvement is significant for large values of &lt;em&gt;e&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here&amp;rsquo;s a sketch for a recursive function based on the algorithm above, taken from a Wikipedia article:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function modular_pow(b, e, m)  
-    c := 1
-    for e_prime = 1 to e
-        c := (c * b) mod m
-    return c
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;improving-the-time-bound&#34;&gt;Improving the time bound&lt;/h4&gt;
-
-&lt;p&gt;Now that we&amp;rsquo;ve sufficiently improved the worst-case space bound, let&amp;rsquo;s do something about the &lt;em&gt;O(e)&lt;/em&gt; time bound, which can be troublesome for large values of &lt;em&gt;e&lt;/em&gt;. Consider the binary representation for the exponent &lt;em&gt;e&lt;/em&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;e = ( a&lt;sub&gt;0&lt;/sub&gt; × 2&lt;sup&gt;0&lt;/sup&gt; ) + ( a&lt;sub&gt;1&lt;/sub&gt; × 2&lt;sup&gt;1&lt;/sup&gt; ) + &amp;hellip; + ( a&lt;sub&gt;n&lt;/sub&gt; × 2&lt;sup&gt;n&lt;/sup&gt;  )&lt;/em&gt;, where &lt;em&gt;n = log&lt;sub&gt;2&lt;/sub&gt; e&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Thus,&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt; (mod m) = b&lt;sup&gt;( a&lt;sub&gt;0&lt;/sub&gt; × 2&lt;sup&gt;0&lt;/sup&gt; ) + ( a&lt;sub&gt;1&lt;/sub&gt; × 2&lt;sup&gt;1&lt;/sup&gt; ) + &amp;hellip; + ( a&lt;sub&gt;n&lt;/sub&gt; × 2&lt;sup&gt;n&lt;/sup&gt;  )&lt;/sup&gt; (mod m)&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt; (mod m) = { b&lt;sup&gt;( a&lt;sub&gt;0&lt;/sub&gt; × 2&lt;sup&gt;0&lt;/sup&gt; )&lt;/sup&gt; (mod m) } × { b&lt;sup&gt;( a&lt;sub&gt;1&lt;/sub&gt; × 2&lt;sup&gt;1&lt;/sup&gt; )&lt;/sup&gt; (mod m) } × &amp;hellip; × { b&lt;sup&gt;( a&lt;sub&gt;n&lt;/sub&gt; × 2&lt;sup&gt;n&lt;/sup&gt; )&lt;/sup&gt; (mod m) }&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;b&lt;sup&gt;e&lt;/sup&gt; (mod m) = { (b&lt;sup&gt;2&lt;sup&gt;0&lt;/sup&gt;&lt;/sup&gt; )&lt;sup&gt;a&lt;sub&gt;0&lt;/sub&gt;&lt;/sup&gt; (mod m) } × { (b&lt;sup&gt;2&lt;sup&gt;1&lt;/sup&gt;&lt;/sup&gt; )&lt;sup&gt;a&lt;sub&gt;1&lt;/sub&gt;&lt;/sup&gt; (mod m) } × &amp;hellip; × { (b&lt;sup&gt;2&lt;sup&gt;n&lt;/sup&gt;&lt;/sup&gt; )&lt;sup&gt;a&lt;sub&gt;n&lt;/sub&gt;&lt;/sup&gt; (mod m) }&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;At this point, two observations are key:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;When &lt;em&gt;a&lt;sub&gt;i&lt;/sub&gt; = 0&lt;/em&gt;, the term &lt;em&gt;{ (b&lt;sup&gt;2&lt;sup&gt;i&lt;/sup&gt;&lt;/sup&gt;)&lt;sup&gt;a&lt;sub&gt;i&lt;/sub&gt;&lt;/sup&gt; (mod m) }&lt;/em&gt; reduces to 1&lt;/li&gt;
-&lt;li&gt;When &lt;em&gt;a&lt;sub&gt;i&lt;/sub&gt; = 1&lt;/em&gt;, the same term becomes equal to &lt;em&gt;b&lt;sup&gt;2&lt;sup&gt;i&lt;/sup&gt;&lt;/sup&gt; (mod m)&lt;/em&gt;, which can be computed iteratively as &lt;em&gt;{ b&lt;sup&gt;2&lt;/sup&gt; (mod m) × b&lt;sup&gt;2&lt;sup&gt;(i - 1)&lt;/sup&gt;&lt;/sup&gt; (mod m) } (mod m)&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This leaves us with a fast and space-efficient algorithm running in only &lt;em&gt;O(log&lt;sub&gt;2&lt;/sub&gt; e)&lt;/em&gt; time and requiring only &lt;em&gt;O(log&lt;sub&gt;2&lt;/sub&gt; (b × m))&lt;/em&gt; space. Here&amp;rsquo;s a sketch of the complete algorithm:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function modular_pow(b, e, m)  
-    result := 1
-    b := b mod m
-    while e &amp;gt; 0
-        if (e mod 2 == 1):
-           result := (result * b) mod m
-        e := e &amp;gt;&amp;gt; 1
-        b := (b * b) mod m
-    return result
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+      <guid>http://cdax.me/post/fast-modular-exponentiation/</guid>
+      <description>The Problem &amp;hellip; is to compute be (mod m), where b, e, and m are positive integers.
+e.g., for b = 2, e = 109 and m = 109 + 7,
+be (mod m) = 140625001
+A Naive Solution &amp;hellip; would be one that first computes be and then computes its remainder mod m.
+Speaking in terms of the basic arithmetic operations, this method would require O(e) multiplications, and a lot of space to store the computed value of be.</description>
     </item>
     
     <item>
       <title>Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India?</title>
-      <link>http://cdax.tech/post/1975-emergency/</link>
+      <link>http://cdax.me/post/1975-emergency/</link>
       <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/1975-emergency/</guid>
-      <description>&lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/History/Why-is-the-National-Emergency-of-1975-seen-as-one-of-the-most-controversial-times-in-the-History-of-India&#34;&gt;Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;I&amp;rsquo;ll begin with your first question, &lt;strong&gt;the reasons&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;There were two important developments leading up to the 1975 emergency, that can be credited with its imposition [1].&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;The first of these, the JP Movement, initiated by students in Bihar and later lead by veteran political leader Jayaprakash Narayan (JP) was targeted against growing misgovernance and corruption under the Congress regime. JP&amp;rsquo;s call to &amp;lsquo;Total Revolution&amp;rsquo; [2], addressed to his predominantly youth following generated tremendous popular enthusiasm and pushed Indira Gandhi into a corner. The laurels of the 1971 Indo-Pakistan war were far behind her now.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;The second, more immediate cause, was a ruling by the Allahabad High Court on 12 June, 1975 that effectively rendered her election to Parliament, null and void. She had been found guilty on 2 out of 14 counts of election malpractices leveled against her by Raj Narain, who had lost the Rae Bareilly seat to her in the said election.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;In the days that followed, the pressure to resign began to mount on Indira Gandhi from many quarters, even from within her own party. In an unexpected reaction, she decided to have the President Fakhruddin Ali Ahmed sign and approve an ordinance declaring a state of internal emergency with effect from the midnight of 25 June, 1975.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;The answer to your second question, regarding the procedure, is a little more complicated. Back in those days, the Constitutional procedure and requirements for imposing an emergency were very different from what they are now. This is because once the emergency was uplifted and a new government was elected to the Centre in 1977, no time was wasted in amending the very provisions that had made it astonishingly simple for Indira Gandhi to impose and sustain a state of emergency since 1975. [3] For example,&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;It is no longer possible to declare an emergency on grounds of &amp;lsquo;internal disturbance&amp;rsquo; as it was in 1975. This term was replaced with the much more specific &amp;lsquo;armed rebellion&amp;rsquo; by an amendment in 1978.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;According to this same amendment, the cabinet&amp;rsquo;s approval is now required before an emergency can be declared by the President. In 1975, Indira Gandhi acted swiftly to get the President&amp;rsquo;s approval and chose to inform her cabinet the next morning.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;A declaration of emergency was, prior to the 1978 amendment, immune to judicial review. Simply put, such a declaration could not be contested in a court of law!&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;In 1975, an emergency, once approved by Parliament, could be extended for as long as the cabinet deemed necessary. The 1978 amendment has made it imperative for the Parliament to review its approval periodically, once every six months.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Back then, while approving the declaration or continuity of an emergency, all that was required was a simple majority of the Parliament &amp;ndash; which is at least half of the members present and voting. Thousands of the Congress&amp;rsquo;s political opponents, including many MPs and the chief rival Jayaprakash Narayan, had already been arrested and sent to jail without trial as was allowed under Emergency provisions then. With their opposition missing from Parliament, the Congress found it easy to manage this rather simple majority. Understandably, the 1978 amendment made the terms of Parliamentary approval stricter by replacing the requirement of a simple majority with that of a &amp;lsquo;special&amp;rsquo; majority. This requires the approval of at least two-thrids of the members present and voting, as well as at least half of the total strength of the Parliament (which includes members who are not present).&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Now coming to your third question, that of upliftment. The exact reasons for why Indira Gandhi finally chose to end twenty months of Emergency rule, remain unknown and hence open to wide speculation. Ramachandra Guha&amp;rsquo;s book, India After Gandhi, quotes a few possible explanations for this. That she was confident of being elected back to power in the elections that would follow, that she was competing with the Pakistan President who had declared fresh elections in his own state, that she disliked being cut off from public contact following the emergency, and that she was hurt by criticism targeted at her by independent foreign observers who could not be dismissed off as enemies of the state.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Sources&lt;/p&gt;
-
-&lt;p&gt;[1] Chapters 21 (The Rivals) and 22 (Autumn of the Matriarch) from Ramachandra Guha&amp;rsquo;s excellent book, India After Gandhi&lt;/p&gt;
-
-&lt;p&gt;[2] Bihar Movement&lt;/p&gt;
-
-&lt;p&gt;[3] Indian Polity by M. Laxmikanth, for information regarding the Constitution&amp;rsquo;s Emergency provisions, and also the 44th Amendment Act of 1978.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/1975-emergency/</guid>
+      <description>This was originally posted as an answer to the question Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India? on Quora.
+I&amp;rsquo;ll begin with your first question, the reasons.
+There were two important developments leading up to the 1975 emergency, that can be credited with its imposition [1].
+ The first of these, the JP Movement, initiated by students in Bihar and later lead by veteran political leader Jayaprakash Narayan (JP) was targeted against growing misgovernance and corruption under the Congress regime.</description>
     </item>
     
     <item>
       <title>What major issues did India have at the time of its independence that are now resolved?</title>
-      <link>http://cdax.tech/post/india-at-independence/</link>
+      <link>http://cdax.me/post/india-at-independence/</link>
       <pubDate>Wed, 14 May 2014 00:32:26 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/india-at-independence/</guid>
-      <description>
-
-&lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/What-major-issues-did-India-have-at-the-time-of-its-independence-that-are-now-resolved&#34;&gt;What major issues did India have at the time of its independence that are now resolved?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;To describe a few that come to mind:&lt;/p&gt;
-
-&lt;h4 id=&#34;resettlement-of-refugees&#34;&gt;Resettlement of refugees&lt;/h4&gt;
-
-&lt;p&gt;When it became clear that Indian independence would come at the cost of partition, people who wished to be part of the Indian dominion migrated in heavy numbers from across the border, leaving their land and property behind in what was to become Pakistan. Much of this migration happened post-independence, and the new government was immediately faced with the challenge of resettling them. Along with a lot of hard work on the part of the administration, a couple of very innovative methods were employed to redistribute land among the refugees in a just and efficient manner (read about the &amp;lsquo;standard acre&amp;rsquo; and the &amp;lsquo;graded cut&amp;rsquo;). Many of the thriving Punjabi-populated colonies in Delhi (Patel Nagar, Lajpat Nagar,&amp;hellip;) were set up during this time, as was the city of Faridabad.&lt;/p&gt;
-
-&lt;h4 id=&#34;integration-of-the-princely-states&#34;&gt;Integration of the Princely states&lt;/h4&gt;
-
-&lt;p&gt;It would be a massive understatement to say that the British left behind just 2 states, India and Pakistan, because in effect they were leaving the new government the mammoth task of integrating over 500 princely states into the union. Chiefly owing to the efforts of Sardar Patel and his secretary VP Menon, many of these states acceded without much need for persuasion, though a few are infamous for having given us trouble. One of these, Kashmir, continues to be a bone of contention to this day.&lt;/p&gt;
-
-&lt;h4 id=&#34;framing-a-constitution&#34;&gt;Framing a Constitution&lt;/h4&gt;
-
-&lt;p&gt;I have often heard people say that the three years that it took to frame the Indian constitution is a mark of inefficiency on the part of the Constituent Assembly, when similar operations in other countries (e.g., Japan) were completed within months. What is overlooked here are two important facts. First, the constitution was drafted entirely by Indians, and was not dictated or handed down to us by another nation (e.g., again, Japan). This in itself should be considered an achievement. And then there&amp;rsquo;s the fact that the sheer diversity among the members of the Constituent Assembly naturally led to near-incessant debates. Looking back, it is hard to believe we managed to do it in just three years!&lt;/p&gt;
-
-&lt;p&gt;In fact, India achieved more in those first few years following independence, than some of the recent coalitions have managed in their five-year terms in office. And to think, all of this was accomplished against the backdrop of rioting, the Kashmir problem, and the task of conducting the first election in independent India.&lt;/p&gt;
-
-&lt;p&gt;There are a few other major examples that are to be found in the pages of our early post-independence history, chief among them being the Green Revolution. This period of history however, remains largely ignored and un-chronicled even by our own historians. Ramachandra Guha&amp;rsquo;s &amp;ldquo;India After Gandhi&amp;rdquo; would be a good starting point for anybody who&amp;rsquo;s interested.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/india-at-independence/</guid>
+      <description>This was originally posted as an answer to the question What major issues did India have at the time of its independence that are now resolved? on Quora.
+To describe a few that come to mind:
+Resettlement of refugees When it became clear that Indian independence would come at the cost of partition, people who wished to be part of the Indian dominion migrated in heavy numbers from across the border, leaving their land and property behind in what was to become Pakistan.</description>
     </item>
     
     <item>
       <title>Why is Ashoka Maurya given the title of &#39;Great&#39;?</title>
-      <link>http://cdax.tech/post/ashoka-the-great/</link>
+      <link>http://cdax.me/post/ashoka-the-great/</link>
       <pubDate>Wed, 16 Oct 2013 00:27:50 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/ashoka-the-great/</guid>
-      <description>&lt;p&gt;&lt;em&gt;This was originally posted as an answer to the question &lt;a href=&#34;https://www.quora.com/Why-is-Ashoka-Maurya-given-the-title-of-Great&#34;&gt;Why is Ashoka Maurya given the title of &amp;lsquo;Great&amp;rsquo;?&lt;/a&gt; on &lt;a href=&#34;https://www.quora.com/&#34;&gt;Quora&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;In India under Ashoka, we witness the successful culmination of an ambitious first experiment in empire-building. Much has been written about the aggression and cruelty that marked his reign prior to his conversion to Buddhism, and how this conversion was to play a silent role in the subsequent decline of the Mauryan empire.&lt;/p&gt;
-
-&lt;p&gt;These contentious issues apart, my personal belief is that Ashoka should forever be remembered for trying to persuade his subjects to adopt Dhamma, a social ethic that tried to unite them by invoking virtues of tolerance and respect for human dignity.&lt;/p&gt;
-
-&lt;p&gt;At the time, Mauryan society had visible divisions based on caste, regional and ideological differences. Ever since its inception in the mid-second millenium BC, Caste had been (and continues to be) a permanent fixture of Indian society. A number of unorthodox new sects including Buddhism and Jainism that flourished under Mauryan rule, did not endorse the caste system. None of them managed to eradicate it however. On the other hand, they ended up inviting strong disapproval from communities practising Vedic Brahmanism, an early form of Hinduism that was prominent at the time. Moreover, the vast Mauryan empire consisted of a number of culturally disjoint regions, from the former Greek territories in the north-west, to Kalinga in the south-east.&lt;/p&gt;
-
-&lt;p&gt;It was as a response to these differences that Ashoka formulated his policy of Dhamma, which professed among other things:
-- an equal respect for the sects and a plea for practicing tolerance, as also to respect one&amp;rsquo;s elders
-- the uselessness of ritual ceremonies and animal sacrifice
-- the need for non-violent conquest by Dhamma, as opposed to conquest by war&lt;/p&gt;
-
-&lt;p&gt;It is another matter entirely that Ashoka received little success with the implementation of his policies. What matters is that unlike many rulers who came after him, he tried and that his attempt marks a rare effort in the direction of establishing unity in the subcontinent.&lt;/p&gt;
-
-&lt;p&gt;Moreover, the manner in which he communicated these ideas to his subjects &amp;ndash; through a number of rock and pillar inscriptions that were read out to them by literate locals on his behalf &amp;ndash; was quite a direct form of public address which was rarely ever practiced after his death. For me, his greatness lies in the fact that using Dhamma, he tried to set an example for future generations of rulers. An example that, to this day remains largely ignored and forgotten.&lt;/p&gt;
-</description>
+      <guid>http://cdax.me/post/ashoka-the-great/</guid>
+      <description>This was originally posted as an answer to the question Why is Ashoka Maurya given the title of &amp;lsquo;Great&amp;rsquo;? on Quora.
+In India under Ashoka, we witness the successful culmination of an ambitious first experiment in empire-building. Much has been written about the aggression and cruelty that marked his reign prior to his conversion to Buddhism, and how this conversion was to play a silent role in the subsequent decline of the Mauryan empire.</description>
+    </item>
+    
+    <item>
+      <title>What was pre-Aryan india like?</title>
+      <link>http://cdax.me/post/pre-aryan-india/</link>
+      <pubDate>Tue, 08 Oct 2013 00:23:32 +0530</pubDate>
+      
+      <guid>http://cdax.me/post/pre-aryan-india/</guid>
+      <description>This was originally posted as an answer to the question What was pre-Aryan india like? on Quora.
+Your question called for looking at pre-Aryan India from the following multiple perspectives:
+Habitation A mountain of evidence unearthed by archaeologists over the years shows us that India was certainly not uninhabited before the coming of the Indo-Aryan speaking people (the &amp;ldquo;Aryans&amp;rdquo;) in around 1,500 BC. In fact, a first wave of urbanization had already swept past north-western and western India, long before the Aryans started setting up towns and cities in the Ganges Plain.</description>
+    </item>
+    
+    <item>
+      <title>The Kasol Affair</title>
+      <link>http://cdax.me/post/kasol/</link>
+      <pubDate>Wed, 13 Feb 2013 22:46:27 +0530</pubDate>
+      
+      <guid>http://cdax.me/post/kasol/</guid>
+      <description>It’s been four months since my first trip to Kasol. Looking back, I don’t regret not having kept an account of how I spent my time there. There’s a certain infectious quality about the relaxed air at Kasol. Once you’re there, enjoy the cool weather, eat the good food, live at the cheap hotels and meet the strange people. Of course there’s a lot else to do, but keeping a journal of my adventures was never a priority.</description>
+    </item>
+    
+    <item>
+      <title>Dynamic Pivoting with T-SQL</title>
+      <link>http://cdax.me/post/dynamic-pivoting-t-sql/</link>
+      <pubDate>Tue, 05 Feb 2013 12:10:43 +0530</pubDate>
+      
+      <guid>http://cdax.me/post/dynamic-pivoting-t-sql/</guid>
+      <description>In this post, I will share a cheap trick technique for pivoting a variable number of columns using Microsoft’s Transact-SQL. The idea of writing dynamic SQL to accomplish a pivot is nothing new, and can be found in discussion forums all over the web. Anyway, I’ve been looking for something to blog about, so I thought I’d go into more detail with this.
+The Problem You’re given two tables Students and Courses.</description>
+    </item>
+    
+    <item>
+      <title>Movie Review · Invasion of the Body Snatchers (1956)</title>
+      <link>http://cdax.me/post/invasion-of-the-body-snatchers/</link>
+      <pubDate>Thu, 29 Jul 2010 20:29:59 +0530</pubDate>
+      
+      <guid>http://cdax.me/post/invasion-of-the-body-snatchers/</guid>
+      <description>Invasion of the Body Snatchers is a title that does not hold back too much about the movie’s storyline. However, it does manage to conceal its heavily satirical undertones quite cleverly.
+The credit roll is flashed against the picturesque backdrop of floating clouds. It is a vision of pleasant calm, though the speed at which the clouds move does indicate some sort of imminent danger. The opening scene of the movie is that of the protagonist Dr Miles Bennell involved in an animated exchange with a psychiatrist, trying to convince everyone around him of his sanity.</description>
+    </item>
+    
+    <item>
+      <title>Flash vs HTML5</title>
+      <link>http://cdax.me/post/flash-v-html5/</link>
+      <pubDate>Sat, 13 Mar 2010 08:32:16 +0530</pubDate>
+      
+      <guid>http://cdax.me/post/flash-v-html5/</guid>
+      <description>The last few months have been full of heavy speculation regarding, well, the future of a certain pioneering RIA technology that goes by the name of Adobe Flash. All this fuss hasn’t been without good reason though. Over the years, not only has Flash managed in helping to sculpt the most interactive and visually delectable portion of the World Wide Web, it has also succeeded in creating a formidable string of (potentially?</description>
+    </item>
+    
+    <item>
+      <title>Tales from the Cryptology Book</title>
+      <link>http://cdax.me/post/tales-from-the-cryptology-book/</link>
+      <pubDate>Sat, 23 Jan 2010 20:39:26 +0530</pubDate>
+      
+      <guid>http://cdax.me/post/tales-from-the-cryptology-book/</guid>
+      <description>So last Wednesday, I picked up this great book from my college library (down here, it’s called the ‘Resource Center (RC)’). At the risk of sounding clichéd, I’d like to point out that finding a good book in the RC is like searching for a needle in a you-know-where. But back to the book. It’s called Cryptological Mathematics, authored by Robert Edward Lewand and published by the Mathematical Association of America.</description>
     </item>
     
   </channel>

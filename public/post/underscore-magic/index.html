@@ -7,12 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Chitharanjan Das">
 <meta name="description" content="">
-<meta name="generator" content="Hugo 0.16" />
-<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.tech/img/icons/apple-touch-icon.png?v=3">
-<link rel="icon" type="image/png" href="http://cdax.tech/img/icons/favicon-32x32.png?v=3" sizes="32x32">
-<link rel="icon" type="image/png" href="http://cdax.tech/img/icons/favicon-16x16.png?v=3" sizes="16x16">
-<link rel="manifest" href="http://cdax.tech/img/icons/manifest.json">
-<link rel="mask-icon" href="http://cdax.tech/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
+<meta name="generator" content="Hugo 0.32.1" />
+<link rel="apple-touch-icon" sizes="180x180" href="http://cdax.me/img/icons/apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" href="http://cdax.me/img/icons/favicon-32x32.png?v=3" sizes="32x32">
+<link rel="icon" type="image/png" href="http://cdax.me/img/icons/favicon-16x16.png?v=3" sizes="16x16">
+<link rel="manifest" href="http://cdax.me/img/icons/manifest.json">
+<link rel="mask-icon" href="http://cdax.me/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
 <meta name="theme-color" content="#ffffff">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/img/icons/mstile-150x150.png?v=3">
@@ -20,9 +20,9 @@
 
 
 <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="http://cdax.tech/css/normalize.css">
-<link rel="stylesheet" href="http://cdax.tech/css/main.css">
-<link rel="stylesheet" href="http://cdax.tech/css/ionicons.min.css">
+<link rel="stylesheet" href="http://cdax.me/css/normalize.css">
+<link rel="stylesheet" href="http://cdax.me/css/main.css">
+<link rel="stylesheet" href="http://cdax.me/css/ionicons.min.css">
 
     </head>
     <body>
@@ -30,7 +30,7 @@
         <nav class="main-nav">
 	
 	
-		<a href='http://cdax.tech/'> <span class="arrow">←</span>Home</a>
+		<a href='http://cdax.me/'> <span class="arrow">←</span>Home</a>
 	
 
 	
@@ -50,7 +50,7 @@
 
 <p>Front-end developers should know <a href="http://underscorejs.org/">Underscore.js</a> like the backs of their hands. It brings jQuery&rsquo;s philosophy of <em>Write less, do more</em> to the area of array/object manipulation. It&rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like <em>Backbone.js</em> and <em>Ghost</em>.</p>
 
-<p><img src="http://cdax.tech/img/underscore.png" alt="" /></p>
+<p><img src="http://cdax.me/img/underscore.png" alt="" /></p>
 
 <p>In this post, I&rsquo;m going to talk about three cool ways in which I&rsquo;ve seen Underscore (or its cousin <a href="http://lodash.com/">Lo-Dash</a>) put to use.</p>
 
@@ -58,70 +58,58 @@
 
 <p>I noticed these tricks while going through the source of <em>Ghost</em>. Ghost server has a number of API endpoints, each with a set of blacklisted/whitelisted request parameters. So what happens when someone tries to meddle with the API calls made by the client-side app? Something like this:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//pick() returns a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys)  </span>
-<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">pick</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">whitelistedParams</span><span style="color: #f8f8f2">);</span>  
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//pick() returns a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys)  
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">pick</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>, <span style="color:#a6e22e">whitelistedParams</span>);  </code></pre></div>
 
 <p>&hellip;or this:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//omit() returns a copy of the object, filtered to omit the blacklisted keys (or array of keys)  </span>
-<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">omit</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">blacklistedParams</span><span style="color: #f8f8f2">);</span>  
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//omit() returns a copy of the object, filtered to omit the blacklisted keys (or array of keys)  
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">omit</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>, <span style="color:#a6e22e">blacklistedParams</span>);  </code></pre></div>
 
 <p>Similarly, in order to normalize/standardize a request by adding in default values for required parameters, simply do:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//defaults() fills in undefined properties in object with the first value present in the following list of defaults objects  </span>
-<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">defaults</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">defaultRequest</span><span style="color: #f8f8f2">);</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//defaults() fills in undefined properties in object with the first value present in the following list of defaults objects  
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">defaults</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>, <span style="color:#a6e22e">defaultRequest</span>);</code></pre></div>
 
 <h4 id="chaining">Chaining</h4>
 
 <p>When <code>chain()</code> is called on an array/object, Underscore attaches its own methods to it, returning a <em>wrapped object</em>. The beauty of <code>chain()</code> is that the following two lines of code become equivalent:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//Imperative style  </span>
-<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">pick</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">whitelistedParams</span><span style="color: #f8f8f2">);</span>  
-<span style="color: #75715e">//Functional style</span>
-<span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">chain</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">)</span>  
-                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">pick</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">whitelistedParams</span><span style="color: #f8f8f2">)</span>
-                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">();</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//Imperative style  
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">pick</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>, <span style="color:#a6e22e">whitelistedParams</span>);  
+<span style="color:#75715e">//Functional style
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">chain</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>)  
+                .<span style="color:#a6e22e">pick</span>(<span style="color:#a6e22e">whitelistedParams</span>)
+                .<span style="color:#a6e22e">value</span>();</code></pre></div>
 
 <p>The call to <code>value()</code> at the end strips off underscore methods from the wrapped object returned by the previous method in the chain. Here&rsquo;s another example of this <em>functional</em> way of writing JavaScript:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">chain</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">params</span><span style="color: #f8f8f2">)</span>  
-                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">keys</span><span style="color: #f8f8f2">()</span>
-                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">size</span><span style="color: #f8f8f2">()</span>
-                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">();</span>
-                <span style="color: #f8f8f2">.</span><span style="color: #a6e22e">value</span><span style="color: #f8f8f2">();</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">chain</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">params</span>)  
+                .<span style="color:#a6e22e">keys</span>()
+                .<span style="color:#a6e22e">size</span>()
+                .<span style="color:#a6e22e">value</span>();
+                .<span style="color:#a6e22e">value</span>();</code></pre></div>
 
 <h4 id="templating">Templating</h4>
 
 <p>Underscore also comes with an inbuilt templating method that parses and populates Embedded JS templates, taking values from a passed-in object. In fact, this is a fairly common pattern in Backbone.js:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">//Defining the template  </span>
-<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">viewTemplate</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">template</span><span style="color: #f8f8f2">(</span>  
-                    <span style="color: #e6db74">&quot;&lt;p&gt;Hi! I&#39;m &lt;%= firstName %&gt;&quot;</span> <span style="color: #f92672">+</span>
-                    <span style="color: #e6db74">&quot; and I&#39;m &lt;%= age %&gt; &quot;</span> <span style="color: #f92672">+</span>
-                    <span style="color: #e6db74">&quot;&lt;% if(age === 1) { %&gt;&quot;</span> <span style="color: #f92672">+</span>
-                        <span style="color: #e6db74">&quot;year&quot;</span> <span style="color: #f92672">+</span>
-                    <span style="color: #e6db74">&quot;&lt;% } else { %&gt;&quot;</span> <span style="color: #f92672">+</span>
-                        <span style="color: #e6db74">&quot;years&quot;</span> <span style="color: #f92672">+</span>
-                    <span style="color: #e6db74">&quot;&lt;% } %&gt; old.&lt;/p&gt;&quot;</span>
-                  <span style="color: #f8f8f2">);</span>
-<span style="color: #75715e">//Populating the template</span>
-<span style="color: #a6e22e">$</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;.view&quot;</span><span style="color: #f8f8f2">).</span><span style="color: #a6e22e">append</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">viewTemplate</span><span style="color: #f8f8f2">({</span>
-    <span style="color: #a6e22e">firstName</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Chitharanjan&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">lastName</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Das&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #a6e22e">age</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">24</span>
-<span style="color: #f8f8f2">});</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//Defining the template  
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">viewTemplate</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_</span>.<span style="color:#a6e22e">template</span>(  
+                    <span style="color:#e6db74">&#34;&lt;p&gt;Hi! I&#39;m &lt;%= firstName %&gt;&#34;</span> <span style="color:#f92672">+</span>
+                    <span style="color:#e6db74">&#34; and I&#39;m &lt;%= age %&gt; &#34;</span> <span style="color:#f92672">+</span>
+                    <span style="color:#e6db74">&#34;&lt;% if(age === 1) { %&gt;&#34;</span> <span style="color:#f92672">+</span>
+                        <span style="color:#e6db74">&#34;year&#34;</span> <span style="color:#f92672">+</span>
+                    <span style="color:#e6db74">&#34;&lt;% } else { %&gt;&#34;</span> <span style="color:#f92672">+</span>
+                        <span style="color:#e6db74">&#34;years&#34;</span> <span style="color:#f92672">+</span>
+                    <span style="color:#e6db74">&#34;&lt;% } %&gt; old.&lt;/p&gt;&#34;</span>
+                  );
+<span style="color:#75715e">//Populating the template
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;.view&#34;</span>).<span style="color:#a6e22e">append</span>(<span style="color:#a6e22e">viewTemplate</span>({
+    <span style="color:#a6e22e">firstName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Chitharanjan&#34;</span>,
+    <span style="color:#a6e22e">lastName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Das&#34;</span>,
+    <span style="color:#a6e22e">age</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">24</span>
+});</code></pre></div>
 
 <h4 id="read-the-docs">Read the Docs!</h4>
 
@@ -132,7 +120,7 @@
                     Tagged with
                     <ul class="topics inline">
                         
-                            <li class="topic"><a href="http://cdax.tech/tags/javascript">javascript</a></li>
+                            <li class="topic"><a href="http://cdax.me/tags/javascript">javascript</a></li>
                         
                     </ul>
                 </section>
@@ -140,7 +128,7 @@
             <footer id="post-meta" class="clearfix">
                 
                     <div class="avatar-name">
-                        <img class="avatar" src="http://cdax.tech/img/avatar.jpg">
+                        <img class="avatar" src="http://cdax.me/img/avatar.jpg">
                         <div>
                             <span class="dark">Chitharanjan Das</span>
                             <span>Software Developer</span>
