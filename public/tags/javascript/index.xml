@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.me/tags/javascript/</link>
+    <link>http://cdax.tech/tags/javascript/</link>
     <description>Recent content in Javascript on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© 2016, Chitharanjan Das</copyright>
+    <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Fri, 27 Feb 2015 20:33:49 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.me/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://cdax.tech/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>If Arundhati Roy wrote JavaScript</title>
-      <link>http://cdax.me/post/if-roy-wrote-js/</link>
+      <link>http://cdax.tech/post/if-roy-wrote-js/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.me/post/if-roy-wrote-js/</guid>
+      <guid>http://cdax.tech/post/if-roy-wrote-js/</guid>
       <description>Angus Croll’s If Hemingway Wrote JavaScript is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.</description>
     </item>
     
     <item>
       <title>Underscore Magic!</title>
-      <link>http://cdax.me/post/underscore-magic/</link>
+      <link>http://cdax.tech/post/underscore-magic/</link>
       <pubDate>Fri, 26 Dec 2014 13:42:48 +0530</pubDate>
       
-      <guid>http://cdax.me/post/underscore-magic/</guid>
+      <guid>http://cdax.tech/post/underscore-magic/</guid>
       <description>Front-end developers should know Underscore.js like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of Write less, do more to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like Backbone.js and Ghost.
 In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin Lo-Dash) put to use.</description>
     </item>
     
     <item>
       <title>Javascript&#39;s &#34;void&#34; operator</title>
-      <link>http://cdax.me/post/void-0/</link>
+      <link>http://cdax.tech/post/void-0/</link>
       <pubDate>Thu, 25 Dec 2014 13:53:53 +0530</pubDate>
       
-      <guid>http://cdax.me/post/void-0/</guid>
+      <guid>http://cdax.tech/post/void-0/</guid>
       <description>Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight Backbone.js, so I thought its annotated source would be the perfect place to start.
 After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for null/undefined.</description>
     </item>

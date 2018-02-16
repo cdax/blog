@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.me/post/</link>
+    <link>http://cdax.tech/post/</link>
     <description>Recent content in Posts on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© 2016, Chitharanjan Das</copyright>
+    <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Wed, 02 Nov 2016 21:37:46 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.me/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://cdax.tech/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Closure in Python</title>
-      <link>http://cdax.me/post/python-closure/</link>
+      <link>http://cdax.tech/post/python-closure/</link>
       <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
       
-      <guid>http://cdax.me/post/python-closure/</guid>
+      <guid>http://cdax.tech/post/python-closure/</guid>
       <description>In Python, a function can be defined inside of another function. This inner function has access to variables defined in every function it is nested within. This is called closure. Douglas Crockford has said that:
  Closures are the source of enormous expressive power.
  However, Crockford had said this about closures in Javascript: The Good Parts, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences.</description>
@@ -25,10 +25,10 @@
     
     <item>
       <title>Regular Expression Lookaround</title>
-      <link>http://cdax.me/post/regex-lookaround/</link>
+      <link>http://cdax.tech/post/regex-lookaround/</link>
       <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
       
-      <guid>http://cdax.me/post/regex-lookaround/</guid>
+      <guid>http://cdax.tech/post/regex-lookaround/</guid>
       <description>Regular expression lookahead and lookbehind, collectively called lookaround, are zero-length assertions. They&amp;rsquo;re called zero-length assertions because they do not consume characters in the string, but only assert whether a match is possible or not.
 Lookarounds are very useful, because they allow you to create regular expressions that are impossible to create without them, or that would get very unmanageable without them.
 Negative lookahead Negative lookahead is useful when you want to match only those instances of a pattern that are not followed by another pattern.</description>
@@ -36,69 +36,69 @@ Negative lookahead Negative lookahead is useful when you want to match only thos
     
     <item>
       <title>(Solution to) Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.me/post/prison-break-sol/</link>
+      <link>http://cdax.tech/post/prison-break-sol/</link>
       <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
       
-      <guid>http://cdax.me/post/prison-break-sol/</guid>
+      <guid>http://cdax.tech/post/prison-break-sol/</guid>
       <description>Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.
  Can you figure such a way out of the prison?</description>
     </item>
     
     <item>
       <title>If Arundhati Roy wrote JavaScript</title>
-      <link>http://cdax.me/post/if-roy-wrote-js/</link>
+      <link>http://cdax.tech/post/if-roy-wrote-js/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.me/post/if-roy-wrote-js/</guid>
+      <guid>http://cdax.tech/post/if-roy-wrote-js/</guid>
       <description>Angus Croll’s If Hemingway Wrote JavaScript is a beautifully illustrated book full of code snippets that are rich in their use of fundamental JavaScript abstractions and modern programming patterns. Born out of equal love for both literature and JavaScript, this book is a whirlwind tour through imaginary GitHub repos belonging to some of the most celebrated wordsmiths of our time, from Shakespeare to JD Salinger to Tupac, including of course Ernest Hemingway.</description>
     </item>
     
     <item>
       <title>Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.me/post/prison-break/</link>
+      <link>http://cdax.tech/post/prison-break/</link>
       <pubDate>Fri, 20 Feb 2015 20:50:11 +0530</pubDate>
       
-      <guid>http://cdax.me/post/prison-break/</guid>
+      <guid>http://cdax.tech/post/prison-break/</guid>
       <description>Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.
  Can you figure such a way out of the prison?</description>
     </item>
     
     <item>
       <title>MongoDB: Selecting Documents at Random</title>
-      <link>http://cdax.me/post/mongodb-select-random-docs/</link>
+      <link>http://cdax.tech/post/mongodb-select-random-docs/</link>
       <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
       
-      <guid>http://cdax.me/post/mongodb-select-random-docs/</guid>
+      <guid>http://cdax.tech/post/mongodb-select-random-docs/</guid>
       <description>The Problem While implementing the back-end for Mathbin, I wanted an API endpoint that would return a random document from a Mongo collection. A very naive way of approaching this would be to select all documents and then picking the document at a random index in the returned array.
 Now, I don&amp;rsquo;t expect Mathbin&amp;rsquo;s database to hit big numbers anytime soon, but this really got me thinking about how this problem could be solved efficiently for collections having millions, maybe billions of documents.</description>
     </item>
     
     <item>
       <title>Underscore Magic!</title>
-      <link>http://cdax.me/post/underscore-magic/</link>
+      <link>http://cdax.tech/post/underscore-magic/</link>
       <pubDate>Fri, 26 Dec 2014 13:42:48 +0530</pubDate>
       
-      <guid>http://cdax.me/post/underscore-magic/</guid>
+      <guid>http://cdax.tech/post/underscore-magic/</guid>
       <description>Front-end developers should know Underscore.js like the backs of their hands. It brings jQuery&amp;rsquo;s philosophy of Write less, do more to the area of array/object manipulation. It&amp;rsquo;s almost like a shim for some really useful functions that JavaScript should be supporting natively. No wonder then, that it finds itself listed as a dependency by many popular client-and server-side projects like Backbone.js and Ghost.
 In this post, I&amp;rsquo;m going to talk about three cool ways in which I&amp;rsquo;ve seen Underscore (or its cousin Lo-Dash) put to use.</description>
     </item>
     
     <item>
       <title>Javascript&#39;s &#34;void&#34; operator</title>
-      <link>http://cdax.me/post/void-0/</link>
+      <link>http://cdax.tech/post/void-0/</link>
       <pubDate>Thu, 25 Dec 2014 13:53:53 +0530</pubDate>
       
-      <guid>http://cdax.me/post/void-0/</guid>
+      <guid>http://cdax.tech/post/void-0/</guid>
       <description>Being a relative newcomer to JavaScript, I figured a good way to learn the community&amp;rsquo;s best practices would be to spend some time looking under the hood of popular open-source projects that I use. Lately I&amp;rsquo;ve been working with the excellent and lightweight Backbone.js, so I thought its annotated source would be the perfect place to start.
 After ten minutes of reading, I was staring at this puzzling snippet of code on my screen, which at first glance seems to be a check for null/undefined.</description>
     </item>
     
     <item>
       <title>Binary Indexed Trees</title>
-      <link>http://cdax.me/post/binary-indexed-trees/</link>
+      <link>http://cdax.tech/post/binary-indexed-trees/</link>
       <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
       
-      <guid>http://cdax.me/post/binary-indexed-trees/</guid>
+      <guid>http://cdax.tech/post/binary-indexed-trees/</guid>
       <description>&amp;ldquo;A problem that seems difficult may have a simple, unexpected solution.&amp;rdquo; Unlike the advanced methods, the aha! insights of algorithms don&amp;rsquo;t come only after extensive study; they&amp;rsquo;re available to any programmer willing to think seriously before, during and after coding.
  Jon Bentley (quoting Martin Gardner), in the column Aha! Algorithms from his book Programming Pearls
 The Origin of BITs The Binary Indexed Tree is hands down the most elegant data structure that I&amp;rsquo;ve had the pleasure of studying.</description>
@@ -106,29 +106,29 @@ The Origin of BITs The Binary Indexed Tree is hands down the most elegant data s
     
     <item>
       <title>CSS for Print Media</title>
-      <link>http://cdax.me/post/css-for-print-media/</link>
+      <link>http://cdax.tech/post/css-for-print-media/</link>
       <pubDate>Tue, 25 Nov 2014 14:06:28 +0530</pubDate>
       
-      <guid>http://cdax.me/post/css-for-print-media/</guid>
+      <guid>http://cdax.tech/post/css-for-print-media/</guid>
       <description>I never really felt it was important to style web pages for the print medium till a few days ago when I was formatting my résumé. The theme that I&amp;rsquo;ve forked to use on this blog employs font-kerning and anti-aliasing to make my posts look like text on paper. This made me curious to see what my resume would look like if printed.
 The Print Preview was embarrassing. The text was huge and there were gaps everywhere.</description>
     </item>
     
     <item>
       <title>The Coffee Can Problem</title>
-      <link>http://cdax.me/post/coffee-can/</link>
+      <link>http://cdax.tech/post/coffee-can/</link>
       <pubDate>Fri, 31 Oct 2014 14:16:01 +0530</pubDate>
       
-      <guid>http://cdax.me/post/coffee-can/</guid>
+      <guid>http://cdax.tech/post/coffee-can/</guid>
       <description>The Problem  Imagine you&amp;rsquo;ve got a can full of coffee beans &amp;ndash; some are black and the rest are white. Outside of this can, you&amp;rsquo;ve also got yourself a large reservoir of black coffee beans. You keep picking out beans from your can, two at a time. If both the beans you picked are the same colour, you&amp;rsquo;ve got to throw both of them away and add to the can with a black bean from your stockpile.</description>
     </item>
     
     <item>
       <title>Fast Modular Exponentiation</title>
-      <link>http://cdax.me/post/fast-modular-exponentiation/</link>
+      <link>http://cdax.tech/post/fast-modular-exponentiation/</link>
       <pubDate>Mon, 06 Oct 2014 14:45:24 +0530</pubDate>
       
-      <guid>http://cdax.me/post/fast-modular-exponentiation/</guid>
+      <guid>http://cdax.tech/post/fast-modular-exponentiation/</guid>
       <description>The Problem &amp;hellip; is to compute be (mod m), where b, e, and m are positive integers.
 e.g., for b = 2, e = 109 and m = 109 + 7,
 be (mod m) = 140625001
@@ -138,10 +138,10 @@ Speaking in terms of the basic arithmetic operations, this method would require 
     
     <item>
       <title>Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India?</title>
-      <link>http://cdax.me/post/1975-emergency/</link>
+      <link>http://cdax.tech/post/1975-emergency/</link>
       <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
       
-      <guid>http://cdax.me/post/1975-emergency/</guid>
+      <guid>http://cdax.tech/post/1975-emergency/</guid>
       <description>This was originally posted as an answer to the question Why is the National Emergency of 1975 seen as one of the most controversial times in the History of India? on Quora.
 I&amp;rsquo;ll begin with your first question, the reasons.
 There were two important developments leading up to the 1975 emergency, that can be credited with its imposition [1].
@@ -150,10 +150,10 @@ There were two important developments leading up to the 1975 emergency, that can
     
     <item>
       <title>What major issues did India have at the time of its independence that are now resolved?</title>
-      <link>http://cdax.me/post/india-at-independence/</link>
+      <link>http://cdax.tech/post/india-at-independence/</link>
       <pubDate>Wed, 14 May 2014 00:32:26 +0530</pubDate>
       
-      <guid>http://cdax.me/post/india-at-independence/</guid>
+      <guid>http://cdax.tech/post/india-at-independence/</guid>
       <description>This was originally posted as an answer to the question What major issues did India have at the time of its independence that are now resolved? on Quora.
 To describe a few that come to mind:
 Resettlement of refugees When it became clear that Indian independence would come at the cost of partition, people who wished to be part of the Indian dominion migrated in heavy numbers from across the border, leaving their land and property behind in what was to become Pakistan.</description>
@@ -161,20 +161,20 @@ Resettlement of refugees When it became clear that Indian independence would com
     
     <item>
       <title>Why is Ashoka Maurya given the title of &#39;Great&#39;?</title>
-      <link>http://cdax.me/post/ashoka-the-great/</link>
+      <link>http://cdax.tech/post/ashoka-the-great/</link>
       <pubDate>Wed, 16 Oct 2013 00:27:50 +0530</pubDate>
       
-      <guid>http://cdax.me/post/ashoka-the-great/</guid>
+      <guid>http://cdax.tech/post/ashoka-the-great/</guid>
       <description>This was originally posted as an answer to the question Why is Ashoka Maurya given the title of &amp;lsquo;Great&amp;rsquo;? on Quora.
 In India under Ashoka, we witness the successful culmination of an ambitious first experiment in empire-building. Much has been written about the aggression and cruelty that marked his reign prior to his conversion to Buddhism, and how this conversion was to play a silent role in the subsequent decline of the Mauryan empire.</description>
     </item>
     
     <item>
       <title>What was pre-Aryan india like?</title>
-      <link>http://cdax.me/post/pre-aryan-india/</link>
+      <link>http://cdax.tech/post/pre-aryan-india/</link>
       <pubDate>Tue, 08 Oct 2013 00:23:32 +0530</pubDate>
       
-      <guid>http://cdax.me/post/pre-aryan-india/</guid>
+      <guid>http://cdax.tech/post/pre-aryan-india/</guid>
       <description>This was originally posted as an answer to the question What was pre-Aryan india like? on Quora.
 Your question called for looking at pre-Aryan India from the following multiple perspectives:
 Habitation A mountain of evidence unearthed by archaeologists over the years shows us that India was certainly not uninhabited before the coming of the Indo-Aryan speaking people (the &amp;ldquo;Aryans&amp;rdquo;) in around 1,500 BC. In fact, a first wave of urbanization had already swept past north-western and western India, long before the Aryans started setting up towns and cities in the Ganges Plain.</description>
@@ -182,48 +182,48 @@ Habitation A mountain of evidence unearthed by archaeologists over the years sho
     
     <item>
       <title>The Kasol Affair</title>
-      <link>http://cdax.me/post/kasol/</link>
+      <link>http://cdax.tech/post/kasol/</link>
       <pubDate>Wed, 13 Feb 2013 22:46:27 +0530</pubDate>
       
-      <guid>http://cdax.me/post/kasol/</guid>
+      <guid>http://cdax.tech/post/kasol/</guid>
       <description>It’s been four months since my first trip to Kasol. Looking back, I don’t regret not having kept an account of how I spent my time there. There’s a certain infectious quality about the relaxed air at Kasol. Once you’re there, enjoy the cool weather, eat the good food, live at the cheap hotels and meet the strange people. Of course there’s a lot else to do, but keeping a journal of my adventures was never a priority.</description>
     </item>
     
     <item>
       <title>Dynamic Pivoting with T-SQL</title>
-      <link>http://cdax.me/post/dynamic-pivoting-t-sql/</link>
+      <link>http://cdax.tech/post/dynamic-pivoting-t-sql/</link>
       <pubDate>Tue, 05 Feb 2013 12:10:43 +0530</pubDate>
       
-      <guid>http://cdax.me/post/dynamic-pivoting-t-sql/</guid>
+      <guid>http://cdax.tech/post/dynamic-pivoting-t-sql/</guid>
       <description>In this post, I will share a cheap trick technique for pivoting a variable number of columns using Microsoft’s Transact-SQL. The idea of writing dynamic SQL to accomplish a pivot is nothing new, and can be found in discussion forums all over the web. Anyway, I’ve been looking for something to blog about, so I thought I’d go into more detail with this.
 The Problem You’re given two tables Students and Courses.</description>
     </item>
     
     <item>
       <title>Movie Review · Invasion of the Body Snatchers (1956)</title>
-      <link>http://cdax.me/post/invasion-of-the-body-snatchers/</link>
+      <link>http://cdax.tech/post/invasion-of-the-body-snatchers/</link>
       <pubDate>Thu, 29 Jul 2010 20:29:59 +0530</pubDate>
       
-      <guid>http://cdax.me/post/invasion-of-the-body-snatchers/</guid>
+      <guid>http://cdax.tech/post/invasion-of-the-body-snatchers/</guid>
       <description>Invasion of the Body Snatchers is a title that does not hold back too much about the movie’s storyline. However, it does manage to conceal its heavily satirical undertones quite cleverly.
 The credit roll is flashed against the picturesque backdrop of floating clouds. It is a vision of pleasant calm, though the speed at which the clouds move does indicate some sort of imminent danger. The opening scene of the movie is that of the protagonist Dr Miles Bennell involved in an animated exchange with a psychiatrist, trying to convince everyone around him of his sanity.</description>
     </item>
     
     <item>
       <title>Flash vs HTML5</title>
-      <link>http://cdax.me/post/flash-v-html5/</link>
+      <link>http://cdax.tech/post/flash-v-html5/</link>
       <pubDate>Sat, 13 Mar 2010 08:32:16 +0530</pubDate>
       
-      <guid>http://cdax.me/post/flash-v-html5/</guid>
+      <guid>http://cdax.tech/post/flash-v-html5/</guid>
       <description>The last few months have been full of heavy speculation regarding, well, the future of a certain pioneering RIA technology that goes by the name of Adobe Flash. All this fuss hasn’t been without good reason though. Over the years, not only has Flash managed in helping to sculpt the most interactive and visually delectable portion of the World Wide Web, it has also succeeded in creating a formidable string of (potentially?</description>
     </item>
     
     <item>
       <title>Tales from the Cryptology Book</title>
-      <link>http://cdax.me/post/tales-from-the-cryptology-book/</link>
+      <link>http://cdax.tech/post/tales-from-the-cryptology-book/</link>
       <pubDate>Sat, 23 Jan 2010 20:39:26 +0530</pubDate>
       
-      <guid>http://cdax.me/post/tales-from-the-cryptology-book/</guid>
+      <guid>http://cdax.tech/post/tales-from-the-cryptology-book/</guid>
       <description>So last Wednesday, I picked up this great book from my college library (down here, it’s called the ‘Resource Center (RC)’). At the risk of sounding clichéd, I’d like to point out that finding a good book in the RC is like searching for a needle in a you-know-where. But back to the book. It’s called Cryptological Mathematics, authored by Robert Edward Lewand and published by the Mathematical Association of America.</description>
     </item>
     
