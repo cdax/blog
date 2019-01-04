@@ -1,4 +1,4 @@
-baseurl = "http://cdax.tech/"
+baseurl = "https://cdax.tech/"
 languageCode = "en-us"
 title = "Chitharanjan's Blog"
 theme = "phantasm"
