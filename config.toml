@@ -2,7 +2,7 @@ baseurl = "https://cdax.tech/"
 languageCode = "en-us"
 title = "Chitharanjan's Blog"
 theme = "phantasm"
-canonifyurls = true
+canonifyurls = false
 
 [params]
 name = "Chitharanjan Das"
