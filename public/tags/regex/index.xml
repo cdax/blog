@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Regex on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/regex/</link>
+    <link>https://cdax.tech/tags/regex/</link>
     <description>Recent content in Regex on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Wed, 19 Oct 2016 20:54:22 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.tech/tags/regex/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cdax.tech/tags/regex/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Regular Expression Lookaround</title>
-      <link>http://cdax.tech/post/regex-lookaround/</link>
+      <link>https://cdax.tech/post/regex-lookaround/</link>
       <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/regex-lookaround/</guid>
+      <guid>https://cdax.tech/post/regex-lookaround/</guid>
       <description>Regular expression lookahead and lookbehind, collectively called lookaround, are zero-length assertions. They&amp;rsquo;re called zero-length assertions because they do not consume characters in the string, but only assert whether a match is possible or not.
 Lookarounds are very useful, because they allow you to create regular expressions that are impossible to create without them, or that would get very unmanageable without them.
 Negative lookahead Negative lookahead is useful when you want to match only those instances of a pattern that are not followed by another pattern.</description>

@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/web/</link>
+    <link>https://cdax.tech/tags/web/</link>
     <description>Recent content in Web on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Sat, 13 Mar 2010 08:32:16 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.tech/tags/web/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cdax.tech/tags/web/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Flash vs HTML5</title>
-      <link>http://cdax.tech/post/flash-v-html5/</link>
+      <link>https://cdax.tech/post/flash-v-html5/</link>
       <pubDate>Sat, 13 Mar 2010 08:32:16 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/flash-v-html5/</guid>
+      <guid>https://cdax.tech/post/flash-v-html5/</guid>
       <description>The last few months have been full of heavy speculation regarding, well, the future of a certain pioneering RIA technology that goes by the name of Adobe Flash. All this fuss hasn’t been without good reason though. Over the years, not only has Flash managed in helping to sculpt the most interactive and visually delectable portion of the World Wide Web, it has also succeeded in creating a formidable string of (potentially?</description>
     </item>
     

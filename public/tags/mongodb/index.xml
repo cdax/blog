@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mongodb on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/mongodb/</link>
+    <link>https://cdax.tech/tags/mongodb/</link>
     <description>Recent content in Mongodb on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Sun, 28 Dec 2014 13:01:57 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.tech/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cdax.tech/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MongoDB: Selecting Documents at Random</title>
-      <link>http://cdax.tech/post/mongodb-select-random-docs/</link>
+      <link>https://cdax.tech/post/mongodb-select-random-docs/</link>
       <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/mongodb-select-random-docs/</guid>
+      <guid>https://cdax.tech/post/mongodb-select-random-docs/</guid>
       <description>The Problem While implementing the back-end for Mathbin, I wanted an API endpoint that would return a random document from a Mongo collection. A very naive way of approaching this would be to select all documents and then picking the document at a random index in the returned array.
 Now, I don&amp;rsquo;t expect Mathbin&amp;rsquo;s database to hit big numbers anytime soon, but this really got me thinking about how this problem could be solved efficiently for collections having millions, maybe billions of documents.</description>
     </item>

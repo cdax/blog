@@ -2,139 +2,139 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/</link>
+    <link>https://cdax.tech/tags/</link>
     <description>Recent content in Tags on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Thu, 27 Nov 2014 13:28:06 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cdax.tech/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Algorithms</title>
-      <link>http://cdax.tech/tags/algorithms/</link>
+      <link>https://cdax.tech/tags/algorithms/</link>
       <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/algorithms/</guid>
+      <guid>https://cdax.tech/tags/algorithms/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Css</title>
-      <link>http://cdax.tech/tags/css/</link>
+      <link>https://cdax.tech/tags/css/</link>
       <pubDate>Tue, 25 Nov 2014 14:06:28 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/css/</guid>
+      <guid>https://cdax.tech/tags/css/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Data Structures</title>
-      <link>http://cdax.tech/tags/data-structures/</link>
+      <link>https://cdax.tech/tags/data-structures/</link>
       <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/data-structures/</guid>
+      <guid>https://cdax.tech/tags/data-structures/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Film</title>
-      <link>http://cdax.tech/tags/film/</link>
+      <link>https://cdax.tech/tags/film/</link>
       <pubDate>Thu, 29 Jul 2010 20:29:59 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/film/</guid>
+      <guid>https://cdax.tech/tags/film/</guid>
       <description></description>
     </item>
     
     <item>
       <title>History</title>
-      <link>http://cdax.tech/tags/history/</link>
+      <link>https://cdax.tech/tags/history/</link>
       <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/history/</guid>
+      <guid>https://cdax.tech/tags/history/</guid>
       <description></description>
     </item>
     
     <item>
       <title>India</title>
-      <link>http://cdax.tech/tags/india/</link>
+      <link>https://cdax.tech/tags/india/</link>
       <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/india/</guid>
+      <guid>https://cdax.tech/tags/india/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Javascript</title>
-      <link>http://cdax.tech/tags/javascript/</link>
+      <link>https://cdax.tech/tags/javascript/</link>
       <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/javascript/</guid>
+      <guid>https://cdax.tech/tags/javascript/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Mongodb</title>
-      <link>http://cdax.tech/tags/mongodb/</link>
+      <link>https://cdax.tech/tags/mongodb/</link>
       <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/mongodb/</guid>
+      <guid>https://cdax.tech/tags/mongodb/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Puzzles</title>
-      <link>http://cdax.tech/tags/puzzles/</link>
+      <link>https://cdax.tech/tags/puzzles/</link>
       <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/puzzles/</guid>
+      <guid>https://cdax.tech/tags/puzzles/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://cdax.tech/tags/python/</link>
+      <link>https://cdax.tech/tags/python/</link>
       <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/python/</guid>
+      <guid>https://cdax.tech/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Regex</title>
-      <link>http://cdax.tech/tags/regex/</link>
+      <link>https://cdax.tech/tags/regex/</link>
       <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/regex/</guid>
+      <guid>https://cdax.tech/tags/regex/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sql</title>
-      <link>http://cdax.tech/tags/sql/</link>
+      <link>https://cdax.tech/tags/sql/</link>
       <pubDate>Tue, 05 Feb 2013 12:10:43 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/sql/</guid>
+      <guid>https://cdax.tech/tags/sql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Travel</title>
-      <link>http://cdax.tech/tags/travel/</link>
+      <link>https://cdax.tech/tags/travel/</link>
       <pubDate>Wed, 13 Feb 2013 22:46:27 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/travel/</guid>
+      <guid>https://cdax.tech/tags/travel/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Web</title>
-      <link>http://cdax.tech/tags/web/</link>
+      <link>https://cdax.tech/tags/web/</link>
       <pubDate>Sat, 13 Mar 2010 08:32:16 +0530</pubDate>
       
-      <guid>http://cdax.tech/tags/web/</guid>
+      <guid>https://cdax.tech/tags/web/</guid>
       <description></description>
     </item>
     

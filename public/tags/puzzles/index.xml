@@ -2,51 +2,51 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Puzzles on Chitharanjan&#39;s Blog</title>
-    <link>http://cdax.tech/tags/puzzles/</link>
+    <link>https://cdax.tech/tags/puzzles/</link>
     <description>Recent content in Puzzles on Chitharanjan&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2018, Chitharanjan Das</copyright>
     <lastBuildDate>Sun, 08 Mar 2015 20:53:15 +0530</lastBuildDate>
     
-	<atom:link href="http://cdax.tech/tags/puzzles/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cdax.tech/tags/puzzles/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>(Solution to) Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break-sol/</link>
+      <link>https://cdax.tech/post/prison-break-sol/</link>
       <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break-sol/</guid>
+      <guid>https://cdax.tech/post/prison-break-sol/</guid>
       <description>Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.
  Can you figure such a way out of the prison?</description>
     </item>
     
     <item>
       <title>Prison Break: A Simple Counting Problem</title>
-      <link>http://cdax.tech/post/prison-break/</link>
+      <link>https://cdax.tech/post/prison-break/</link>
       <pubDate>Fri, 20 Feb 2015 20:50:11 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/prison-break/</guid>
+      <guid>https://cdax.tech/post/prison-break/</guid>
       <description>Imagine a prison having 36 cells arranged like the squares in a 6-by-6 grid. All adjacent cells have doors between them; doors that you can open. You, the prisoner in the top-left corner cell, are told that you can have your freedom if you can find your way to the diagonally opposite corner cell, after passing through each other cell exactly once.
  Can you figure such a way out of the prison?</description>
     </item>
     
     <item>
       <title>The Coffee Can Problem</title>
-      <link>http://cdax.tech/post/coffee-can/</link>
+      <link>https://cdax.tech/post/coffee-can/</link>
       <pubDate>Fri, 31 Oct 2014 14:16:01 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/coffee-can/</guid>
+      <guid>https://cdax.tech/post/coffee-can/</guid>
       <description>The Problem  Imagine you&amp;rsquo;ve got a can full of coffee beans &amp;ndash; some are black and the rest are white. Outside of this can, you&amp;rsquo;ve also got yourself a large reservoir of black coffee beans. You keep picking out beans from your can, two at a time. If both the beans you picked are the same colour, you&amp;rsquo;ve got to throw both of them away and add to the can with a black bean from your stockpile.</description>
     </item>
     
     <item>
       <title>Tales from the Cryptology Book</title>
-      <link>http://cdax.tech/post/tales-from-the-cryptology-book/</link>
+      <link>https://cdax.tech/post/tales-from-the-cryptology-book/</link>
       <pubDate>Sat, 23 Jan 2010 20:39:26 +0530</pubDate>
       
-      <guid>http://cdax.tech/post/tales-from-the-cryptology-book/</guid>
+      <guid>https://cdax.tech/post/tales-from-the-cryptology-book/</guid>
       <description>So last Wednesday, I picked up this great book from my college library (down here, it’s called the ‘Resource Center (RC)’). At the risk of sounding clichéd, I’d like to point out that finding a good book in the RC is like searching for a needle in a you-know-where. But back to the book. It’s called Cryptological Mathematics, authored by Robert Edward Lewand and published by the Mathematical Association of America.</description>
     </item>
     
