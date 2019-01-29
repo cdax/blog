@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Chitharanjan&#39;s Blog</title>
+    <link>https://cdax.tech/tags/</link>
+    <description>Recent content in Tags on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2018, Chitharanjan Das</copyright>
+    <lastBuildDate>Thu, 27 Nov 2014 13:28:06 +0530</lastBuildDate>
+    
+	<atom:link href="https://cdax.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Algorithms</title>
+      <link>https://cdax.tech/tags/algorithms/</link>
+      <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/algorithms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Css</title>
+      <link>https://cdax.tech/tags/css/</link>
+      <pubDate>Tue, 25 Nov 2014 14:06:28 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/css/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Structures</title>
+      <link>https://cdax.tech/tags/data-structures/</link>
+      <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/data-structures/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Film</title>
+      <link>https://cdax.tech/tags/film/</link>
+      <pubDate>Thu, 29 Jul 2010 20:29:59 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/film/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>History</title>
+      <link>https://cdax.tech/tags/history/</link>
+      <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/history/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>India</title>
+      <link>https://cdax.tech/tags/india/</link>
+      <pubDate>Sun, 29 Jun 2014 00:41:34 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/india/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Javascript</title>
+      <link>https://cdax.tech/tags/javascript/</link>
+      <pubDate>Fri, 27 Feb 2015 20:33:49 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mongodb</title>
+      <link>https://cdax.tech/tags/mongodb/</link>
+      <pubDate>Sun, 28 Dec 2014 13:01:57 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/mongodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Puzzles</title>
+      <link>https://cdax.tech/tags/puzzles/</link>
+      <pubDate>Sun, 08 Mar 2015 20:53:15 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/puzzles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://cdax.tech/tags/python/</link>
+      <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Regex</title>
+      <link>https://cdax.tech/tags/regex/</link>
+      <pubDate>Wed, 19 Oct 2016 20:54:22 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/regex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sql</title>
+      <link>https://cdax.tech/tags/sql/</link>
+      <pubDate>Tue, 05 Feb 2013 12:10:43 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/sql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Travel</title>
+      <link>https://cdax.tech/tags/travel/</link>
+      <pubDate>Wed, 13 Feb 2013 22:46:27 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/travel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web</title>
+      <link>https://cdax.tech/tags/web/</link>
+      <pubDate>Sat, 13 Mar 2010 08:32:16 +0530</pubDate>
+      
+      <guid>https://cdax.tech/tags/web/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

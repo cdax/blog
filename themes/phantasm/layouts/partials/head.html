@@ -1,0 +1,22 @@
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>{{ .Title }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="{{ with .Site.Params.name }}{{ . }}{{ end }}">
+<meta name="description" content="{{ with .Site.Params.description }}{{ . }}{{ end }}">
+{{ .Hugo.Generator }}
+<link rel="apple-touch-icon" sizes="180x180" href="/img/icons/apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" href="/img/icons/favicon-32x32.png?v=3" sizes="32x32">
+<link rel="icon" type="image/png" href="/img/icons/favicon-16x16.png?v=3" sizes="16x16">
+<link rel="manifest" href="/img/icons/manifest.json">
+<link rel="mask-icon" href="/img/icons/safari-pinned-tab.svg?v=3" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/img/icons/mstile-150x150.png?v=3">
+<meta name="theme-color" content="#ffffff">
+<!-- Place favicon.ico in the root directory -->
+
+<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="{{ .Site.BaseURL }}css/ionicons.min.css">

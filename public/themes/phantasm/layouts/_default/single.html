@@ -1,0 +1,48 @@
+<!doctype html>
+<html class="no-js" lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
+    <head>
+        {{ partial "head.html" . }}
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        {{ partial "nav.html" . }}
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>{{ .Title }}</h1>
+                    <h2 class="headline">{{ .Date.Format "January 2, 2006" }}</h2>
+                </header>
+                <section id="post-body">
+                    {{ .Content }}
+                </section>
+                <section class="section topics">
+                    Tagged with
+                    <ul class="topics inline">
+                        {{ range $id, $name := .Params.tags }}
+                            <li class="topic"><a href="/tags/{{ $name | urlize }}">{{ $name }}</a></li>
+                        {{ end }}
+                    </ul>
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                {{ with .Site.Params.twitter }}<a href="https://twitter.com/{{ . }}">{{ end }}
+                    <div class="avatar-name">
+                        <img class="avatar" src="{{ .Site.BaseURL }}img/{{ .Site.Params.avatarPath }}">
+                        <div>
+                            <span class="dark">{{ .Site.Params.name }}</span>
+                            <span>{{ .Site.Params.aboutAuthor }}</span>
+                        </div>
+                    </div>
+                    {{ with .Site.Params.twitter }}</a>{{ end }}
+                <section id="sharing">
+                    {{ partial "social.html" . }}
+                </section>
+            </footer>
+            {{ partial "footer.html" . }}
+        </section>
+
+    </body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Structures on Chitharanjan&#39;s Blog</title>
+    <link>https://cdax.tech/tags/data-structures/</link>
+    <description>Recent content in Data Structures on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2018, Chitharanjan Das</copyright>
+    <lastBuildDate>Thu, 27 Nov 2014 13:28:06 +0530</lastBuildDate>
+    
+	<atom:link href="https://cdax.tech/tags/data-structures/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Binary Indexed Trees</title>
+      <link>https://cdax.tech/post/binary-indexed-trees/</link>
+      <pubDate>Thu, 27 Nov 2014 13:28:06 +0530</pubDate>
+      
+      <guid>https://cdax.tech/post/binary-indexed-trees/</guid>
+      <description>&amp;ldquo;A problem that seems difficult may have a simple, unexpected solution.&amp;rdquo; Unlike the advanced methods, the aha! insights of algorithms don&amp;rsquo;t come only after extensive study; they&amp;rsquo;re available to any programmer willing to think seriously before, during and after coding.
+ Jon Bentley (quoting Martin Gardner), in the column Aha! Algorithms from his book Programming Pearls
+The Origin of BITs The Binary Indexed Tree is hands down the most elegant data structure that I&amp;rsquo;ve had the pleasure of studying.</description>
+    </item>
+    
+  </channel>
+</rss>

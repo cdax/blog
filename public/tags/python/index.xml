@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Chitharanjan&#39;s Blog</title>
+    <link>https://cdax.tech/tags/python/</link>
+    <description>Recent content in Python on Chitharanjan&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2018, Chitharanjan Das</copyright>
+    <lastBuildDate>Wed, 02 Nov 2016 21:37:46 +0530</lastBuildDate>
+    
+	<atom:link href="https://cdax.tech/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Closure in Python</title>
+      <link>https://cdax.tech/post/python-closure/</link>
+      <pubDate>Wed, 02 Nov 2016 21:37:46 +0530</pubDate>
+      
+      <guid>https://cdax.tech/post/python-closure/</guid>
+      <description>In Python, a function can be defined inside of another function. This inner function has access to variables defined in every function it is nested within. This is called closure. Douglas Crockford has said that:
+ Closures are the source of enormous expressive power.
+ However, Crockford had said this about closures in Javascript: The Good Parts, his excellent introduction to the Javascript language. While closures in Python work in much the same way, and offer many of the same benefits, there are a few surprising differences.</description>
+    </item>
+    
+  </channel>
+</rss>

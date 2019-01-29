@@ -1,0 +1,16 @@
+baseurl = "https://cdax.tech/"
+languageCode = "en-us"
+title = "Chitharanjan's Blog"
+theme = "phantasm"
+canonifyurls = false
+
+[params]
+name = "Chitharanjan Das"
+author = "Chitharanjan Das"
+aboutAuthor = "Software Developer"
+logoPath = "phantasm-logo-3x.png"
+avatarPath = "avatar.jpg"
+bio = "Software Developer"
+email = "das.chitharanjan@gmail.com"
+copyright = "© 2018, Chitharanjan Das"
+tag = "tags"
